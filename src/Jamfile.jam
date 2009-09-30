@@ -1,0 +1,12 @@
+project objectFactory
+	: default-build release
+	: build-dir ../bin
+	;
+
+obj InstrumentFactory.o 
+	: InstrumentFactory.cpp
+	;
+
+obj InstrumentRuleFactory.o 
+	: InstrumentRuleFactory.cpp
+ 	;

@@ -1,0 +1,18 @@
+#Instrument Definition
+INSTRUMENT = RPG
+
+#Sub Instrument Definition
+RULES = PSU1            # Several Sets of Transmitter rules can be defined here
+
+#Defined Keywords for Radar Pulse Generator Instrument
+MODE     = Normal             # Select Normal or Multi modes
+IPP      = 10 msec            # InterPulsePeriod
+REFCLOCK = 20 MHz             # Reference clock rate
+BAUD     =  1 usec
+
+#Signal Definitions
+TR   = a.0,a.11,a.12,     (14usec, 10usec)
+TXA  = a.2,a.3, 400 usec
+CODE = a.4,     {+5 -2 +2 -1 +1 -1 +1}
+SA0  = a.5,     (100 km, 110 km)
+a.6  =          {+5 -2 +2 -1 +1 -100}

@@ -1,0 +1,28 @@
+import make ;
+
+project Jamroot 
+	: default-build release
+	: build-dir bin/
+	: requirements <include>test/
+	;
+
+build-project src ;
+
+unit-test spirit
+	: test/spirit_test.cpp 
+	;
+
+unit-test keyword
+	: test/keyword_test.cpp 
+	;
+
+unit-test signal
+	: test/signal_test.cpp 
+	;
+
+unit-test rpg
+	: test/rpg_test.cpp src/InstrumentFactory.cpp src/InstrumentRuleFactory.cpp 
+	: <dependency>test/test.hif
+	;
+
+#make test.hif : test.hif : @common.copy ;
