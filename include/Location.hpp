@@ -2,6 +2,9 @@
 #define LOCATION_H
 
 #include <iostream>
+#include <vector>
+
+using std::vector;
 
 struct Location{
   typedef unsigned int uint;
@@ -9,7 +12,15 @@ struct Location{
     port(port_),channel(channel_){}
   char port;
   uint channel;
+  
+  void Print(std::ostream& stream){
+    stream << "Port: " << port << " Channel: " << channel << std::endl;
+  }
 };
 
+namespace location{
+  
+};
+typedef vector<Location> LocationVector;
 
 #endif

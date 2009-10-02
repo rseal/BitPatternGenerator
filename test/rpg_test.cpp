@@ -20,6 +20,6 @@ BOOST_AUTO_TEST_CASE(radarPulseGenerator_test){
   TokenVector tokens = instrument->Tokenize("test.hif");
 
   rules->Detect(tokens);
-  rules->Verify();
+  //rules->Verify();
   BOOST_CHECK(rules->Verify());
 }
