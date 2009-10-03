@@ -1,0 +1,20 @@
+import boostbook : boostbook ;
+using quickbook ;
+
+xml documentation : documentation.qbk	;
+
+#install ./ : documentation ;
+
+boostbook standalone
+    :
+        documentation
+    :
+	<xsl:param>boost.root=./
+        <xsl:param>boost.image.src=../images/logo-aspirl.png
+	<xsl:param>boost.image.alt="\"MyProject\""
+        <xsl:param>boost.image.w=180
+        <xsl:param>boost.image.h=150
+#       <xsl:param>nav.layout=none
+    ;
+
+#boostbook documentation : documentation.xml ;

@@ -1,0 +1,16 @@
+[article Quickbook
+    [quickbook 1.4]
+    [version 1.4]
+    [authors [Seal, Ryan]]
+    [copyright 2009]
+    [purpose Bit Pattern Generator Version 2.0 Documentation]
+    [license
+        Distributed under the Boost Software License, Version 1.0.
+        (See accompanying file LICENSE_1_0.txt or copy at
+        [@http://www.boost.org/LICENSE_1_0.txt])
+    ]
+]
+
+[section:intro Introduction]
+This is a test
+[endsect]

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE library PUBLIC "-//Boost//DTD BoostBook XML V1.0//EN" "http://www.boost.org/tools/boostbook/dtd/boostbook.dtd">
+<article id="quickbook" last-revision="$Date: 2009/10/03 13:59:37 $" xmlns:xi="http://www.w3.org/2001/XInclude">
+  <title>Bit Pattern Generator Version 2.0</title>
+  <articleinfo>
+    <authorgroup>
+    <author>
+      <firstname>Ryan</firstname> <surname>Seal</surname>
+    </author>
+    </authorgroup>
+    <copyright>
+      <year>2009</year> <holder></holder>
+    </copyright>
+    <legalnotice>
+      <para>
+        Distributed under the Boost Software License, Version 1.0. (See accompanying
+        file LICENSE_1_0.txt or copy at <ulink url="http://www.boost.org/LICENSE_1_0.txt">http://www.boost.org/LICENSE_1_0.txt</ulink>)
+      </para>
+    </legalnotice>
+    <articlepurpose>
+      Bit Pattern Generator Version 2.0 Documentation
+    </articlepurpose>
+  </articleinfo>
+  <section id="quickbook.intro">
+    <title><link linkend="quickbook.intro"> Introduction</link></title>
+    <para>
+      This is a test
+    </para>
+  </section>
+</article>

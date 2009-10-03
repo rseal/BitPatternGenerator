@@ -1,8 +1,7 @@
 import make ;
 
-project Jamroot 
+project bpg 
 	: default-build release
-	: build-dir bin/
 	: requirements <include>test/
 	;
 
