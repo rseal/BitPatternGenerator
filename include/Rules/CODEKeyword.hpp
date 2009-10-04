@@ -1,15 +1,34 @@
+ // Copyright (c) 2009 Ryan Seal <rlseal -at- gmail.com>
+//
+// This file is part of Bit Pattern Generator (BPG) Software.
+//
+// BPG is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//  
+// BPG is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with BPG.  If not, see <http://www.gnu.org/licenses/>.
 #ifndef CODE_KEYWORD_H
 #define CODE_KEYWORD_H
 
 #include "../Keyword.hpp"
 #include "../Location.hpp"
+#include "../Parameter.hpp"
 #include <boost/spirit/include/classic_spirit.hpp>
 #include <boost/dynamic_bitset.hpp>
 
 using namespace boost::spirit::classic;
 
-class CODEKeyword: public Keyword{
-  
+typedef tuple< LocationVector, dynamic_bitset<>, float> CodeTuple;
+
+class CODEKeyword: public Keyword<CodeTuple>{
+
   typedef dynamic_bitset<> Pattern;
   
   void Detect(const string& token){
@@ -63,9 +82,16 @@ class CODEKeyword: public Keyword{
 	    FormatPattern(bitVector,codeVec,signVec);
 
 	    //load parameters
-	    parameters_.push_back(Parameter("location",lv));
-	    parameters_.push_back(Parameter("pattern", bitVector));
-	    parameters_.push_back(Parameter("width", static_cast<float>(bitVector.size())));
+	    parameters_.push_back(make_tuple(lv,
+					     bitVector,
+					     static_cast<float>
+					     (bitVector.size())
+					     )
+				  );
+
+	    // parameters_.push_back(Parameter("location",lv));
+	    // parameters_.push_back(Parameter("pattern", bitVector));
+	    // parameters_.push_back(Parameter("width", static_cast<float>(bitVector.size())));
 	    set_ = true;
 	    Verify();
 	}
@@ -82,7 +108,7 @@ class CODEKeyword: public Keyword{
     }
   
 public:
-    CODEKeyword(): Keyword("code"){};
+  CODEKeyword(): Keyword<CodeTuple>("code"){};
 
 };
 

@@ -3,18 +3,32 @@ using quickbook ;
 
 xml documentation : documentation.qbk	;
 
-#install ./ : documentation ;
+#install html : images/ ;
 
 boostbook standalone
     :
         documentation
     :
-	<xsl:param>boost.root=./
-        <xsl:param>boost.image.src=../images/logo-aspirl.png
-	<xsl:param>boost.image.alt="\"MyProject\""
+	<xsl:param>boost.root=../../
+        <xsl:param>boost.image.src=images/logo-aspirl.png
+	<xsl:param>boost.image.alt="\"BitPatternGenerator\""
         <xsl:param>boost.image.w=180
         <xsl:param>boost.image.h=150
-#       <xsl:param>nav.layout=none
+        <xsl:param>nav.layout=none
+	<xsl:param>html.stylesheet=css/boostbook.css
+	<xsl:param>toc.max.depth=4
+	<xsl:param>toc.section.depth=4
+#	<xsl:param>chunk.section.depth=2
+    ;
+
+#local patterns = *.dtd *.xml *.xsl LICENSE ;
+local dirs = images ;
+
+install dist-share-boostbook
+    :
+    [ glob $(dirs)/* css/*.css ]
+    :
+    <location>html <install-source-root>.
     ;
 
 #boostbook documentation : documentation.xml ;

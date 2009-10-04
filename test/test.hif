@@ -4,22 +4,35 @@ INSTRUMENT = RPG
 #Sub Instrument Definition
 RULES      = PSU1                # Several Sets of Transmitter rules can be defined here
 
-#Defined Keywords for Radar Pulse Generator Instrument
+#No Functionality has been implemented for this keyword yet.
 MODE       =  Normal             # Select Normal or Multi modes
-IPP        =  10 msec            # InterPulsePeriod
-REFCLOCK   =  20 MHz             # Reference clock rate
-BAUDA      =  10 usec            # Baud width for port a
-BAUDB      =  20 usec            # Baud width for port b
 
-#Signal Definitions - required
-TR         = a.0,a.11,a.12,     (14 usec, 10 usec)
-TXA        = a.2,a.3, 130 usec
+#Defines inter pulse period
+IPP        =  10 msec            # InterPulsePeriod
+
+#Defines the RPGs master clock rate
+REFCLOCK   =  20 MHz             # Reference clock rate
+
+#Defines baud width for ports A and B
+BAUDA      =  10 usec            # Baud width for port a
+BAUDB      =  10 usec            # Baud width for port b
+
+#TR SIGNAL : TR Switch Pulse
+#Defines (pre,post) txa settings
+TR         = a.0,     (14 usec, 10 usec)
+
+#TXA SIGNAL : Transmit Enable
+#Defines trasmitted width
+TXA        = a.2,     130 usec
 CODE       = a.4,     {+5 -2 +2 -1 +1 -1 +1}
 
 #sampling windows - one or more can be defined
+#Defines (start,stop) sampling ranges
+#Optional negate signal to invert logic
 SA0        = a.5,     (100 km, 110 km) , negate
-SA1        = a.6,     (80 km, 100 km)
+SA1        = a.6,     ( 80 km, 100 km) , negate
 
 #generic signal definitions
+#Defines logic level in number of bauds
 a.7,a.10   =          {+5 -2 +2 -1 +1 -100}
 a.9,a.1    =          {+10 -20 +30}

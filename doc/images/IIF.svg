@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="286.67026"
+   height="189.86034"
+   id="svg2"
+   sodipodi:version="0.32"
+   inkscape:version="0.46"
+   version="1.0"
+   sodipodi:docname="IIF.svg"
+   inkscape:output_extension="org.inkscape.output.svg.inkscape">
+  <defs
+     id="defs4">
+    <inkscape:perspective
+       sodipodi:type="inkscape:persp3d"
+       inkscape:vp_x="0 : 526.18109 : 1"
+       inkscape:vp_y="0 : 1000 : 0"
+       inkscape:vp_z="744.09448 : 526.18109 : 1"
+       inkscape:persp3d-origin="372.04724 : 350.78739 : 1"
+       id="perspective10" />
+  </defs>
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     gridtolerance="10000"
+     guidetolerance="10"
+     objecttolerance="10"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="1.8027778"
+     inkscape:cx="108.02774"
+     inkscape:cy="160.19729"
+     inkscape:document-units="px"
+     inkscape:current-layer="layer1"
+     showgrid="false"
+     units="in"
+     inkscape:window-width="1337"
+     inkscape:window-height="855"
+     inkscape:window-x="-2"
+     inkscape:window-y="-2" />
+  <metadata
+     id="metadata7">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1"
+     transform="translate(-27.234977,-29.745983)">
+    <text
+       xml:space="preserve"
+       style="font-size:14px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Arial;-inkscape-font-specification:Arial"
+       x="63.790447"
+       y="24.961479"
+       id="text2383"><tspan
+         sodipodi:role="line"
+         id="tspan2385"
+         x="63.790447"
+         y="24.961479" /></text>
+    <g
+       id="g2415">
+      <g
+         transform="translate(24.961479,35.50077)"
+         id="g3217">
+        <rect
+           id="rect2415"
+           width="285.50766"
+           height="171.79425"
+           x="7.0612645"
+           y="11.729995"
+           style="fill:none;stroke:#000000;stroke-width:1.16260993;stroke-opacity:1"
+           ry="14.253672" />
+        <g
+           id="g3197"
+           transform="translate(-5.7334008,9.9166441)">
+          <text
+             id="text2387"
+             y="27.734978"
+             x="32.304436"
+             style="font-size:14px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Arial;-inkscape-font-specification:Arial"
+             xml:space="preserve"><tspan
+               y="27.734978"
+               x="32.304436"
+               id="tspan2389"
+               sodipodi:role="line">File Preamble</tspan></text>
+          <text
+             id="text2391"
+             y="47.817951"
+             x="32.147209"
+             style="font-size:14px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Arial;-inkscape-font-specification:Arial"
+             xml:space="preserve"><tspan
+               id="tspan2397"
+               y="47.817951"
+               x="32.147209"
+               sodipodi:role="line">FPGA Image = f_gen.bit</tspan></text>
+          <text
+             id="text3193"
+             y="64.899849"
+             x="31.777081"
+             style="font-size:14px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Arial;-inkscape-font-specification:Arial"
+             xml:space="preserve"><tspan
+               y="64.899849"
+               x="31.777081"
+               id="tspan3195"
+               sodipodi:role="line">Hardware ID = f_gen.id</tspan></text>
+        </g>
+        <g
+           transform="translate(-20.015396,0)"
+           id="g2406">
+          <rect
+             ry="6.8771787"
+             style="fill:none;stroke:#000000;stroke-width:0.76213479;stroke-opacity:1"
+             y="82.476593"
+             x="42.685356"
+             height="82.8881"
+             width="254.29027"
+             id="rect2400" />
+          <text
+             xml:space="preserve"
+             style="font-size:14px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Arial;-inkscape-font-specification:Arial"
+             x="62.803635"
+             y="127.62572"
+             id="text2402"><tspan
+               sodipodi:role="line"
+               id="tspan2404"
+               x="62.803635"
+               y="127.62572">Instrument Specific Data Structure</tspan></text>
+        </g>
+      </g>
+    </g>
+    <text
+       xml:space="preserve"
+       style="font-size:14px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Arial;-inkscape-font-specification:Arial"
+       x="71.994835"
+       y="39.938366"
+       id="text3213"><tspan
+         sodipodi:role="line"
+         id="tspan3215"
+         x="71.994835"
+         y="39.938366">Instrument Interpretable File (IIF)</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:14px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Arial;-inkscape-font-specification:Arial"
+       x="241.849"
+       y="7.91889"
+       id="text2411"
+       transform="translate(27.234977,29.745983)"><tspan
+         sodipodi:role="line"
+         id="tspan2413"
+         x="241.849"
+         y="7.91889" /></text>
+  </g>
+</svg>

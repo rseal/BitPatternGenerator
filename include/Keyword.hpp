@@ -1,3 +1,19 @@
+// Copyright (c) 2009 Ryan Seal <rlseal -at- gmail.com>
+//
+// This file is part of Bit Pattern Generator (BPG) Software.
+//
+// BPG is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//  
+// BPG is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with BPG.  If not, see <http://www.gnu.org/licenses/>.
 #ifndef KEYWORD_H
 #define KEYWORD_H
 
@@ -6,6 +22,7 @@
 #include <boost/algorithm/string.hpp>
 #include <boost/any.hpp>
 #include <boost/bind.hpp>
+#include <boost/tuple/tuple.hpp>
 #include "Unit.hpp"
 #include "Location.hpp"
 #include "Parameter.hpp"
@@ -17,6 +34,7 @@ using std::cout;
 using std::endl;
 
 //using NonVirtual Interface (NVI)
+template<typename T>
 class Keyword{
 
 
@@ -25,7 +43,7 @@ class Keyword{
   virtual void Detect(const string& token){};
   virtual void Verify(){};
 protected:
-  ParameterVector parameters_;
+  vector<T> parameters_;
   bool set_;
   string name_;
 
@@ -44,19 +62,19 @@ public:
   virtual void Print() {};
   const string& operator()(){ return name_;}
   const bool Match(const string& id) { return id == name_;}
-  const ParameterVector& GetParameterRef() { return parameters_;}
   
-  template<typename T>
-  const T GetParameter(const string& id){
-    ParameterVector::const_iterator iter = 
-      std::find_if(parameters_.begin(), parameters_.end(), 
-		   bind(&Parameter::id, _1) == id);
-    if(iter == parameters_.end()) throw std::runtime_error("Parameter " + id + " could not be found");
-    return any_cast<T>(iter->value);
+  const vector<T>& GetTupleRef() const {
+    if(!set_) throw std::runtime_error("Keyword " + name_ + " was not found");
+    return parameters_;
   }
+
+  const bool& Set() const { return set_;}
+  const string& Name() const { return name_;}
+
+  //  template<typename T>
 
   virtual ~Keyword(){};
 };
 
-typedef vector<Keyword> KeywordVector;
+//typedef vector<Keyword> KeywordVector;
 #endif

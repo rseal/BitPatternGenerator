@@ -1,16 +1,161 @@
-[article Quickbook
+[article BitPatternGenerator
     [quickbook 1.4]
-    [version 1.4]
+    [version 2.0]
     [authors [Seal, Ryan]]
     [copyright 2009]
     [purpose Bit Pattern Generator Version 2.0 Documentation]
     [license
-        Distributed under the Boost Software License, Version 1.0.
-        (See accompanying file LICENSE_1_0.txt or copy at
-        [@http://www.boost.org/LICENSE_1_0.txt])
+	Distributed under the terms of the GNU General Public License as published by
+    	the Free Software Foundation, either version 3 of the License, or (at your option)
+	 any later version. (See accompanying file gpl.txt or copy at
+        [@http://www.gnu.org/licenses/gpl.txt])
     ]
 ]
 
+[/ Bit Pattern Generator Document version 1.0]
+[/ October 3, 2009]
+
+[/ Define links]
+[def __note__       [$/images/note.png]]
+[def __important__  [$/images/important.png]]
+[def __warning__    [$/images/warning.png]]
+[def __tip__        [$/images/tip.png]]
+[def __spirit__     [@http://spirit.sourceforge.net Spirit]]
+[def __boostbook__  [@http://www.boost.org/doc/html/boostbook.html BoostBook]]
+[def __docbook__    [@http://www.docbook.org/ DocBook]]
+[def __boost__      [@http://www.boost.org Boost Libraries]]
+[def __boost::any__ [@http://www.boost.org/doc/libs/1_40_0/doc/html/any.html Any]]
+[def __boost::bin__ [@http://www.boost.org/doc/libs/1_40_0/libs/bind/bind.html Bind]]
+[def __boost::db__  [@http://www.boost.org/doc/libs/1_40_0/libs/dynamic_bitset/dynamic_bitset.html Dynamic Bitset]]
+[def __boost::con__ [@http://www.boost.org/doc/libs/1_40_0/libs/conversion/index.html Convert]]
+[def __ok::main__   [@http://www.opalkelly.com OpalKelly]]
+[def __ok::board__  [@http://www.opalkelly.com/products/xem3001 Product Website]]
+[def __ok::um__     [@http://www.opalkelly.com/library/XEM3001v2-UM.pdf User Manual (pdf)]]
+[def __ok::pb__     [@http://www.opalkelly.com/library/XEM3001-PB.pdf Product Brief (pdf)]]
+
+[def __up__         [$/images/up.png]]
+[def __comments__           [link quickbook.syntax.comments Comments]]
+
+[def __font_styles__        [link quickbook.syntax.phrase.font_styles Font Styles]]
+[def __quotations__         [link quickbook.syntax.phrase.quotations Quotations]]
+[def __replaceable__        [link quickbook.syntax.phrase.replaceable Replaceble]]
+[def __simple_formatting__  [link quickbook.syntax.phrase.simple_formatting Simple formatting]]
+[def __inline_code__        [link quickbook.syntax.phrase.inline_code Inline code]]
+[def __code_blocks__        [link quickbook.syntax.phrase.code_blocks Code blocks]]
+[def __source_mode__        [link quickbook.syntax.phrase.source_mode Source Mode]]
+[def __line_break__         [link quickbook.syntax.phrase.line_break line-break]]
+[def __anchors__            [link quickbook.syntax.phrase.anchors Anchors]]
+[def __links__              [link quickbook.syntax.phrase.links Links]]
+[def __anchor_links__       [link quickbook.syntax.phrase.anchor_links Anchor links]]
+[def __refentry_links__     [link quickbook.syntax.phrase.refentry_links refentry links]]
+[def __code_links__         [link quickbook.syntax.phrase.code_links function, class, member, enum, macro, concept or header links]]
+[def __escape__             [link quickbook.syntax.phrase.escape Escape]]
+[def __single_char_escape__ [link quickbook.syntax.phrase.single_char_escape Single char escape]]
+[def __images__             [link quickbook.syntax.phrase.images Images]]
+[def __cond__               [link quickbook.syntax.phrase.cond Conditional Generation]]
+
+[def __document__           [link quickbook.syntax.block.document Document]]
+[def __section__            [link quickbook.syntax.block.section Section]]
+[def __xinclude__           [link quickbook.syntax.block.xinclude  xinclude]]
+[def __paragraphs__         [link quickbook.syntax.block.paragraphs Paragraphs]]
+[def __ordered_lists__      [link quickbook.syntax.block.lists.ordered_lists Ordered lists]]
+[def __list_hierarchies__   [link quickbook.syntax.block.lists.list_hierarchies List Hierarchies]]
+[def __long_list_lines__    [link quickbook.syntax.block.lists.long_list_lines Long List Lines]]
+[def __unordered_lists__    [link quickbook.syntax.block.lists.unordered_lists Unordered lists]]
+[def __mixed_lists__        [link quickbook.syntax.block.lists.mixed_lists Mixed lists]]
+[def __code__               [link quickbook.syntax.block.code Code]]
+[def __escape_back__        [link quickbook.syntax.block.escape_back Escaping Back To QuickBook]]
+[def __preformatted__       [link quickbook.syntax.block.preformatted Preformatted]]
+[def __blockquote__         [link quickbook.syntax.block.blockquote Blockquote]]
+[def __heading__            [link quickbook.syntax.block.headings Heading]]
+[def __macros__             [link quickbook.syntax.block.macros Macros]]
+[def __templates__          [link quickbook.syntax.block.templates Templates]]
+[def __predefined_macros__  [link quickbook.syntax.block.predefined_macros Predefined Macros]]
+[def __blurbs__             [link quickbook.syntax.block.blurbs Blurbs]]
+[def __admonitions__        [link quickbook.syntax.block.admonitions Admonitions]]
+[def __tables__             [link quickbook.syntax.block.tables Tables]]
+[def __variable_lists__     [link quickbook.syntax.block.variable_lists Variable Lists]]
+[def __include__            [link quickbook.syntax.block.include Include]]
+[def __import__             [link quickbook.syntax.block.import Import]]
+
 [section:intro Introduction]
-This is a test
+The Bit Pattern Generator (BPG) is a generic virtual instrument that uses a reconfigurable hardware base (FPGA-based) 
+combined with application-specific output stage hardware (OSH). This document describes the 2nd generation BPG. A 
+detailed analysis of hardware and software will be given in the sections that follow.
+[note This is a note]
+[important This is important]
+[warning This is a warning]
+[tip This is a tip]
+[endsect]
+
+[section Hardware]
+[section Operational Overview]
+[$images/HDL.svg]
+[endsect]
+[section FPGA Module ]
+The FPGA module is designed by __ok::main__ and provides an economy-based Xilinx FPGA XC3S400-4PQ208C with approximately 400,000 gates vailable to the user. Up to 86 I/O + 6 clock pins are provided in a series of 3 0.1" dual inline header strips.
+
+* __ok::board__
+* __ok::pb__
+* __ok::um__
+
+[$images/fpga.png]
+[endsect] 
+[section FPGA Carrier Board ]
+[endsect] 
+[section Small Form Factor Computer ]
+[$images/computer.png]
+[endsect] 
+[section Output Stage Hardware ]
+[endsect] 
+[endsect]
+
+[section Software]
+
+[section BPG Generator Program]
+The ['Generator] program takes a Human Interpretable File (HIF), designed by the user, and translates provided 
+parameters into a format directly readable by the base hardware module. Since the instrument provides a generic, 
+customizable interface, certain parameters are required to load the proper instrument and the instrument's ['rule 
+set].
+All software is written in C++ and makes extensive use of the __boost__, more specifically:
+
+* __spirit__
+* __boost::con__
+* __boost::any__
+* __boost::bin__
+* __boost::db__
+
+[section InstrumentFinder helper class]
+[endsect] 
+[section Instrument interface and class design]
+[$images/InstrumentFactory.svg]
+[endsect] 
+[section Rule interface and class design]
+[$images/RuleFactory.svg]
+[endsect] 
+[section Parameter class]
+[endsect] 
+[section Location class]
+[endsect] 
+[section Keyword class]
+[endsect] 
+
+[section Human Interpretable File]
+These files are simple text files and require no specialized software to read and manipulate them. This concept is 
+central to providing a universal interface, which provides the following qualities:
+
+# Editing HIFs require no specialized software.
+# Debugging software is a straight-forward exercise.
+# Graphical front-ends can be provided to encapsulate certain parameters and/or for aesthetic purposes.
+# Plain text is platform independent and obsolescence proof.
+
+
+[$images/HIF.svg]
+
+[endsect]
+
+[endsect]
+[section BPG Shell Program]
+[endsect]
+
 [endsect]

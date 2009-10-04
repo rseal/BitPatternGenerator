@@ -1,3 +1,19 @@
+// Copyright (c) 2009 Ryan Seal <rlseal -at- gmail.com>
+//
+// This file is part of Bit Pattern Generator (BPG) Software.
+//
+// BPG is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//  
+// BPG is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with BPG.  If not, see <http://www.gnu.org/licenses/>.
 #ifndef GENERIC_KEYWORD_H
 #define GENERIC_KEYWORD_H
 
@@ -8,7 +24,9 @@
 
 using namespace boost::spirit::classic;
 
-class GenericKeyword: public Keyword{
+typedef tuple<LocationVector, dynamic_bitset<> > GenericTuple;
+
+class GenericKeyword: public Keyword<GenericTuple>{
   
     typedef dynamic_bitset<> Pattern;
 
@@ -62,9 +80,9 @@ class GenericKeyword: public Keyword{
 	    FormatPattern(bitVector,codeVec,signVec);
 
 	    //load parameters
-	    parameters_.push_back(Parameter("location",lv));
-	    parameters_.push_back(Parameter("pattern", bitVector));
-
+	    parameters_.push_back(make_tuple(lv, bitVector));
+	    // parameters_.push_back(Parameter("location",lv));
+	    // parameters_.push_back(Parameter("pattern", bitVector));
 	    set_ = true;
 	}
 
@@ -81,7 +99,7 @@ class GenericKeyword: public Keyword{
     }
   
 public:
-    GenericKeyword(): Keyword("generic"){};
+  GenericKeyword(): Keyword<GenericTuple>("generic"){};
 
 };
 

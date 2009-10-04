@@ -1,3 +1,19 @@
+// Copyright (c) 2009 Ryan Seal <rlseal -at- gmail.com>
+//
+// This file is part of Bit Pattern Generator (BPG) Software.
+//
+// BPG is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//  
+// BPG is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with BPG.  If not, see <http://www.gnu.org/licenses/>.
 #ifndef TR_KEYWORD_H
 #define TR_KEYWORD_H
 
@@ -8,7 +24,9 @@
 
 using namespace boost::spirit::classic;
 
-class TRKeyword: public Keyword{
+typedef tuple<LocationVector, float, float> TrTuple;
+
+class TRKeyword: public Keyword<TrTuple>{
 
   float pre_;
   float post_;
@@ -50,16 +68,18 @@ class TRKeyword: public Keyword{
       //load location vector
       for(int i=0; i<portVec.size(); ++i){
 	lv.push_back(Location(portVec[i][0],channelVec[i]));
+	
       }
       
       //load parameters
-      parameters_.push_back(Parameter("location",lv));
+      //      parameters_.push_back(Parameter("location",lv));
       pre_  = (unitValueVec[0]*UnitConvert::Convert(unitStrVec[0]))*1e6;
       post_ = (unitValueVec[1]*UnitConvert::Convert(unitStrVec[1]))*1e6;
 
-      parameters_.push_back(Parameter("pre", pre_));
-      parameters_.push_back(Parameter("post", post_));
+      //      parameters_.push_back(Parameter("pre", pre_));
+      //      parameters_.push_back(Parameter("post", post_));
 
+      parameters_.push_back(make_tuple(lv, pre_, post_));
       set_ = true;
       Verify();
     }
@@ -76,7 +96,7 @@ class TRKeyword: public Keyword{
   }
   
 public:
-  TRKeyword(): Keyword("tr"){
+  TRKeyword(): Keyword<TrTuple>("tr"){
     typedef unsigned int uint;
   };
 
