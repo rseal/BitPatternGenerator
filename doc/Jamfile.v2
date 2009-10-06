@@ -31,4 +31,9 @@ install dist-share-boostbook
     <location>html <install-source-root>.
     ;
 
+install file
+	: test/test.hif
+	: <location>html
+	;
+
 #boostbook documentation : documentation.xml ;

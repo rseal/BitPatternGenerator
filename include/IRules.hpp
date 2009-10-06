@@ -29,8 +29,9 @@ class IRules{
 public:
   typedef vector<string> TokenVector;
 
-  virtual void Detect(const TokenVector& tokenvector){};
-  virtual const bool Verify(){};
+  virtual void Detect(const TokenVector& tokenvector){}
+  virtual const bool Verify(){return false;}
+  virtual ~IRules(){}
 };
 
 #endif

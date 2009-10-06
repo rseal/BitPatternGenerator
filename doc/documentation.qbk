@@ -28,6 +28,7 @@
 [def __boost::bin__ [@http://www.boost.org/doc/libs/1_40_0/libs/bind/bind.html Bind]]
 [def __boost::db__  [@http://www.boost.org/doc/libs/1_40_0/libs/dynamic_bitset/dynamic_bitset.html Dynamic Bitset]]
 [def __boost::con__ [@http://www.boost.org/doc/libs/1_40_0/libs/conversion/index.html Convert]]
+[def __boost::tup__ [@http://www.boost.org/doc/libs/1_40_0/libs/tuple/doc/tuple_users_guide.html Tuple]]
 [def __ok::main__   [@http://www.opalkelly.com OpalKelly]]
 [def __ok::board__  [@http://www.opalkelly.com/products/xem3001 Product Website]]
 [def __ok::um__     [@http://www.opalkelly.com/library/XEM3001v2-UM.pdf User Manual (pdf)]]
@@ -79,13 +80,7 @@
 [def __import__             [link quickbook.syntax.block.import Import]]
 
 [section:intro Introduction]
-The Bit Pattern Generator (BPG) is a generic virtual instrument that uses a reconfigurable hardware base (FPGA-based) 
-combined with application-specific output stage hardware (OSH). This document describes the 2nd generation BPG. A 
-detailed analysis of hardware and software will be given in the sections that follow.
-[note This is a note]
-[important This is important]
-[warning This is a warning]
-[tip This is a tip]
+The Bit Pattern Generator (BPG) is a special-purpose instrument derived from of a generic virtual instrument using reconfigurable hardware combined with application-specific output stage hardware (OSH). The BPG produces a collection of well-defined logic-level signals to control radar instrumentation, namely the transmitter and receiver modules. This particular implementation provides a robust, flexible interface; allowing the user to design a set of rules particular to their instrumentation, thus allowing the machine to be reconfigured solely through software modification (i.e. reprogrammable hardware). This document provides a detailed analysis of the thought process that led to its development, the reasons for design choices, and details of the implementation and operation of the device. 
 [endsect]
 
 [section Hardware]
@@ -117,21 +112,30 @@ The ['Generator] program takes a Human Interpretable File (HIF), designed by the
 parameters into a format directly readable by the base hardware module. Since the instrument provides a generic, 
 customizable interface, certain parameters are required to load the proper instrument and the instrument's ['rule 
 set].
-All software is written in C++ and makes extensive use of the __boost__, more specifically:
+All software is written in C++ and makes extensive use of the __boost__, more specifically the following:
 
 * __spirit__
 * __boost::con__
 * __boost::any__
 * __boost::bin__
 * __boost::db__
+* __boost::tup__
 
 [section InstrumentFinder helper class]
+The Generator program application, upon execution, requires only an HIF file from the user. The InstrumentFinder class is used to assist the application as follows
+
+# Accepts the HIF file from the user and finds the 'INSTRUMENT keyword
+# Passes the value of 'INSTRUMENT to the InstrumentFactory and receives a reference to the newly created Instrument object. 
+# Returns this reference to the calling application (i.e. bpg-generator application).
+
+This InstrumentFinder class only knows how to parse the file and request an object reference from the InstrumentFactory, it knows nothing about the type of Instrument or its capabilities (i.e. it meets the Design-By-Contract specification).
+ 
 [endsect] 
 [section Instrument interface and class design]
 [$images/InstrumentFactory.svg]
 [endsect] 
 [section Rule interface and class design]
-[$images/RuleFactory.svg]
+[$images/InstrumentRuleFactory.svg]
 [endsect] 
 [section Parameter class]
 [endsect] 
@@ -149,8 +153,11 @@ central to providing a universal interface, which provides the following qualiti
 # Graphical front-ends can be provided to encapsulate certain parameters and/or for aesthetic purposes.
 # Plain text is platform independent and obsolescence proof.
 
-
 [$images/HIF.svg]
+
+[note 
+[*A functional HIF file for the Penn State Transmitter can be found [@test.hif here]]
+]
 
 [endsect]
 

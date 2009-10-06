@@ -23,8 +23,9 @@
 using std::vector;
 
 struct Location{
+
   typedef unsigned int uint;
-  Location(char& port_, uint& channel_):
+  Location(const char& port_, const uint& channel_):
     port(port_),channel(channel_){}
   char port;
   uint channel;

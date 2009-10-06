@@ -28,15 +28,18 @@ BOOST_AUTO_TEST_CASE(radarPulseGenerator_test){
   InstrumentFinder iFinder;
 
   //Locate the instrument according to the specified INSTRUMENT
-  IInstrumentDefinition* instrument = iFinder.FindInstrument("test.hif");
+  IInstrumentDefinition& instrument = iFinder.Find("test.hif");
 
   //Load the instrument's rule set
-  IRules* rules = instrument->GetRules("test.hif");
+  IRules& rules = instrument.GetRules("test.hif");
 
   //Tokenize the input file
-  TokenVector tokens = instrument->Tokenize("test.hif");
+  TokenVector tokens = instrument.Tokenize("test.hif");
 
-  rules->Detect(tokens);
-  //rules->Verify();
-  BOOST_CHECK(rules->Verify());
+  rules.Detect(tokens);
+  BOOST_CHECK(rules.Verify());
+
+  delete &rules;
+  delete &instrument;
+  
 }

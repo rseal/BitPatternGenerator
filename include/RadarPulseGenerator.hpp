@@ -31,7 +31,8 @@ using namespace boost;
 
 class RadarPulseGenerator: public IInstrumentDefinition{
 
-  typedef vector<string> TokenVector;
+  string transmitter_;
+  //  typedef vector<string> TokenVector;
   TokenVector tokens_;
 
   void StripToken(string& token){
@@ -44,66 +45,20 @@ class RadarPulseGenerator: public IInstrumentDefinition{
 
 public:
 
-  void WriteIIF(){ cout << "writing output file" << endl;}
+  IRules& GetRules(const string& fileName);
   
-  IRules* GetRules(const string& fileName){
-    
-    string transmitter;
-    string buffer;
-
-    ifstream in(fileName.c_str());
-
-    if(!in) throw runtime_error("RadarPulseGenerator::GetRules - Could not open" + fileName);
-    
-    while(!in.eof()){
-      getline(in,buffer);
-
-      StripToken(buffer);
-
-      if(buffer.find("rules") != string::npos){
-	int idx = buffer.find("=");
-	transmitter = buffer.substr(idx+1,buffer.length());
-      }
-    }
-    return InstrumentRuleFactory::Instance().Create(transmitter);
-  }
-
+  void WriteIIF();
+  
   //custom tokenizer for RPG Rules
-  const TokenVector& Tokenize(const string& fileName){
-    string buffer;
-    ifstream in(fileName.c_str());
+  const TokenVector& Tokenize(const string& fileName);
 
-    if(!in) throw runtime_error("FindInstrument:: Could not open" + fileName);
-    
-    while(!in.eof()){
-      getline(in,buffer);
-      
-      StripToken(buffer);
-
-      if(buffer.find("instrument")==string::npos && 
-	 buffer.find("rules")==string::npos &&
-	 buffer[0]!='\n' && !buffer.empty()){
-	tokens_.push_back(buffer);
-      }
-    }
-
-    return tokens_;
+  ~RadarPulseGenerator(){
+    InstrumentFactory::Instance().UnregisterInstrument("rpg");
   }
-
 
 };
 
-//using anonymous namespace to register callback with factory
-namespace RPG
-{
-  //static callback for factory registration
-  IInstrumentDefinition* Callback(){
-    return new RadarPulseGenerator();
-  }
 
-  const string id = "rpg";
-  bool result = InstrumentFactory::Instance().RegisterInstrument(id,Callback);
-}
-
+typedef vector<string> TokenVector;
 
 #endif

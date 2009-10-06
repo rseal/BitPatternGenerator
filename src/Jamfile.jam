@@ -1,12 +1,21 @@
-project objectFactory
+project src 
 	: default-build release
 	: build-dir ../bin
 	;
 
-obj InstrumentFactory.o 
-	: InstrumentFactory.cpp
-	;
+obj InstrumentFactory.o     : InstrumentFactory.cpp	;
+obj InstrumentRuleFactory.o : InstrumentRuleFactory.cpp	;
+obj InstrumentFinder.o	    : InstrumentFinder.cpp      ;
+obj CODEKeyword.o	    : CODEKeyword.cpp           ;
+obj GenericKeyword.o	    : GenericKeyword.cpp        ;
+obj TRKeyword.o	            : TRKeyword.cpp	        ;
+obj SAKeyword.o	            : SAKeyword.cpp	        ;
+obj RadarPulseGenerator.o   : RadarPulseGenerator.cpp   ;
+obj TXAKeyword.o            : TXAKeyword.cpp            ;
+obj PSU1Rules.o	            : PSU1Rules.cpp	        ;
+obj TYPE1Keyword.o          : TYPE1Keyword.cpp          ;
+obj TYPE2Keyword.o          : TYPE2Keyword.cpp	        ;
 
-obj InstrumentRuleFactory.o 
-	: InstrumentRuleFactory.cpp
- 	;
+
+
+

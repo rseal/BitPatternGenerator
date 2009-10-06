@@ -37,13 +37,9 @@ public:
   typedef vector<string> TokenVector;
 
   virtual void WriteIIF()=0;
-  virtual IRules* GetRules(const string& fileName)=0;
+  virtual IRules& GetRules(const string& fileName)=0;
   virtual const TokenVector& Tokenize(const string& fileName)=0; 
-private:
-
-  //  TokenVector tokens_;
-  // Instrument instrument_;
-
+  virtual ~IInstrumentDefinition(){};
 };
 
 #endif

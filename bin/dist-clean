@@ -2,3 +2,5 @@
 
 rm -rf ../doc/html 
 rm -rf ../doc/bin
+rm -rf gcc-*
+rm -f boostbook_catalog.xml

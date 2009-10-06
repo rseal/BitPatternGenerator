@@ -5,22 +5,16 @@ project bpg
 	: requirements <include>test/
 	;
 
-build-project src ;
+use-project docs : doc/ ;
 
-unit-test spirit
-	: test/spirit_test.cpp 
-	;
+#obj objs : [ glob *.o ] ;
 
 unit-test keyword
-	: test/keyword_test.cpp 
+	: test/keyword_test.cpp src
 	;
 
-unit-test signal
-	: test/signal_test.cpp 
-	;
-
-unit-test rpg
-	: test/rpg_test.cpp src/InstrumentFactory.cpp src/InstrumentRuleFactory.cpp 
+unit-test rpg  
+	: test/rpg_test.cpp src
 	: <dependency>test/test.hif
 	;
 

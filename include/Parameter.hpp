@@ -35,11 +35,11 @@ struct Parameter{
 
 typedef std::vector<Parameter> ParameterVector;
 
-namespace param{
-  const Parameter& Find(const ParameterVector& pv, const string& id){
-    return *std::find_if(pv.begin(),pv.end(), bind(&Parameter::id, _1) == id);
-  }
-};
+// namespace param{
+//   const Parameter& Find(const ParameterVector& pv, const string& id){
+//     return *std::find_if(pv.begin(),pv.end(), bind(&Parameter::id, _1) == id);
+//   }
+//};
 
 
 

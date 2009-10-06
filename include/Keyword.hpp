@@ -37,15 +37,14 @@ using std::endl;
 template<typename T>
 class Keyword{
 
-
-  vector<Unit> unitVec_;
+  //  vector<Unit> unitVec_;
 
   virtual void Detect(const string& token){};
   virtual void Verify(){};
 protected:
   vector<T> parameters_;
   bool set_;
-  string name_;
+  const string& name_;
 
 public:
 
@@ -56,8 +55,7 @@ public:
     erase_all(str," ");
     to_lower(str);
     Detect(str);
-    //Verify();
-  }
+   }
 
   virtual void Print() {};
   const string& operator()(){ return name_;}
@@ -70,9 +68,6 @@ public:
 
   const bool& Set() const { return set_;}
   const string& Name() const { return name_;}
-
-  //  template<typename T>
-
   virtual ~Keyword(){};
 };
 
