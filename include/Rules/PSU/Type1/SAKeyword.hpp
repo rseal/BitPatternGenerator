@@ -14,22 +14,33 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with BPG.  If not, see <http://www.gnu.org/licenses/>.
-#ifndef TYPE1_KEYWORD_H
-#define TYPE1_KEYWORD_H
+#ifndef SA_KEYWORD_H
+#define SA_KEYWORD_H
 
-#include "../Keyword.hpp"
-#include "../UnitConvert.hpp"
+#include <bpg-v2/Common/Keyword.hpp>
+#include <bpg-v2/Common/UnitConvert.hpp>
+#include <bpg-v2/Common/Location.hpp>
+
 #include <boost/spirit/include/classic_spirit.hpp>
 
 using namespace boost::spirit::classic;
 
-class TYPE1Keyword: public Keyword<Parameter>{
+typedef tuple<LocationVector, bool, float, float&> SaTuple;
+
+class SAKeyword: public Keyword<SaTuple>{
+
+  float h0_;
+  float hf_;
 
   void Detect(const string& token);
-  void Verify(){ cout << "TYPE1 verify" << endl;}
+
+  void Verify(){
+    if(h0_ > hf_) throw std::runtime_error("SA window - hf > h0");
+    cout << "SA verify" << endl;
+  }
   
 public:
-  TYPE1Keyword(): Keyword<Parameter>("type1"){};
+  SAKeyword(): Keyword<SaTuple>("sa"){};
 
 };
 

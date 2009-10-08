@@ -20,20 +20,26 @@
 #include <iostream>
 #include <string>
 #include <boost/algorithm/string.hpp>
-#include "IInstrumentDefinition.hpp"
-#include "InstrumentRuleFactory.hpp"
-#include "InstrumentFactory.hpp"
-#include "IRules.hpp"
-#include "Rules/PSU1Rules.hpp"
+
+#include <bpg-v2/Common/IInstrumentDefinition.hpp>
+#include <bpg-v2/Common/InstrumentRuleFactory.hpp>
+#include <bpg-v2/Common/InstrumentFactory.hpp>
+#include <bpg-v2/Common/IRules.hpp>
+#include <bpg-v2/Rules/PSU/Type1/PSU1Rules.hpp>
+#include <bpg-v2/Instruments/Rpg/RpgIIF.hpp>
+#include <bpg-v2/Instruments/Rpg/RpgSignalFormatter.hpp>
+#include <bpg-v2/Instruments/Rpg/RpgTypes.hpp>
+
+#include <fstream>
 
 using namespace std;
 using namespace boost;
 
 class RadarPulseGenerator: public IInstrumentDefinition{
 
+  RpgIIF iif_;
   string transmitter_;
-  //  typedef vector<string> TokenVector;
-  TokenVector tokens_;
+  RpgRules* rules_;
 
   void StripToken(string& token){
       //remove all whitespace and comments 
@@ -43,22 +49,18 @@ class RadarPulseGenerator: public IInstrumentDefinition{
       token = token.substr(0,idx);
   }
 
-public:
-
   IRules& GetRules(const string& fileName);
-  
-  void WriteIIF();
+  void WriteIIF(const string& fileName);
   
   //custom tokenizer for RPG Rules
-  const TokenVector& Tokenize(const string& fileName);
+  void Tokenize(const string& fileName);
+
+public:
 
   ~RadarPulseGenerator(){
+    delete rules_;
     InstrumentFactory::Instance().UnregisterInstrument("rpg");
   }
 
 };
-
-
-typedef vector<string> TokenVector;
-
 #endif

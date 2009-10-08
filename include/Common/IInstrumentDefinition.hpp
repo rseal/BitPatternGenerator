@@ -14,8 +14,8 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with BPG.  If not, see <http://www.gnu.org/licenses/>.
-#ifndef INSTRUMENT_FINDER_H
-#define INSTRUMENT_FINDER_H
+#ifndef IINSTRUMENT_DEFINITION_H
+#define IINSTRUMENT_DEFINITION_H
 
 #include <string>
 #include <fstream>
@@ -23,26 +23,38 @@
 #include <vector>
 #include <stdexcept>
 #include <boost/algorithm/string.hpp>
-#include "InstrumentFactory.hpp"
 
-using namespace std;
-using namespace boost;
+#include <bpg-v2/Common/IRules.hpp>
 
-//Rule interface
-struct InstrumentFinder{
+using std::vector;
 
-  string instrument_;
+//Nonvirtual Instrument Definition Interface
+class IInstrumentDefinition{
+  
   typedef vector<string> TokenVector;
-  typedef string File;
+
+protected:
   TokenVector tokens_;
   
+  //Custom Rule sets
+  virtual IRules& GetRules(const string& fileName)=0;
+  //Custom configuration file writer
+  virtual void WriteIIF(const string& fileName)=0;
+  //Custom HIF Tokenizer
+  virtual void Tokenize(const string& fileName)=0; 
+
 public:
+  virtual ~IInstrumentDefinition(){};
 
-  IInstrumentDefinition& Find(const File& fileName);
-
-  ~InstrumentFinder(){
-    InstrumentFactory::Instance().UnregisterInstrument(instrument_);
-  }
+  //The Init() function is the only member exposed
+  //All customization is encapsulated in the private virtual members
+  const bool Init(const string& inFile, const string& outFile){
+    IRules& rules = GetRules(inFile);
+    Tokenize(inFile);
+    rules.Init(tokens_);
+    WriteIIF(outFile);
+    return true;
+  }    
 };
 
 #endif

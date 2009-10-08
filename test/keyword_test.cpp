@@ -14,15 +14,11 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with BPG.  If not, see <http://www.gnu.org/licenses/>.
-#include "../include/Keywords.hpp"
-
+#include <bpg-v2/Rules/PSU/Type1/Keywords.hpp>
 #define BOOST_TEST_MODULE TRKeywordTest
 #include <boost/test/included/unit_test.hpp>
-
 #include <iostream>
 #include <functional>
-#include "../include/Keyword.hpp"
-#include "../include/Keywords.hpp"
 
 using namespace std;
 

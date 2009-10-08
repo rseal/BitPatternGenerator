@@ -1,4 +1,4 @@
-#include "../include/Rules/CODEKeyword.hpp"
+#include <bpg-v2/Rules/PSU/Type1/CODEKeyword.hpp>
 
 void CODEKeyword::Detect(const string& token){
 

@@ -1,4 +1,4 @@
-#include "../include/Rules/TRKeyword.hpp"
+#include <bpg-v2/Rules/PSU/Type1/TRKeyword.hpp>
 
 void TRKeyword::Detect(const string& token){
 

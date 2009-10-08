@@ -1,5 +1,4 @@
-#include "../include/Rules/SAKeyword.hpp"
-
+#include <bpg-v2/Rules/PSU/Type1/SAKeyword.hpp>
 
 void SAKeyword::Detect(const string& token){
 

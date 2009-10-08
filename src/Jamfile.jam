@@ -15,7 +15,7 @@ obj TXAKeyword.o            : TXAKeyword.cpp            ;
 obj PSU1Rules.o	            : PSU1Rules.cpp	        ;
 obj TYPE1Keyword.o          : TYPE1Keyword.cpp          ;
 obj TYPE2Keyword.o          : TYPE2Keyword.cpp	        ;
-
+obj RpgSignalFormatter.o    : RpgSignalFormatter.cpp    ;
 
 
 

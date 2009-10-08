@@ -14,34 +14,21 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with BPG.  If not, see <http://www.gnu.org/licenses/>.
-#ifndef TR_KEYWORD_H
-#define TR_KEYWORD_H
+#ifndef TYPE2_KEYWORD_H
+#define TYPE2_KEYWORD_H
 
-#include "../Keyword.hpp"
-#include "../UnitConvert.hpp"
-#include "../Location.hpp"
+#include <bpg-v2/Common/Keyword.hpp>
 #include <boost/spirit/include/classic_spirit.hpp>
 
 using namespace boost::spirit::classic;
 
-typedef tuple<LocationVector, float, float> TrTuple;
-
-class TRKeyword: public Keyword<TrTuple>{
-
-  float pre_;
-  float post_;
+class TYPE2Keyword: public Keyword<Parameter>{
 
   void Detect(const string& token);
-
-  void Verify(){ 
-
-    if(pre_ < 10) throw std::runtime_error("TR PRE value is below limits");
-    if(post_ < 10) throw std::runtime_error("TR POST value is below limits");
-    cout << "TR verify " <<  endl;
-  }
+  void Verify(){ cout << "TYPE2 verify" << endl;}
   
 public:
-  TRKeyword(): Keyword<TrTuple>("tr"){};
+  TYPE2Keyword(): Keyword<Parameter>("type2"){};
 
 };
 

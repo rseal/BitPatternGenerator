@@ -14,32 +14,36 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with BPG.  If not, see <http://www.gnu.org/licenses/>.
-#ifndef IINSTRUMENT_DEFINITION_H
-#define IINSTRUMENT_DEFINITION_H
+#ifndef TR_KEYWORD_H
+#define TR_KEYWORD_H
 
-#include <string>
-#include <fstream>
-#include <iostream>
-#include <vector>
-#include <stdexcept>
-#include <boost/algorithm/string.hpp>
+#include <bpg-v2/Common/Keyword.hpp>
+#include <bpg-v2/Common/UnitConvert.hpp>
+#include <bpg-v2/Common/Location.hpp>
 
-#include "IRules.hpp"
-//#include "PSU1Rules.hpp"
+#include <boost/spirit/include/classic_spirit.hpp>
 
-using std::vector;
-//using namespace boost;
+using namespace boost::spirit::classic;
 
-//Rule interface
-class IInstrumentDefinition{
+typedef tuple<LocationVector, float, float> TrTuple;
 
+class TRKeyword: public Keyword<TrTuple>{
+
+  float pre_;
+  float post_;
+
+  void Detect(const string& token);
+
+  void Verify(){ 
+
+    if(pre_ < 10) throw std::runtime_error("TR PRE value is below limits");
+    if(post_ < 10) throw std::runtime_error("TR POST value is below limits");
+    cout << "TR verify " <<  endl;
+  }
+  
 public:
-  typedef vector<string> TokenVector;
+  TRKeyword(): Keyword<TrTuple>("tr"){};
 
-  virtual void WriteIIF()=0;
-  virtual IRules& GetRules(const string& fileName)=0;
-  virtual const TokenVector& Tokenize(const string& fileName)=0; 
-  virtual ~IInstrumentDefinition(){};
 };
 
 #endif

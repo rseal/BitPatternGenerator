@@ -14,7 +14,7 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with BPG.  If not, see <http://www.gnu.org/licenses/>.
-#include "../include/InstrumentFactory.hpp"
+#include <bpg-v2/Common/InstrumentFactory.hpp>
 
 InstrumentFactory* InstrumentFactory::pInstance_ = 0;
 bool InstrumentFactory::destroyed_ = false;

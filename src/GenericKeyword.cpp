@@ -1,4 +1,4 @@
-#include "../include/Rules/GenericKeyword.hpp"
+#include <bpg-v2/Rules/PSU/Type1/GenericKeyword.hpp>
 
 void GenericKeyword::Detect(const string& token){
 

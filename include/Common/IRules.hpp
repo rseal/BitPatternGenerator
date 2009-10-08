@@ -23,15 +23,23 @@
 using std::vector;
 using std::string;
 
-//Rule interface
+//Nonvirtual Rule interface
 class IRules{
   
-public:
+protected:
   typedef vector<string> TokenVector;
-
   virtual void Detect(const TokenVector& tokenvector){}
   virtual const bool Verify(){return false;}
+  virtual void Build(){}
+public:
+
   virtual ~IRules(){}
+
+  const bool Init(const TokenVector& tv){
+    Detect(tv);
+    Verify();
+    Build();
+  }
 };
 
 #endif

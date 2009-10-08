@@ -18,9 +18,10 @@
 #include <boost/spirit/include/classic_spirit.hpp>
 #define BOOST_TEST_MODULE RadarPulseGeneratorTest
 #include <boost/test/included/unit_test.hpp>
-#include "../include/RadarPulseGenerator.hpp"
-#include "../include/InstrumentFinder.hpp"
-#include "../include/IRules.hpp"
+
+#include <bpg-v2/Instruments/Rpg/RadarPulseGenerator.hpp>
+#include <bpg-v2/Common/InstrumentFinder.hpp>
+#include <bpg-v2/Common/IRules.hpp>
 
 BOOST_AUTO_TEST_CASE(radarPulseGenerator_test){
 
@@ -30,16 +31,9 @@ BOOST_AUTO_TEST_CASE(radarPulseGenerator_test){
   //Locate the instrument according to the specified INSTRUMENT
   IInstrumentDefinition& instrument = iFinder.Find("test.hif");
 
-  //Load the instrument's rule set
-  IRules& rules = instrument.GetRules("test.hif");
+  BOOST_CHECK(instrument.Init("test.hif", "output.hif"));
 
-  //Tokenize the input file
-  TokenVector tokens = instrument.Tokenize("test.hif");
-
-  rules.Detect(tokens);
-  BOOST_CHECK(rules.Verify());
-
-  delete &rules;
+  //free instrument 
   delete &instrument;
   
 }

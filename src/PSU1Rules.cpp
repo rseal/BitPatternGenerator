@@ -1,4 +1,4 @@
-#include "../include/Rules/PSU1Rules.hpp"
+#include <bpg-v2/Rules/PSU/Type1/PSU1Rules.hpp>
 
 namespace PSU1
 {
@@ -57,12 +57,17 @@ const bool PSU1Rules::Verify(){
   const float txa_l   = txaTuple[0].get<1>();
   const float bauda_l = FindParam<float>(t1Tuple, "bauda")*1e6;
   const float baudb_l = FindParam<float>(t1Tuple, "baudb")*1e6;
-  //const float rfclk   = FindParam<float>(t1Tuple, "refclock")*1e6;
+  const float rfclk   = FindParam<float>(t1Tuple, "refclock");
   const float ipp     = FindParam<float>(t1Tuple, "ipp")*1e6;
+  const float divClkA = rfclk*bauda_l/2e6;
+  const float divClkB = rfclk*baudb_l/2e6;
+
+  iif_.clkDivA = divClkA;
+  iif_.clkDivB = divClkB;
+
   //const float ipp_b   = rfclk/ipp;
   const float dc      = txa_l/ipp;      
   const float code_l  = cTuple[0].get<2>()*bauda_l;
-
    
   //verify that code width matches the transmitted pulse width
   if(txa_l != code_l) {
@@ -102,7 +107,6 @@ const bool PSU1Rules::Verify(){
 
   //push all other locations
   LocationVector t = txaTuple[0].get<0>();
- 
   tLoc.insert(tLoc.end(), t.begin(), t.end() );
   t = trTuple[0].get<0>();
   tLoc.insert(tLoc.end(), t.begin(), t.end() );
@@ -120,7 +124,9 @@ const bool PSU1Rules::Verify(){
 	}
 
   //VERIFICATION PASSED at this point
-    
+
+  //Begin Building signals into Preformatted forms
+
   //(1) BUILD TR Signal
   const float pre         = trTuple[0].get<1>();
   const float post        = trTuple[0].get<2>();
@@ -131,8 +137,7 @@ const bool PSU1Rules::Verify(){
   //(1) BUILD TR SIGNAL
   for(i=0; i<sz; ++i){
     for(j=0; j<trWidth; ++j)
-      ports_[lv[i].channel+GetChOffset(lv,i)].set(j,true);
-    cout << ports_[ lv[i].channel + GetChOffset(lv,i)] << endl << endl;
+      ports_[ChIndex(lv,i)].set(j,true);
   }
 
   //(2) BUILD TXA Signal
@@ -140,8 +145,7 @@ const bool PSU1Rules::Verify(){
   sz = lv.size();
   for(i=0; i<sz; ++i){
     for(j=pre; j<txa_l; ++j)
-      ports_[lv[i].channel+GetChOffset(lv,i)].set(j,true);
-    cout << ports_[ lv[i].channel + GetChOffset(lv,i)] << endl << endl;
+      ports_[ChIndex(lv,i)].set(j,true);
   }
 
   //(3) BUILD CODE Signal
@@ -149,9 +153,8 @@ const bool PSU1Rules::Verify(){
   const Pattern p = cTuple[0].get<1>();
   sz = lv.size();
   for(i=0; i<sz; ++i){
-    ch = lv[i].channel + GetChOffset(lv,i);
+    ch = ChIndex(lv,i);
     for(j=0; j<p.size(); ++j) ports_[ch][pre+j] = p[j];
-    cout << ports_[ch] << endl << endl;
   }
 
   //(4) BUILD SA SIGNALS
@@ -163,7 +166,7 @@ const bool PSU1Rules::Verify(){
     h0    = static_cast<int>(saTuple[i].get<2>());
     hf    = static_cast<int>(saTuple[i].get<3>());
     for(j=0; j<lv.size(); ++j){
-      ch = lv[j].channel + GetChOffset(lv,j);	
+      ch = ChIndex(lv,j);	
       for(k=h0; k<hf; ++k) ports_[ch][k]=true;
       if(isNeg) ports_[ch].flip(); 
     } 
@@ -174,7 +177,7 @@ const bool PSU1Rules::Verify(){
     lv = gTuple[i].get<0>();
     const Pattern p = gTuple[i].get<1>();
     for(j=0; j<lv.size(); ++j){
-      const int ch = lv[j].channel + GetChOffset(lv,j);
+      const int ch = ChIndex(lv,j);
       ports_[ch] = p;
       ports_[ch].resize(('a'==lv[j].port)? chLengthA : chLengthB);
     } 

@@ -14,37 +14,36 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with BPG.  If not, see <http://www.gnu.org/licenses/>.
-#ifndef GENERIC_KEYWORD_H
-#define GENERIC_KEYWORD_H
+#ifndef INSTRUMENT_FINDER_H
+#define INSTRUMENT_FINDER_H
 
-#include "../Keyword.hpp"
-#include "../Location.hpp"
-#include <boost/spirit/include/classic_spirit.hpp>
-#include <boost/dynamic_bitset.hpp>
+#include <string>
+#include <fstream>
+#include <iostream>
+#include <vector>
+#include <stdexcept>
+#include <boost/algorithm/string.hpp>
 
-using namespace boost::spirit::classic;
+#include <bpg-v2/Common/InstrumentFactory.hpp>
 
-typedef tuple<LocationVector, dynamic_bitset<> > GenericTuple;
+using namespace std;
+using namespace boost;
 
-class GenericKeyword: public Keyword<GenericTuple>{
-  
-  typedef dynamic_bitset<> Pattern;
+//Rule interface
+struct InstrumentFinder{
 
-  void Detect(const string& token);
-  
-  void Verify(){ cout << "GENERIC verify" << endl;}
-  
-  void FormatPattern(Pattern& pattern,vector<uint>& codeVec, 
-		     vector<bool>& signVec){
-    for(uint i=0; i<codeVec.size(); ++i){
-      for(uint j=0; j<codeVec[i]; ++j)
-	pattern.push_back(!signVec[i]);
-    }
-  }
+  string instrument_;
+  typedef vector<string> TokenVector;
+  typedef string File;
+  TokenVector tokens_;
   
 public:
-  GenericKeyword(): Keyword<GenericTuple>("generic"){};
-  
+
+  IInstrumentDefinition& Find(const File& fileName);
+
+  ~InstrumentFinder(){
+    InstrumentFactory::Instance().UnregisterInstrument(instrument_);
+  }
 };
 
 #endif

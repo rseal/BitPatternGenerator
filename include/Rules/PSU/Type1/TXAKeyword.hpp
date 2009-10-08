@@ -14,14 +14,34 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with BPG.  If not, see <http://www.gnu.org/licenses/>.
-#ifndef KEYWORDS_H
-#define KEYWORDS_H
+#ifndef TXA_KEYWORD_H
+#define TXA_KEYWORD_H
 
-#include "Rules/TRKeyword.hpp"
-#include "Rules/TXAKeyword.hpp"
-#include "Rules/CODEKeyword.hpp"
-#include "Rules/SAKeyword.hpp"
-#include "Rules/GenericKeyword.hpp"
-#include "Rules/TYPE1Keyword.hpp"
-#include "Rules/TYPE2Keyword.hpp"
+#include <bpg-v2/Common/Keyword.hpp>
+#include <bpg-v2/Common/UnitConvert.hpp>
+#include <bpg-v2/Common/Location.hpp>
+
+#include <boost/spirit/include/classic_spirit.hpp>
+
+using namespace boost::spirit::classic;
+
+typedef tuple<LocationVector, float> TxaTuple;
+
+class TXAKeyword: public Keyword<TxaTuple>{
+
+  float width_;
+
+  void Detect(const string& token);
+
+  void Verify(){
+    if(width_ > 145) throw std::runtime_error("TXA width is above limits");
+    cout << "TXA verify" << endl;
+  }
+  
+public:
+  TXAKeyword(): Keyword<TxaTuple>("txa"){};
+
+};
+
+
 #endif

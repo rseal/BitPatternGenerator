@@ -14,31 +14,32 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with BPG.  If not, see <http://www.gnu.org/licenses/>.
-#ifndef INSTRUMENT_RULE_FACTORY_H
-#define INSTRUMENT_RULE_FACTORY_H
+#ifndef INSTRUMENT_RULE_H
+#define INSTRUMENT_RULE_H
 
 #include <map>
 #include <memory>
 #include <iostream>
 #include <stdexcept>
-#include "IRules.hpp"
+
+#include <bpg-v2/Common/IInstrumentDefinition.hpp>
 
 using namespace std;
 
-struct InstrumentRuleFactory{
+struct InstrumentFactory{
 
-  typedef IRules* (*CreateRuleCallback)(); 
-  typedef map<string, CreateRuleCallback> InstrumentRuleMap;
-  InstrumentRuleMap iMap_;
-  static InstrumentRuleFactory* pInstance_;
+  typedef IInstrumentDefinition* (*CreateRuleCallback)(); 
+  typedef map<string, CreateRuleCallback> InstrumentMap;
+  InstrumentMap iMap_;
+  static InstrumentFactory* pInstance_;
   static bool destroyed_;
 
   //disable CTOR and copy, and assignment capabilities
-  InstrumentRuleFactory(){};
-  InstrumentRuleFactory(const InstrumentRuleFactory&);
-  InstrumentRuleFactory& operator=(const InstrumentRuleFactory&);
+  InstrumentFactory(){};
+  InstrumentFactory(const InstrumentFactory&);
+  InstrumentFactory& operator=(const InstrumentFactory&);
   
-  virtual ~InstrumentRuleFactory(){
+  virtual ~InstrumentFactory(){
     pInstance_=0;
     destroyed_=true;
   }
@@ -46,11 +47,11 @@ struct InstrumentRuleFactory{
 public:
 
   //create single instance
-  static InstrumentRuleFactory& Instance(){
+  static InstrumentFactory& Instance(){
     if(!pInstance_){
       if(destroyed_) throw runtime_error("Dead reference detected");
       else{
-	static InstrumentRuleFactory obj;
+	static InstrumentFactory obj;
 	pInstance_ = &obj;
       }
     }
@@ -58,20 +59,20 @@ public:
   }
   
   //Every class must register its callback here
-  const bool RegisterRule(const string& id , CreateRuleCallback createFun){
-    InstrumentRuleMap::iterator iter = iMap_.find(id);
-    return iMap_.insert( InstrumentRuleMap::value_type(id,createFun)).second;
+  const bool RegisterInstrument(const string& id , CreateRuleCallback createFun){
+    InstrumentMap::iterator iter = iMap_.find(id);
+    return iMap_.insert( InstrumentMap::value_type(id,createFun)).second;
   }
   
-  const bool UnregisterRule(const string& id){
+  const bool UnregisterInstrument(const string& id){
     return iMap_.erase(id)==1;
   }
 
   //Return object of specified type or throw exception
-  IRules* Create(const string& id){
-    InstrumentRuleMap::const_iterator iter = iMap_.find(id);
+  IInstrumentDefinition* Create(const string& id){
+    InstrumentMap::const_iterator iter = iMap_.find(id);
     if(iter == iMap_.end()){
-      throw std::runtime_error("InstrumentRuleFactory - Unknown Rule id " + id);
+      throw std::runtime_error("InstrumentFactory - Unknown Rule ID " + id);
     }
     return (iter->second)();
   }

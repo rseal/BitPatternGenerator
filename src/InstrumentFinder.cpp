@@ -1,4 +1,4 @@
-#include "../include/InstrumentFinder.hpp"
+#include <bpg-v2/Common/InstrumentFinder.hpp>
 
 IInstrumentDefinition& InstrumentFinder::Find(const File& fileName) {
 

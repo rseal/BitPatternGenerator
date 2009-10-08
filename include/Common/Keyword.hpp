@@ -23,9 +23,10 @@
 #include <boost/any.hpp>
 #include <boost/bind.hpp>
 #include <boost/tuple/tuple.hpp>
-#include "Unit.hpp"
-#include "Location.hpp"
-#include "Parameter.hpp"
+
+#include <bpg-v2/Common/Unit.hpp>
+#include <bpg-v2/Common/Location.hpp>
+#include <bpg-v2/Common/Parameter.hpp>
 
 using std::vector;
 using std::string;

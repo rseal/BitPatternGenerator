@@ -17,27 +17,23 @@
 #ifndef PSU1RULES_H
 #define PSU1RULES_H
 
-#include "../Keywords.hpp"
-#include "../Unit.hpp"
-#include "../Location.hpp"
-#include "../IRules.hpp"
-#include "../InstrumentRuleFactory.hpp"
+#include <bpg-v2/Instruments/Rpg/RpgRules.hpp>
+#include <bpg-v2/Common/Keyword.hpp>
+#include <bpg-v2/Common/Unit.hpp>
+#include <bpg-v2/Common/Location.hpp>
+#include <bpg-v2/Common/InstrumentRuleFactory.hpp>
+#include <bpg-v2/Rules/PSU/Type1/Keywords.hpp>
 
-#include <boost/dynamic_bitset.hpp>
 #include <boost/tuple/tuple.hpp>
 #include <boost/bind.hpp>
-#include <vector>
 #include <iostream>
 
 using namespace std;
-using namespace boost::spirit::classic;
+//using namespace boost::spirit::classic;
 using namespace boost;
+using namespace rpg;
 
-class PSU1Rules: public IRules{
-  typedef dynamic_bitset<> Pattern;
-  typedef vector<Pattern> PatternVector;
-
-  PatternVector ports_;
+class PSU1Rules: public RpgRules{
 
   //due to spirit rules non-copy problem, we can't simply
   //create a vector here.
@@ -49,6 +45,7 @@ class PSU1Rules: public IRules{
   TYPE2Keyword   t2Key;
   SAKeyword      saKey;
 
+  //this is probably no longer needed.
   template<typename T>
   const T FindParam(const ParameterVector& pv, const string& id){
     ParameterVector::const_iterator iter = 
@@ -58,16 +55,20 @@ class PSU1Rules: public IRules{
     return any_cast<T>(iter->value);
   }
 
-  const int GetChOffset(const LocationVector& lv, const int& chNum){
+  const int ChIndex(const LocationVector& lv, const int& chNum){
     return lv[chNum].channel + ((lv[chNum].port == 'a') ? 0 : 16);
   }
 
-public:
-
-  PSU1Rules(): ports_(32){};
-
+  //protected:
   void Detect(const TokenVector& tv);
+
   const bool Verify();
+
+  void Build() { 
+    cout << "BUILDING SIGNALS" << endl;
+  }
+
+public:
 
   ~PSU1Rules(){
     InstrumentRuleFactory::Instance().UnregisterRule("psu1");

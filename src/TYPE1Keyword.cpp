@@ -1,4 +1,4 @@
-#include "../include/Rules/TYPE1Keyword.hpp"
+#include <bpg-v2/Rules/PSU/Type1/TYPE1Keyword.hpp>
 
 void TYPE1Keyword::Detect(const string& token){
 

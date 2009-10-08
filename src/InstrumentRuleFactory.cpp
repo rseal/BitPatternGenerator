@@ -14,7 +14,7 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with BPG.  If not, see <http://www.gnu.org/licenses/>.
-#include "../include/InstrumentRuleFactory.hpp"
+#include <bpg-v2/Common/InstrumentRuleFactory.hpp>
 
 InstrumentRuleFactory* InstrumentRuleFactory::pInstance_ = 0;
 bool InstrumentRuleFactory::destroyed_ = false;

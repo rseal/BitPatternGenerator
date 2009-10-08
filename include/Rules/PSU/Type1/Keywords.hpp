@@ -14,22 +14,15 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with BPG.  If not, see <http://www.gnu.org/licenses/>.
-#ifndef TYPE2_KEYWORD_H
-#define TYPE2_KEYWORD_H
+#ifndef KEYWORDS_H
+#define KEYWORDS_H
 
-#include "../Keyword.hpp"
-#include <boost/spirit/include/classic_spirit.hpp>
-
-using namespace boost::spirit::classic;
-
-class TYPE2Keyword: public Keyword<Parameter>{
-
-  void Detect(const string& token);
-  void Verify(){ cout << "TYPE2 verify" << endl;}
-  
-public:
-  TYPE2Keyword(): Keyword<Parameter>("type2"){};
-
-};
+#include <bpg-v2/Rules/PSU/Type1/TRKeyword.hpp>
+#include <bpg-v2/Rules/PSU/Type1/TXAKeyword.hpp>
+#include <bpg-v2/Rules/PSU/Type1/CODEKeyword.hpp>
+#include <bpg-v2/Rules/PSU/Type1/SAKeyword.hpp>
+#include <bpg-v2/Rules/PSU/Type1/GenericKeyword.hpp>
+#include <bpg-v2/Rules/PSU/Type1/TYPE1Keyword.hpp>
+#include <bpg-v2/Rules/PSU/Type1/TYPE2Keyword.hpp>
 
 #endif

@@ -1,4 +1,4 @@
-#include "../include/Rules/TXAKeyword.hpp"
+#include <bpg-v2/Rules/PSU/Type1/TXAKeyword.hpp>
 
 void TXAKeyword::Detect(const string& token){
 

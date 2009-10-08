@@ -14,33 +14,24 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with BPG.  If not, see <http://www.gnu.org/licenses/>.
-#ifndef TXA_KEYWORD_H
-#define TXA_KEYWORD_H
+#ifndef TYPE1_KEYWORD_H
+#define TYPE1_KEYWORD_H
 
-#include "../Keyword.hpp"
-#include "../UnitConvert.hpp"
-#include "../Location.hpp"
+#include <bpg-v2/Common/Keyword.hpp>
+#include <bpg-v2/Common/UnitConvert.hpp>
+
 #include <boost/spirit/include/classic_spirit.hpp>
 
 using namespace boost::spirit::classic;
 
-typedef tuple<LocationVector, float> TxaTuple;
-
-class TXAKeyword: public Keyword<TxaTuple>{
-
-  float width_;
+class TYPE1Keyword: public Keyword<Parameter>{
 
   void Detect(const string& token);
-
-  void Verify(){
-    if(width_ > 145) throw std::runtime_error("TXA width is above limits");
-    cout << "TXA verify" << endl;
-  }
+  void Verify(){ cout << "TYPE1 verify" << endl;}
   
 public:
-  TXAKeyword(): Keyword<TxaTuple>("txa"){};
+  TYPE1Keyword(): Keyword<Parameter>("type1"){};
 
 };
-
 
 #endif

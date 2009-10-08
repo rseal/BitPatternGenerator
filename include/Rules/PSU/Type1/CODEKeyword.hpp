@@ -1,4 +1,4 @@
-// Copyright (c) 2009 Ryan Seal <rlseal -at- gmail.com>
+ // Copyright (c) 2009 Ryan Seal <rlseal -at- gmail.com>
 //
 // This file is part of Bit Pattern Generator (BPG) Software.
 //
@@ -14,32 +14,38 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with BPG.  If not, see <http://www.gnu.org/licenses/>.
-#ifndef SA_KEYWORD_H
-#define SA_KEYWORD_H
+#ifndef CODE_KEYWORD_H
+#define CODE_KEYWORD_H
 
-#include "../Keyword.hpp"
-#include "../UnitConvert.hpp"
-#include "../Location.hpp"
+#include <bpg-v2/Common/Keyword.hpp>
+#include <bpg-v2/Common/Location.hpp>
+#include <bpg-v2/Common/Parameter.hpp>
+
 #include <boost/spirit/include/classic_spirit.hpp>
+#include <boost/dynamic_bitset.hpp>
 
 using namespace boost::spirit::classic;
 
-typedef tuple<LocationVector, bool, float, float&> SaTuple;
+typedef tuple< LocationVector, dynamic_bitset<>, float> CodeTuple;
 
-class SAKeyword: public Keyword<SaTuple>{
+class CODEKeyword: public Keyword<CodeTuple>{
 
-  float h0_;
-  float hf_;
-
+  typedef dynamic_bitset<> Pattern;
+  
   void Detect(const string& token);
 
-  void Verify(){
-    if(h0_ > hf_) throw std::runtime_error("SA window - hf > h0");
-    cout << "SA verify" << endl;
+  void Verify(){ cout << "CODE verify" << endl;}
+
+  void FormatPattern(Pattern& pattern,vector<uint>& codeVec, 
+		     vector<bool>& signVec){
+    for(uint i=0; i<codeVec.size(); ++i){
+      for(uint j=0; j<codeVec[i]; ++j)
+	pattern.push_back(!signVec[i]);
+    }
   }
   
 public:
-  SAKeyword(): Keyword<SaTuple>("sa"){};
+  CODEKeyword(): Keyword<CodeTuple>("code"){};
 
 };
 
