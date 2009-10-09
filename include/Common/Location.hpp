@@ -20,8 +20,6 @@
 #include <iostream>
 #include <vector>
 
-using std::vector;
-
 struct Location{
 
   typedef unsigned int uint;
@@ -35,9 +33,6 @@ struct Location{
   }
 };
 
-namespace location{
-  
-};
-typedef vector<Location> LocationVector;
+typedef std::vector<Location> LocationVector;
 
 #endif

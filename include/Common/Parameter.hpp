@@ -20,17 +20,16 @@
 #include <boost/any.hpp>
 #include <vector>
 
-
 struct Parameter{
 
-  string id;
+  std::string id;
   boost::any value;
 
   Parameter();
-  Parameter(const string& id_, const boost::any& value_):
+  Parameter(const std::string& id_, const boost::any& value_):
     id(id_), value(value_){};
 
-  const string& operator()(){return id;}
+  const std::string& operator()(){return id;}
 };
 
 typedef std::vector<Parameter> ParameterVector;

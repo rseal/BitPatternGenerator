@@ -1,4 +1,9 @@
+#include <boost/spirit/include/classic_spirit.hpp>
+#include <bpg-v2/Common/UnitConvert.hpp>
 #include <bpg-v2/Rules/PSU/Type1/SAKeyword.hpp>
+
+using namespace std;
+using namespace boost::spirit::classic;
 
 void SAKeyword::Detect(const string& token){
 

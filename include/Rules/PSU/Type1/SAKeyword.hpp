@@ -17,26 +17,22 @@
 #ifndef SA_KEYWORD_H
 #define SA_KEYWORD_H
 
-#include <bpg-v2/Common/Keyword.hpp>
-#include <bpg-v2/Common/UnitConvert.hpp>
+#include <boost/tuple/tuple.hpp>
 #include <bpg-v2/Common/Location.hpp>
+#include <bpg-v2/Common/Keyword.hpp>
 
-#include <boost/spirit/include/classic_spirit.hpp>
-
-using namespace boost::spirit::classic;
-
-typedef tuple<LocationVector, bool, float, float&> SaTuple;
+typedef boost::tuple<LocationVector, bool, float, float&> SaTuple;
 
 class SAKeyword: public Keyword<SaTuple>{
 
   float h0_;
   float hf_;
 
-  void Detect(const string& token);
+  void Detect(const std::string& token);
 
   void Verify(){
     if(h0_ > hf_) throw std::runtime_error("SA window - hf > h0");
-    cout << "SA verify" << endl;
+    std::cout << "SA verify" << std::endl;
   }
   
 public:

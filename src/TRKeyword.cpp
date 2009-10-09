@@ -1,4 +1,10 @@
+#include <boost/spirit/include/classic_spirit.hpp>
+#include <boost/tuple/tuple.hpp>
+#include <bpg-v2/Common/UnitConvert.hpp>
 #include <bpg-v2/Rules/PSU/Type1/TRKeyword.hpp>
+
+using namespace std;
+using namespace boost::spirit::classic;
 
 void TRKeyword::Detect(const string& token){
 

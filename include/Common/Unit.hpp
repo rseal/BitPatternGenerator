@@ -20,19 +20,16 @@
 #include <iostream>
 #include <vector>
 
-using std::vector;
-using std::string;
-
 struct Unit{
-  Unit(): value(float()),units(string()){};
+  Unit(): value(float()),units(std::string()){};
 
   Unit(const float& value_, 
-       const string& units_):
+       const std::string& units_):
     value(value_),units(units_){}
   float value;
-  string units;
+  std::string units;
 };
 
-typedef vector<Unit> UnitVector;
+typedef std::vector<Unit> UnitVector;
 
 #endif

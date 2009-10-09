@@ -17,28 +17,24 @@
 #ifndef TR_KEYWORD_H
 #define TR_KEYWORD_H
 
-#include <bpg-v2/Common/Keyword.hpp>
-#include <bpg-v2/Common/UnitConvert.hpp>
+#include <boost/tuple/tuple.hpp>
 #include <bpg-v2/Common/Location.hpp>
+#include <bpg-v2/Common/Keyword.hpp>
 
-#include <boost/spirit/include/classic_spirit.hpp>
+typedef boost::tuple<LocationVector, float, float> TrTuple;
 
-using namespace boost::spirit::classic;
-
-typedef tuple<LocationVector, float, float> TrTuple;
-
-class TRKeyword: public Keyword<TrTuple>{
+class TRKeyword: public Keyword<TrTuple >{
 
   float pre_;
   float post_;
 
-  void Detect(const string& token);
+  void Detect(const std::string& token);
 
   void Verify(){ 
 
     if(pre_ < 10) throw std::runtime_error("TR PRE value is below limits");
     if(post_ < 10) throw std::runtime_error("TR POST value is below limits");
-    cout << "TR verify " <<  endl;
+    std::cout << "TR verify " <<  std::endl;
   }
   
 public:

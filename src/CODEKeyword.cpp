@@ -1,4 +1,9 @@
+#include <boost/spirit/include/classic_spirit.hpp>
+#include <bpg-v2/Common/Parameter.hpp>
 #include <bpg-v2/Rules/PSU/Type1/CODEKeyword.hpp>
+
+using namespace std;
+using namespace boost::spirit::classic;
 
 void CODEKeyword::Detect(const string& token){
 

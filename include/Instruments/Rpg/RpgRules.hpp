@@ -5,17 +5,16 @@
 #include <bpg-v2/Instruments/Rpg/RpgTypes.hpp>
 #include <bpg-v2/Instruments/Rpg/RpgIIF.hpp>
 
-using namespace rpg;
 
 class RpgRules: public IRules{
   
 protected:
   RpgIIF iif_;
-  PatternVector ports_;
+  rpg::PatternVector ports_;
 
 public:
   RpgRules(): ports_(32){}
-  PatternVector& PortRef() { return ports_;}
+  rpg::PatternVector& PortRef() { return ports_;}
   RpgIIF& IIFRef() { return iif_;}
 };
 

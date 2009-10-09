@@ -17,26 +17,23 @@
 #ifndef GENERIC_KEYWORD_H
 #define GENERIC_KEYWORD_H
 
+#include <boost/dynamic_bitset.hpp>
 #include <bpg-v2/Common/Keyword.hpp>
+#include <bpg-v2/Common/UnitConvert.hpp>
 #include <bpg-v2/Common/Location.hpp>
 
-#include <boost/spirit/include/classic_spirit.hpp>
-#include <boost/dynamic_bitset.hpp>
-
-using namespace boost::spirit::classic;
-
-typedef tuple<LocationVector, dynamic_bitset<> > GenericTuple;
+typedef boost::tuple<LocationVector, boost::dynamic_bitset<> > GenericTuple;
 
 class GenericKeyword: public Keyword<GenericTuple>{
   
-  typedef dynamic_bitset<> Pattern;
+  typedef boost::dynamic_bitset<> Pattern;
 
-  void Detect(const string& token);
+  void Detect(const std::string& token);
   
-  void Verify(){ cout << "GENERIC verify" << endl;}
+  void Verify(){ std::cout << "GENERIC verify" << std::endl;}
   
-  void FormatPattern(Pattern& pattern,vector<uint>& codeVec, 
-		     vector<bool>& signVec){
+  void FormatPattern(Pattern& pattern,std::vector<uint>& codeVec, 
+		     std::vector<bool>& signVec){
     for(uint i=0; i<codeVec.size(); ++i){
       for(uint j=0; j<codeVec[i]; ++j)
 	pattern.push_back(!signVec[i]);

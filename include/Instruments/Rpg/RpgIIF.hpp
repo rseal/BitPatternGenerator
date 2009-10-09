@@ -3,16 +3,14 @@
 
 #include <bpg-v2/Instruments/Rpg/RpgTypes.hpp>
 
-using namespace rpg;
-
 struct RpgIIF{
 public:
 
   ulong portLength;
-  SignalVector stateVectorA;
-  SignalVector stateVectorB;
-  SignalVector durVectorA;
-  SignalVector durVectorB;
+  rpg::SignalVector stateVectorA;
+  rpg::SignalVector stateVectorB;
+  rpg::SignalVector durVectorA;
+  rpg::SignalVector durVectorB;
   ulong clkDivA;
   ulong clkDivB;
   uint numStatesA;

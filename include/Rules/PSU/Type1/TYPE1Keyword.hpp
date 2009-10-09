@@ -17,17 +17,13 @@
 #ifndef TYPE1_KEYWORD_H
 #define TYPE1_KEYWORD_H
 
+#include <bpg-v2/Common/Parameter.hpp>
 #include <bpg-v2/Common/Keyword.hpp>
-#include <bpg-v2/Common/UnitConvert.hpp>
-
-#include <boost/spirit/include/classic_spirit.hpp>
-
-using namespace boost::spirit::classic;
 
 class TYPE1Keyword: public Keyword<Parameter>{
 
-  void Detect(const string& token);
-  void Verify(){ cout << "TYPE1 verify" << endl;}
+  void Detect(const std::string& token);
+  void Verify(){ std::cout << "TYPE1 verify" << std::endl;}
   
 public:
   TYPE1Keyword(): Keyword<Parameter>("type1"){};

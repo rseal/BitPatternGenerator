@@ -1,4 +1,15 @@
+#include <iostream>
+#include <boost/tuple/tuple.hpp>
+#include <boost/bind.hpp>
+#include <bpg-v2/Instruments/Rpg/RpgRules.hpp>
+#include <bpg-v2/Common/Keyword.hpp>
+#include <bpg-v2/Common/Unit.hpp>
+#include <bpg-v2/Common/Location.hpp>
 #include <bpg-v2/Rules/PSU/Type1/PSU1Rules.hpp>
+
+using namespace std;
+using namespace boost;
+using namespace rpg;
 
 namespace PSU1
 {

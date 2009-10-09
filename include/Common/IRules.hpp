@@ -20,14 +20,11 @@
 #include <vector>
 #include <iostream>
 
-using std::vector;
-using std::string;
-
 //Nonvirtual Rule interface
 class IRules{
   
 protected:
-  typedef vector<string> TokenVector;
+  typedef std::vector<std::string> TokenVector;
   virtual void Detect(const TokenVector& tokenvector){}
   virtual const bool Verify(){return false;}
   virtual void Build(){}

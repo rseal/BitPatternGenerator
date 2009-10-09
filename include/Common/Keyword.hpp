@@ -28,47 +28,41 @@
 #include <bpg-v2/Common/Location.hpp>
 #include <bpg-v2/Common/Parameter.hpp>
 
-using std::vector;
-using std::string;
-using namespace boost;
-using std::cout;
-using std::endl;
-
 //using NonVirtual Interface (NVI)
 template<typename T>
 class Keyword{
 
   //  vector<Unit> unitVec_;
 
-  virtual void Detect(const string& token){};
+  virtual void Detect(const std::string& token){};
   virtual void Verify(){};
 protected:
-  vector<T> parameters_;
+  std::vector<T> parameters_;
   bool set_;
-  const string& name_;
+  const std::string& name_;
 
 public:
 
-  explicit Keyword(const string& name): set_(false),name_(name){};
+  explicit Keyword(const std::string& name): set_(false),name_(name){};
 
-  void Process(const string& token){
-    string str = token;
-    erase_all(str," ");
-    to_lower(str);
+  void Process(const std::string& token){
+    std::string str = token;
+    boost::erase_all(str," ");
+    boost::to_lower(str);
     Detect(str);
    }
 
   virtual void Print() {};
-  const string& operator()(){ return name_;}
-  const bool Match(const string& id) { return id == name_;}
+  const std::string& operator()(){ return name_;}
+  const bool Match(const std::string& id) { return id == name_;}
   
-  const vector<T>& GetTupleRef() const {
+  const std::vector<T>& GetTupleRef() const {
     if(!set_) throw std::runtime_error("Keyword " + name_ + " was not found");
     return parameters_;
   }
 
   const bool& Set() const { return set_;}
-  const string& Name() const { return name_;}
+  const std::string& Name() const { return name_;}
   virtual ~Keyword(){};
 };
 

@@ -1,4 +1,10 @@
+#include <iostream>
+
+#include <bpg-v2/Instruments/Rpg/RpgTypes.hpp>
+#include <bpg-v2/Instruments/Rpg/RpgIIF.hpp>
 #include <bpg-v2/Instruments/Rpg/RpgSignalFormatter.hpp>
+
+using namespace rpg;
 
 void RpgSignalFormatter::operator()(const PatternVector& ports, RpgIIF& iif){
 

@@ -1,4 +1,16 @@
+
+#include <fstream>
+#include <iostream>
+#include <vector>
+#include <stdexcept>
+#include <boost/algorithm/string.hpp>
+
+#include <bpg-v2/Common/InstrumentFactory.hpp>
 #include <bpg-v2/Common/InstrumentFinder.hpp>
+
+
+using namespace std;
+using namespace boost;
 
 IInstrumentDefinition& InstrumentFinder::Find(const File& fileName) {
 

@@ -1,4 +1,8 @@
+#include <boost/spirit/include/classic_spirit.hpp>
 #include <bpg-v2/Rules/PSU/Type1/GenericKeyword.hpp>
+
+using namespace std;
+using namespace boost::spirit::classic;
 
 void GenericKeyword::Detect(const string& token){
 

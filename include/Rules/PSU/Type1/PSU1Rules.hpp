@@ -17,21 +17,11 @@
 #ifndef PSU1RULES_H
 #define PSU1RULES_H
 
-#include <bpg-v2/Instruments/Rpg/RpgRules.hpp>
-#include <bpg-v2/Common/Keyword.hpp>
-#include <bpg-v2/Common/Unit.hpp>
-#include <bpg-v2/Common/Location.hpp>
+#include <boost/any.hpp>
 #include <bpg-v2/Common/InstrumentRuleFactory.hpp>
 #include <bpg-v2/Rules/PSU/Type1/Keywords.hpp>
-
-#include <boost/tuple/tuple.hpp>
-#include <boost/bind.hpp>
-#include <iostream>
-
-using namespace std;
-//using namespace boost::spirit::classic;
-using namespace boost;
-using namespace rpg;
+#include <bpg-v2/Common/Parameter.hpp>
+#include <bpg-v2/Instruments/Rpg/RpgRules.hpp>
 
 class PSU1Rules: public RpgRules{
 
@@ -47,12 +37,12 @@ class PSU1Rules: public RpgRules{
 
   //this is probably no longer needed.
   template<typename T>
-  const T FindParam(const ParameterVector& pv, const string& id){
+  const T FindParam(const ParameterVector& pv, const std::string& id){
     ParameterVector::const_iterator iter = 
       std::find_if(pv.begin(), pv.end(), 
 		   bind(&Parameter::id, _1) == id);
     if(iter == pv.end()) throw std::runtime_error("Parameter " + id + " could not be found");
-    return any_cast<T>(iter->value);
+    return boost::any_cast<T>(iter->value);
   }
 
   const int ChIndex(const LocationVector& lv, const int& chNum){
@@ -65,7 +55,7 @@ class PSU1Rules: public RpgRules{
   const bool Verify();
 
   void Build() { 
-    cout << "BUILDING SIGNALS" << endl;
+    std::cout << "BUILDING SIGNALS" << std::endl;
   }
 
 public:

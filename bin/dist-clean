@@ -8,3 +8,4 @@ rm -f ../include/*~
 rm -f ../include/Rules/*~
 rm -f ../test/*~ ../test/*.o
 rm -f ../src/*~
+rm -rf generator

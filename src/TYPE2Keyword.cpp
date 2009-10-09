@@ -1,4 +1,8 @@
+#include <boost/spirit/include/classic_spirit.hpp>
 #include <bpg-v2/Rules/PSU/Type1/TYPE2Keyword.hpp>
+
+using namespace std;
+using namespace boost::spirit::classic;
 
 void TYPE2Keyword::Detect(const string& token){
 

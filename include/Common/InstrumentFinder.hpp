@@ -17,24 +17,13 @@
 #ifndef INSTRUMENT_FINDER_H
 #define INSTRUMENT_FINDER_H
 
-#include <string>
-#include <fstream>
-#include <iostream>
-#include <vector>
-#include <stdexcept>
-#include <boost/algorithm/string.hpp>
-
-#include <bpg-v2/Common/InstrumentFactory.hpp>
-
-using namespace std;
-using namespace boost;
 
 //Rule interface
 struct InstrumentFinder{
 
-  string instrument_;
-  typedef vector<string> TokenVector;
-  typedef string File;
+  std::string instrument_;
+  typedef std::vector<std::string> TokenVector;
+  typedef std::string File;
   TokenVector tokens_;
   
 public:

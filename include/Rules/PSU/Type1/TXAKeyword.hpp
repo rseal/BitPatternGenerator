@@ -17,25 +17,21 @@
 #ifndef TXA_KEYWORD_H
 #define TXA_KEYWORD_H
 
-#include <bpg-v2/Common/Keyword.hpp>
-#include <bpg-v2/Common/UnitConvert.hpp>
+#include <boost/tuple/tuple.hpp>
 #include <bpg-v2/Common/Location.hpp>
+#include <bpg-v2/Common/Keyword.hpp>
 
-#include <boost/spirit/include/classic_spirit.hpp>
-
-using namespace boost::spirit::classic;
-
-typedef tuple<LocationVector, float> TxaTuple;
+typedef boost::tuple<LocationVector, float> TxaTuple;
 
 class TXAKeyword: public Keyword<TxaTuple>{
 
   float width_;
 
-  void Detect(const string& token);
+  void Detect(const std::string& token);
 
   void Verify(){
     if(width_ > 145) throw std::runtime_error("TXA width is above limits");
-    cout << "TXA verify" << endl;
+    std::cout << "TXA verify" << std::endl;
   }
   
 public:

@@ -14,16 +14,6 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with BPG.  If not, see <http://www.gnu.org/licenses/>.
-
-////////////////////////////////////////////////////////////////////////////////
-///\file Units.h
-///
-/// This file defines and implements the Units structure, which is responsible
-/// for parsing various given units and returning time of type double.
-///
-///Author: Ryan Seal
-///Modified: 01/26/09
-////////////////////////////////////////////////////////////////////////////////
 #ifndef UNITCONVERT_H
 #define UNITCONVERT_H
 
@@ -31,21 +21,15 @@
 #include <boost/algorithm/string.hpp>
 #include <map>
 
-using std::string;
-using std::cout;
-using std::endl;
-using std::map;
-using namespace boost;
-
 ///\brief Parses various defined time units and returns time with double precision
 struct UnitConvert{
 
 public:
 
 
-  static const double Convert(const string& token){
+  static const double Convert(const std::string& token){
     
-    typedef map<string, float> UnitMap;
+    typedef std::map<std::string, float> UnitMap;
     UnitMap unitMap;
     
     unitMap["mhz" ] = 1e6;
@@ -58,12 +42,12 @@ public:
     unitMap["km"  ] = (2.0/3.0)*1e-6;
     unitMap["m"   ] = (2.0/3.0)*1e-3;
 
-    string str = token;
+    std::string str = token;
 
     double multiplier = double();
 
-    erase_all(str," ");
-    to_lower(str);
+    boost::erase_all(str," ");
+    boost::to_lower(str);
 
     //search map for token and assign if found
     UnitMap::iterator iter = unitMap.find(str);

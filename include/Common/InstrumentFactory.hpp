@@ -24,12 +24,11 @@
 
 #include <bpg-v2/Common/IInstrumentDefinition.hpp>
 
-using namespace std;
 
 struct InstrumentFactory{
 
   typedef IInstrumentDefinition* (*CreateRuleCallback)(); 
-  typedef map<string, CreateRuleCallback> InstrumentMap;
+  typedef std::map<std::string, CreateRuleCallback> InstrumentMap;
   InstrumentMap iMap_;
   static InstrumentFactory* pInstance_;
   static bool destroyed_;
@@ -49,7 +48,7 @@ public:
   //create single instance
   static InstrumentFactory& Instance(){
     if(!pInstance_){
-      if(destroyed_) throw runtime_error("Dead reference detected");
+      if(destroyed_) throw std::runtime_error("Dead reference detected");
       else{
 	static InstrumentFactory obj;
 	pInstance_ = &obj;
@@ -59,17 +58,17 @@ public:
   }
   
   //Every class must register its callback here
-  const bool RegisterInstrument(const string& id , CreateRuleCallback createFun){
+  const bool RegisterInstrument(const std::string& id , CreateRuleCallback createFun){
     InstrumentMap::iterator iter = iMap_.find(id);
     return iMap_.insert( InstrumentMap::value_type(id,createFun)).second;
   }
   
-  const bool UnregisterInstrument(const string& id){
+  const bool UnregisterInstrument(const std::string& id){
     return iMap_.erase(id)==1;
   }
 
   //Return object of specified type or throw exception
-  IInstrumentDefinition* Create(const string& id){
+  IInstrumentDefinition* Create(const std::string& id){
     InstrumentMap::const_iterator iter = iMap_.find(id);
     if(iter == iMap_.end()){
       throw std::runtime_error("InstrumentFactory - Unknown Rule ID " + id);
