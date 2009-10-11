@@ -32,15 +32,16 @@ public:
     typedef std::map<std::string, float> UnitMap;
     UnitMap unitMap;
     
-    unitMap["mhz" ] = 1e6;
-    unitMap["khz" ] = 1e3;
-    unitMap["hz"  ] = 1e0;
-    unitMap["nsec"] = 1e-9;
-    unitMap["usec"] = 1e-6;
-    unitMap["msec"] = 1e-3;
-    unitMap["sec" ] = 1e0;
-    unitMap["km"  ] = (2.0/3.0)*1e-6;
-    unitMap["m"   ] = (2.0/3.0)*1e-3;
+    unitMap["mhz" ]    = 1e6;
+    unitMap["khz" ]    = 1e3;
+    unitMap["hz"  ]    = 1e0;
+    unitMap["nsec"]    = 1e-9;
+    unitMap["usec"]    = 1e-6;
+    unitMap["msec"]    = 1e-3;
+    unitMap["sec" ]    = 1e0;
+    unitMap["km"  ]    = (2.0/3.0)*1e-6;
+    unitMap["m"   ]    = (2.0/3.0)*1e-3;
+    unitMap["samples"] = 1e0;
 
     std::string str = token;
 

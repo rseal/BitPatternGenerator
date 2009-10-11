@@ -20,26 +20,17 @@
 #include <iostream>
 #include <vector>
 #include <boost/algorithm/string.hpp>
-#include <boost/any.hpp>
-#include <boost/bind.hpp>
-#include <boost/tuple/tuple.hpp>
-
-#include <bpg-v2/Common/Unit.hpp>
-#include <bpg-v2/Common/Location.hpp>
-#include <bpg-v2/Common/Parameter.hpp>
 
 //using NonVirtual Interface (NVI)
 template<typename T>
 class Keyword{
-
-  //  vector<Unit> unitVec_;
 
   virtual void Detect(const std::string& token){};
   virtual void Verify(){};
 protected:
   std::vector<T> parameters_;
   bool set_;
-  const std::string& name_;
+  const std::string name_;
 
 public:
 
@@ -53,18 +44,14 @@ public:
    }
 
   virtual void Print() {};
-  const std::string& operator()(){ return name_;}
-  const bool Match(const std::string& id) { return id == name_;}
   
-  const std::vector<T>& GetTupleRef() const {
+  const std::vector<T>& GetTupleRef() {
     if(!set_) throw std::runtime_error("Keyword " + name_ + " was not found");
     return parameters_;
   }
 
   const bool& Set() const { return set_;}
-  const std::string& Name() const { return name_;}
   virtual ~Keyword(){};
 };
 
-//typedef vector<Keyword> KeywordVector;
 #endif

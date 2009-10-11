@@ -9,15 +9,15 @@ void TYPE1Keyword::Detect(const string& token){
 
   typedef rule<phrase_scanner_t> PhraseRule;
 
-  string                 nStr;
-  unsigned int           uValue;
-  string                 uStr;
+  string         nStr;
+  unsigned int   uValue;
+  string         uStr;
 
   PhraseRule keyword_names_r = (
 				chseq_p("refclock") | chseq_p("ipp") | 
 				chseq_p("bauda")    | chseq_p("baudb")
 				)[assign_a(nStr)];
-    
+
   PhraseRule units_r    = ( 
 			   chseq_p("km") | chseq_p("usec") | 
 			   chseq_p("mhz") | chseq_p("msec") |

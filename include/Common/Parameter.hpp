@@ -19,6 +19,8 @@
 
 #include <boost/any.hpp>
 #include <vector>
+#include <functional>
+#include <algorithm>
 
 struct Parameter{
 
@@ -29,16 +31,33 @@ struct Parameter{
   Parameter(const std::string& id_, const boost::any& value_):
     id(id_), value(value_){};
 
-  const std::string& operator()(){return id;}
+  const bool operator()(const Parameter& p){return p.id==id;}
 };
 
 typedef std::vector<Parameter> ParameterVector;
 
-// namespace param{
-//   const Parameter& Find(const ParameterVector& pv, const string& id){
-//     return *std::find_if(pv.begin(),pv.end(), bind(&Parameter::id, _1) == id);
-//   }
-//};
+namespace param{
+
+  struct Exists{
+    const std::string& value_;
+
+    Exists(const std::string& value): value_(value){}
+
+    const bool operator()(const Parameter& p){
+      return value_ == p.id;
+    }
+  };
+
+  static const Parameter& FindParameter(const std::vector<Parameter>& pv, const std::string& id){
+    ParameterVector::const_iterator iter = find_if( pv.begin(),
+					      pv.end(), 
+					      Exists(id)
+					      );
+    
+    if(iter == pv.end()) throw std::runtime_error("Parameter " + id + " could not be found");
+    return *iter;
+  };
+}
 
 
 

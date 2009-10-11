@@ -1,0 +1,26 @@
+
+obj type1_obj : ../../src/arecibo/Type1.cpp ;
+obj type2_obj : ../../src/arecibo/Type2.cpp ;
+obj type3_obj : ../../src/arecibo/Type3.cpp ;
+obj baud_width_obj : ../../src/arecibo/Baudwidth.cpp ;
+obj phase_obj : ../../src/arecibo/Phase.cpp ;
+
+unit-test t1
+	: type1_test.cpp type1_obj 
+	;
+
+unit-test t2
+	: type2_test.cpp type2_obj 
+	;
+
+unit-test t3
+	: type3_test.cpp type3_obj 
+	;
+
+unit-test baudwidth
+	: baudwidth_test.cpp baud_width_obj
+	;
+
+unit-test phase
+	: phase_test.cpp phase_obj
+	;
