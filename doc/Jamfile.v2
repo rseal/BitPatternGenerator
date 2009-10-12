@@ -32,7 +32,7 @@ install dist-share-boostbook
     ;
 
 install file
-	: test/test.hif
+	: ../test/test.hif
 	: <location>html
 	;
 

@@ -17,6 +17,10 @@
 #ifndef INSTRUMENT_FINDER_H
 #define INSTRUMENT_FINDER_H
 
+class IInstrumentDefinition;
+
+#include <iostream>
+#include <vector>
 
 //Rule interface
 struct InstrumentFinder{

@@ -1,8 +1,0 @@
-project generate
-	: default-build debug
-	;
-
-install ./ : bpg-generate-v2 ;
-
-exe bpg-generate-v2 : bpg-generator-v2.cpp ../../src ;
-

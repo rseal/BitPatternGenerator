@@ -1,0 +1,9 @@
+project generate
+	: default-build release
+	: build-dir ../../bin
+	;
+
+#install ./ : bpg-generate-v2 ;
+
+exe bpg-generate-v2 : bpg-generator-v2.cpp ../../src ;
+

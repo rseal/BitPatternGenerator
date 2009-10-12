@@ -18,6 +18,7 @@
 #define GENERIC_KEYWORD_H
 
 #include <boost/dynamic_bitset.hpp>
+#include <boost/tuple/tuple.hpp>
 #include <bpg-v2/Common/Keyword.hpp>
 #include <bpg-v2/Common/UnitConvert.hpp>
 #include <bpg-v2/Common/Location.hpp>

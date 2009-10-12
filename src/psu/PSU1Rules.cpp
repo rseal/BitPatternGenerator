@@ -66,10 +66,10 @@ const bool PSU1Rules::Verify(){
 
 
   const float txa_l   = txaTuple[0].get<1>();
-  const float bauda_l = FindParam<float>(t1Tuple, "bauda")*1e6;
-  const float baudb_l = FindParam<float>(t1Tuple, "baudb")*1e6;
-  const float rfclk   = FindParam<float>(t1Tuple, "refclock");
-  const float ipp     = FindParam<float>(t1Tuple, "ipp")*1e6;
+  const float bauda_l = any_cast<float>(param::FindParameter(t1Tuple, "bauda").value)*1e6;
+  const float baudb_l = any_cast<float>(param::FindParameter(t1Tuple, "baudb").value)*1e6;
+  const float rfclk   = any_cast<float>(param::FindParameter(t1Tuple, "refclock").value);
+  const float ipp     = any_cast<float>(param::FindParameter(t1Tuple, "ipp").value)*1e6;
   const float divClkA = rfclk*bauda_l/2e6;
   const float divClkB = rfclk*baudb_l/2e6;
 

@@ -18,6 +18,7 @@
 #define PSU1RULES_H
 
 #include <boost/any.hpp>
+#include <boost/bind.hpp>
 #include <bpg-v2/Common/InstrumentRuleFactory.hpp>
 #include <bpg-v2/Rules/PSU/Type1/Keywords.hpp>
 #include <bpg-v2/Common/Parameter.hpp>
@@ -34,16 +35,6 @@ class PSU1Rules: public RpgRules{
   TYPE1Keyword   t1Key;
   TYPE2Keyword   t2Key;
   SAKeyword      saKey;
-
-  //this is probably no longer needed.
-  template<typename T>
-  const T FindParam(const ParameterVector& pv, const std::string& id){
-    ParameterVector::const_iterator iter = 
-      std::find_if(pv.begin(), pv.end(), 
-		   bind(&Parameter::id, _1) == id);
-    if(iter == pv.end()) throw std::runtime_error("Parameter " + id + " could not be found");
-    return boost::any_cast<T>(iter->value);
-  }
 
   const int ChIndex(const LocationVector& lv, const int& chNum){
     return lv[chNum].channel + ((lv[chNum].port == 'a') ? 0 : 16);

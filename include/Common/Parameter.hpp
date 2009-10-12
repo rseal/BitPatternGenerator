@@ -19,6 +19,7 @@
 
 #include <boost/any.hpp>
 #include <vector>
+#include <stdexcept>
 #include <functional>
 #include <algorithm>
 

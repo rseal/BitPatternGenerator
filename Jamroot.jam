@@ -5,6 +5,8 @@ project bpg
 	: requirements <include>test/
 	;
 
+build-project src/generate ;
+
 use-project docs : doc/ ;
 
 #obj objs : [ glob *.o ] ;
@@ -14,7 +16,7 @@ unit-test keyword
 	;
 
 unit-test rpg  
-	: test/rpg_test.cpp src
+	: test/rpg_test.cpp src 
 	: <dependency>test/test.hif
 	;
 

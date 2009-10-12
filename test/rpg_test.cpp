@@ -23,6 +23,8 @@
 #include <bpg-v2/Common/InstrumentFinder.hpp>
 #include <bpg-v2/Common/IRules.hpp>
 
+using namespace std;
+
 BOOST_AUTO_TEST_CASE(radarPulseGenerator_test){
 
   typedef vector<string> TokenVector;

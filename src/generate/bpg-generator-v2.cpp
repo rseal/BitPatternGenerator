@@ -17,7 +17,7 @@
 
 #include <bpg-v2/Instruments.hpp>
 #include <bpg-v2/Common/InstrumentFinder.hpp>
-#include <clp/CommandLineParser.hpp>
+#include <bpg-v2/clp/CommandLineParser.hpp>
 
 #include <iostream>
 

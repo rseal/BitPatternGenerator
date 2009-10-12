@@ -1,10 +1,8 @@
 
 #include <fstream>
-#include <iostream>
-#include <vector>
 #include <stdexcept>
 #include <boost/algorithm/string.hpp>
-
+#include <bpg-v2/Common/IInstrumentDefinition.hpp>
 #include <bpg-v2/Common/InstrumentFactory.hpp>
 #include <bpg-v2/Common/InstrumentFinder.hpp>
 
