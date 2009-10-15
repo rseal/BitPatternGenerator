@@ -23,6 +23,8 @@
 using namespace std;
 using namespace boost::spirit::classic;
 
+namespace arecibo{
+
 void Type1Keyword::Detect(const std::string& token){
 
   typedef rule<phrase_scanner_t> PhraseRule;
@@ -33,7 +35,7 @@ void Type1Keyword::Detect(const std::string& token){
   LocationVector lv;
  
   PhraseRule keyword_names_r = (
-				chseq_p("txipp") | chseq_p("rxipp") | 
+				chseq_p("txipp") | chseq_p("riipp") | 
 				chseq_p("rf")
 				)[assign_a(nStr)];
 
@@ -49,7 +51,7 @@ void Type1Keyword::Detect(const std::string& token){
 			   >> location_r
 			   );
 
-  set_ = false;
+  //set_ = false;
 
   if( parse( token.c_str(), phrase, space_p).full){
     cout << "found TYPE1 Keyword signal" << endl;
@@ -64,5 +66,6 @@ void Type1Keyword::Detect(const std::string& token){
   }
 }
   
-void Verify(){ std::cout << "TYPE1 verify" << std::endl;}
+  void Type1Keyword::Verify(){ std::cout << "TYPE1 verify" << std::endl;}
 
+}; //namespace arecibo

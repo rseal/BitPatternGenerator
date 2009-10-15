@@ -4,6 +4,8 @@
 using namespace std;
 using namespace boost::spirit::classic;
 
+namespace psu1{
+
 void TYPE2Keyword::Detect(const string& token){
 
     if(set_) return;
@@ -30,3 +32,5 @@ void TYPE2Keyword::Detect(const string& token){
       set_ = true;
     }
   }
+
+};

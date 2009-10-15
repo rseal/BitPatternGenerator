@@ -4,6 +4,8 @@
 using namespace std;
 using namespace boost::spirit::classic;
 
+namespace psu1{
+
 void GenericKeyword::Detect(const string& token){
 
   typedef rule<phrase_scanner_t> PhraseRule;
@@ -58,3 +60,5 @@ void GenericKeyword::Detect(const string& token){
   }
 
 }
+
+}; // namespace psu1

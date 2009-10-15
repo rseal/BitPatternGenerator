@@ -22,6 +22,8 @@
 using namespace std;
 using namespace boost::spirit::classic;
 
+namespace arecibo { 
+
 void BaudwidthKeyword::Detect(const string& token){
 
   //we only detect this keyword once
@@ -65,3 +67,5 @@ void BaudwidthKeyword::Detect(const string& token){
   }
 
 }
+
+}; //namespace arecibo 

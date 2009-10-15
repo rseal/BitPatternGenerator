@@ -3,19 +3,24 @@ project src
 	: build-dir ../bin
 	;
 
-obj InstrumentFactory.o     : InstrumentFactory.cpp	;
-obj InstrumentRuleFactory.o : InstrumentRuleFactory.cpp	;
-obj InstrumentFinder.o	    : InstrumentFinder.cpp      ;
-obj CODEKeyword.o	    : psu/CODEKeyword.cpp       ;
-obj GenericKeyword.o	    : psu/GenericKeyword.cpp    ;
-obj TRKeyword.o	            : psu/TRKeyword.cpp	        ;
-obj SAKeyword.o	            : psu/SAKeyword.cpp	        ;
-obj RadarPulseGenerator.o   : RadarPulseGenerator.cpp   ;
-obj TXAKeyword.o            : psu/TXAKeyword.cpp        ;
-obj PSU1Rules.o	            : psu/PSU1Rules.cpp	        ;
-obj TYPE1Keyword.o          : psu/TYPE1Keyword.cpp      ;
-obj TYPE2Keyword.o          : psu/TYPE2Keyword.cpp	;
-obj RpgSignalFormatter.o    : RpgSignalFormatter.cpp    ;
-
-
-
+obj InstrumentFactory.o     : InstrumentFactory.cpp	 ;
+obj InstrumentRuleFactory.o : InstrumentRuleFactory.cpp	 ;
+obj InstrumentFinder.o	    : InstrumentFinder.cpp       ;
+obj CODEKeyword.o	    : psu/CODEKeyword.cpp        ;
+obj GenericKeyword.o	    : psu/GenericKeyword.cpp     ;
+obj TRKeyword.o	            : psu/TRKeyword.cpp	         ;
+obj SAKeyword.o	            : psu/SAKeyword.cpp	         ;
+obj TXAKeyword.o            : psu/TXAKeyword.cpp         ;
+obj PSU1Rules.o	            : psu/PSU1Rules.cpp	         ;
+obj TYPE1Keyword.o          : psu/TYPE1Keyword.cpp       ;
+obj TYPE2Keyword.o          : psu/TYPE2Keyword.cpp	 ;
+obj RpgSignalFormatter.o    : RpgSignalFormatter.cpp     ;
+obj AOPhase.o               : arecibo/Phase.cpp		 ;
+obj AOBaudwidth.o	    : arecibo/Baudwidth.cpp 	 ;
+obj AOGenericKeyword.o 	    : arecibo/GenericKeyword.cpp ;
+obj AOSAKeyword.o	    : arecibo/SAKeyword.cpp	 ;
+obj AOType1Keyword.o	    : arecibo/Type1.cpp 	 ;
+obj AOType2Keyword.o	    : arecibo/Type2.cpp 	 ;
+obj AOType3Keyword.o	    : arecibo/Type3.cpp		 ;
+obj AORules.o 		    : arecibo/Rules.cpp		 ;
+obj AORadarPulseGenerator.o : RadarPulseGenerator.cpp    ;

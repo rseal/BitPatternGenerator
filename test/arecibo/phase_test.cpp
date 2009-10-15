@@ -24,6 +24,7 @@
 
 
 using namespace std;
+using namespace arecibo;
 
 BOOST_AUTO_TEST_CASE(type3_keyword_test){
   

@@ -22,6 +22,8 @@
 #include <bpg-v2/Common/Location.hpp>
 #include <bpg-v2/Common/Parameter.hpp>
 
+namespace arecibo{
+
 typedef boost::tuple<LocationVector,float> Type3Tuple;
 
 class Type3Keyword: public Keyword<Parameter>{
@@ -34,5 +36,7 @@ public:
   Type3Keyword(): Keyword<Parameter>("type3"){};
   
 };
+
+}; // namespace arecibo
 
 #endif

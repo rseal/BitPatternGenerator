@@ -22,6 +22,8 @@
 using namespace std;
 using namespace boost::spirit::classic;
 
+namespace arecibo{
+
 void Type3Keyword::Detect(const string& token){
 
   typedef rule<phrase_scanner_t> PhraseRule;
@@ -64,7 +66,7 @@ void Type3Keyword::Detect(const string& token){
 			   >> unit_r
 			   );
 
-  set_ = false;
+  //  set_ = false;
 
   if( parse( token.c_str(), phrase, space_p).full){
     cout << "found TYPE3 Keyword signal" << endl;
@@ -81,3 +83,5 @@ void Type3Keyword::Detect(const string& token){
   }
 
 }
+
+}; //namespace arecibo

@@ -22,6 +22,8 @@ using namespace boost::spirit::classic;
 using namespace boost;
 using namespace std;
 
+namespace arecibo{
+
 void PhaseKeyword::Detect(const std::string& token){
 
   if(set_) return;
@@ -53,7 +55,7 @@ void PhaseKeyword::Detect(const std::string& token){
 
     //load parameters
     parameters_.push_back(PhaseTuple( bitVector,
-				      static_cast<float>
+				      static_cast<unsigned int>
 				      (bitVector.size()),
 				      nStr == "clp"
 				      )
@@ -63,4 +65,5 @@ void PhaseKeyword::Detect(const std::string& token){
     Verify();
   }
 }
- 
+
+}; // namespace arecibo 

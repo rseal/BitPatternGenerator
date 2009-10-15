@@ -11,7 +11,7 @@ tr_keyword_test: $(INC)/Rules/TRKeyword.hpp tr_keyword_test.cpp
 signal_test: signal_test.cpp
 	g++ -o signal_test signal_test.cpp
 
-rpg_test: rpg_test.cpp $(INC)/IInstrumentDefinition.hpp
+rpg_test: rpg_test.cpp $(INC)/Common/IInstrumentDefinition.hpp
 	g++ -g -O0 -c ../src/InstrumentRuleFactory.cpp -I ../include
 	g++ -g -O0 -c ../src/InstrumentFactory.cpp -I ../include
 	g++ -g -O0 -o rpg_test rpg_test.cpp InstrumentRuleFactory.o InstrumentFactory.o

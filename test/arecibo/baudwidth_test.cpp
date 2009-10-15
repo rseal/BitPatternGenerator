@@ -24,6 +24,7 @@
 
 
 using namespace std;
+using namespace arecibo;
 
 void Print(const Location& loc){ cout << loc.port << " " << loc.channel << endl;}
 

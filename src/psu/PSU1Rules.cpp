@@ -1,7 +1,6 @@
 #include <iostream>
 #include <boost/tuple/tuple.hpp>
 #include <boost/bind.hpp>
-#include <bpg-v2/Instruments/Rpg/RpgRules.hpp>
 #include <bpg-v2/Common/Keyword.hpp>
 #include <bpg-v2/Common/Unit.hpp>
 #include <bpg-v2/Common/Location.hpp>
@@ -11,11 +10,11 @@ using namespace std;
 using namespace boost;
 using namespace rpg;
 
-namespace PSU1
+namespace psu1 
 {
   IRules* Callback(){ return new PSU1Rules(); }
-  bool result = InstrumentRuleFactory::Instance().RegisterRule("psu1",PSU1::Callback);
-};
+  bool result = InstrumentRuleFactory::Instance().RegisterRule("psu1",Callback);
+
 
 void PSU1Rules::Detect(const TokenVector& tv){
     
@@ -64,14 +63,14 @@ const bool PSU1Rules::Verify(){
   //single entry
   //const ParameterVector& t2Tuple   = t2Key.GetTupleRef();
 
-
   const float txa_l   = txaTuple[0].get<1>();
   const float bauda_l = any_cast<float>(param::FindParameter(t1Tuple, "bauda").value)*1e6;
   const float baudb_l = any_cast<float>(param::FindParameter(t1Tuple, "baudb").value)*1e6;
   const float rfclk   = any_cast<float>(param::FindParameter(t1Tuple, "refclock").value);
   const float ipp     = any_cast<float>(param::FindParameter(t1Tuple, "ipp").value)*1e6;
-  const float divClkA = rfclk*bauda_l/2e6;
-  const float divClkB = rfclk*baudb_l/2e6;
+  
+  volatile const float divClkA = rfclk*bauda_l/2e6;
+  volatile const float divClkB = rfclk*baudb_l/2e6;
 
   iif_.clkDivA = divClkA;
   iif_.clkDivB = divClkB;
@@ -195,3 +194,5 @@ const bool PSU1Rules::Verify(){
   }
   return true;
 } 
+
+}; // namespace psu1

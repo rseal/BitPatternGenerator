@@ -14,8 +14,8 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with BPG.  If not, see <http://www.gnu.org/licenses/>.
-#ifndef KEYWORDS_H
-#define KEYWORDS_H
+#ifndef PSU_KEYWORDS_H
+#define PSU_KEYWORDS_H
 
 #include <bpg-v2/Rules/PSU/Type1/TRKeyword.hpp>
 #include <bpg-v2/Rules/PSU/Type1/TXAKeyword.hpp>

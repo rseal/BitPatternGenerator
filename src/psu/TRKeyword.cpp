@@ -6,6 +6,8 @@
 using namespace std;
 using namespace boost::spirit::classic;
 
+namespace psu1{
+
 void TRKeyword::Detect(const string& token){
 
   if(set_) return;
@@ -58,3 +60,5 @@ void TRKeyword::Detect(const string& token){
   }
 
 }
+
+}; // namespace psu1

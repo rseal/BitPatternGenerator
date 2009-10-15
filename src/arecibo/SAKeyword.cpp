@@ -1,11 +1,11 @@
 #include <boost/spirit/include/classic_spirit.hpp>
 #include <bpg-v2/Common/UnitConvert.hpp>
-#include <bpg-v2/Rules/PSU/Type1/SAKeyword.hpp>
+#include <bpg-v2/Rules/Arecibo/Keywords/SA.hpp>
 
 using namespace std;
 using namespace boost::spirit::classic;
 
-namespace psu1{
+namespace arecibo{
 
 void SAKeyword::Detect(const string& token){
 
@@ -64,4 +64,4 @@ void SAKeyword::Detect(const string& token){
 
 }
 
-}; // namespace psu1
+}; // namespace arecibo

@@ -21,6 +21,8 @@
 #include <boost/dynamic_bitset.hpp>
 #include <bpg-v2/Common/Keyword.hpp>
 
+namespace arecibo{
+
 typedef boost::tuple< boost::dynamic_bitset<>,unsigned int,bool> PhaseTuple;
 
 class PhaseKeyword: public Keyword<PhaseTuple>{
@@ -44,4 +46,5 @@ public:
   
 };
 
+}; // namespace arecibo
 #endif

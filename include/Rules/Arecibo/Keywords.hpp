@@ -14,31 +14,15 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with BPG.  If not, see <http://www.gnu.org/licenses/>.
-#ifndef TYPE1_KEYWORD_H
-#define TYPE1_KEYWORD_H
+#ifndef ARECIBO_KEYWORDS_H
+#define ARECIBO_KEYWORDS_H
 
+#include <bpg-v2/Rules/Arecibo/Keywords/Baudwidth.hpp>
+#include <bpg-v2/Rules/Arecibo/Keywords/Phase.hpp>
+#include <bpg-v2/Rules/Arecibo/Keywords/Generic.hpp>
+#include <bpg-v2/Rules/Arecibo/Keywords/SA.hpp>
+#include <bpg-v2/Rules/Arecibo/Keywords/Type1.hpp>
+#include <bpg-v2/Rules/Arecibo/Keywords/Type2.hpp>
+#include <bpg-v2/Rules/Arecibo/Keywords/Type3.hpp>
 
-#include <bpg-v2/Common/Location.hpp>
-#include <bpg-v2/Common/Keyword.hpp>
-#include <bpg-v2/Common/Parameter.hpp>
-
-
-struct Parameter;
-
-namespace arecibo{
-
-typedef LocationVector Type1Tuple;
-
-class Type1Keyword: public Keyword<Parameter>{
-  
-  void Detect(const std::string& token);
-  
-  void Verify();
-  
-public:
-  Type1Keyword(): Keyword<Parameter>("type1"){};
-  
-};
-
-}; //namespace arecibo
 #endif

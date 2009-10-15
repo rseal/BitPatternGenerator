@@ -23,6 +23,8 @@
 #include <bpg-v2/Common/UnitConvert.hpp>
 #include <bpg-v2/Common/Location.hpp>
 
+namespace psu1{
+
 typedef boost::tuple< LocationVector, boost::dynamic_bitset<>, float> CodeTuple;
 
 class CODEKeyword: public Keyword<CodeTuple>{
@@ -45,5 +47,7 @@ public:
   CODEKeyword(): Keyword<CodeTuple>("code"){};
 
 };
+
+}; // namespace psu1
 
 #endif

@@ -22,17 +22,21 @@
 #include <bpg-v2/Common/Location.hpp>
 #include <boost/tuple/tuple.hpp>
 
-typedef ParameterVector Type2Tuple;
+namespace arecibo{
+
+typedef float Type2Tuple;
 
 class Type2Keyword: public Keyword<Parameter>{
   
   void Detect(const std::string& token);
   
-  void Verify(){ std::cout << "TYPE2 verify" << std::endl;}
+  void Verify();
   
 public:
   Type2Keyword(): Keyword<Parameter>("type2"){};
   
+};
+
 };
 
 #endif

@@ -22,6 +22,8 @@
 using namespace std;
 using namespace boost::spirit::classic;
 
+namespace arecibo{
+
 void Type2Keyword::Detect(const std::string& token){
 
   typedef rule<phrase_scanner_t> PhraseRule;
@@ -34,7 +36,7 @@ void Type2Keyword::Detect(const std::string& token){
   LocationVector lv;
  
   PhraseRule keyword_names_r = (
-				chseq_p("refclk") | chseq_p("ipp")
+				chseq_p("refclock") | chseq_p("ipp")
 				)[assign_a(nStr)];
   
   PhraseRule port_r     = ch_p('a') | ch_p('b');
@@ -60,7 +62,7 @@ void Type2Keyword::Detect(const std::string& token){
 			   >> unit_r
 			   );
 
-  set_ = false;
+  //  set_ = false;
 
   if( parse( token.c_str(), phrase, space_p).full){
     cout << "found TYPE2 Keyword signal" << endl;
@@ -73,4 +75,6 @@ void Type2Keyword::Detect(const std::string& token){
   }
 }
   
-void Verify(){ std::cout << "TYPE2 verify" << std::endl;}
+  void Type2Keyword::Verify(){ std::cout << "TYPE2 verify" << std::endl;}
+
+}; //namespace arecibo

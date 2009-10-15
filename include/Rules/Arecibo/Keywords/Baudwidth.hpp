@@ -21,6 +21,8 @@
 #include <bpg-v2/Common/Keyword.hpp>
 #include <bpg-v2/Common/Location.hpp>
 
+namespace arecibo{
+
 typedef boost::tuple<float,float> BaudwidthTuple;
 
 class BaudwidthKeyword: public Keyword<BaudwidthTuple>{
@@ -34,4 +36,5 @@ public:
   
 };
 
+}; // namespace arecibo
 #endif

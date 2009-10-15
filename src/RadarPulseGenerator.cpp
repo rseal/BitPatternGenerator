@@ -1,13 +1,16 @@
 #include <fstream>
 
 #include <bpg-v2/Common/IRules.hpp>
-#include <bpg-v2/Rules/PSU/Type1/PSU1Rules.hpp>
 #include <bpg-v2/Instruments/Rpg/RpgSignalFormatter.hpp>
 #include <bpg-v2/Instruments/Rpg/RpgTypes.hpp>
 #include <bpg-v2/Instruments/Rpg/RadarPulseGenerator.hpp>
+#include <bpg-v2/Instruments/Rpg/RpgIIF.hpp>
+#include <bpg-v2/Instruments/Rpg/RpgRules.hpp>
+
 
 using namespace std;
 using namespace rpg;
+//using namespace arecibo;
 
 namespace RPG
 {

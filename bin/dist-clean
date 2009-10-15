@@ -4,8 +4,24 @@ rm -rf ../doc/html
 rm -rf ../doc/bin
 rm -rf gcc-*
 rm -f boostbook_catalog.xml
+
 rm -f ../include/*~
+rm -f ../include/clp/*~
+rm -f ../include/Common/*~
+rm -f ../include/Instruments/*~
+rm -f ../include/Instruments/Rpg/*~
 rm -f ../include/Rules/*~
+rm -f ../include/Rules/Arecibo/*~
+rm -f ../include/Rules/Arecibo/Keywords/*~
+rm -f ../include/Rules/PSU/Type1/*~
+rm -f ../include/Rules/PSU/Type2/*~
 rm -f ../test/*~ ../test/*.o
+rm -f ../test/arecibo/*~
+
 rm -f ../src/*~
+rm -f ../src/arecibo/*~
+rm -f ../src/psu/*~
+rm -f ../src/generate/*~
+rm -f ../src/shell/*~
+
 rm -rf generate

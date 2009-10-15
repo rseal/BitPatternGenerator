@@ -21,6 +21,8 @@
 #include <bpg-v2/Common/Location.hpp>
 #include <bpg-v2/Common/Keyword.hpp>
 
+namespace psu1{
+
 typedef boost::tuple<LocationVector, float> TxaTuple;
 
 class TXAKeyword: public Keyword<TxaTuple>{
@@ -39,5 +41,5 @@ public:
 
 };
 
-
+}; // namespace psu1
 #endif

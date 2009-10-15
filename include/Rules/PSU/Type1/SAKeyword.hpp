@@ -21,6 +21,8 @@
 #include <bpg-v2/Common/Location.hpp>
 #include <bpg-v2/Common/Keyword.hpp>
 
+namespace psu1{
+
 typedef boost::tuple<LocationVector, bool, float, float&> SaTuple;
 
 class SAKeyword: public Keyword<SaTuple>{
@@ -40,4 +42,5 @@ public:
 
 };
 
+}; // namespace psu1
 #endif

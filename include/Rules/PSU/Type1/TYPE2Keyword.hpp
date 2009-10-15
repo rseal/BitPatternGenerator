@@ -20,6 +20,8 @@
 #include <bpg-v2/Common/Parameter.hpp>
 #include <bpg-v2/Common/Keyword.hpp>
 
+namespace psu1{
+
 class TYPE2Keyword: public Keyword<Parameter>{
 
   void Detect(const std::string& token);
@@ -30,4 +32,5 @@ public:
 
 };
 
+}; // namespace psu1
 #endif

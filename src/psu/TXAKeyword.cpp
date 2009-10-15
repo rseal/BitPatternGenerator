@@ -5,6 +5,8 @@
 using namespace std;
 using namespace boost::spirit::classic;
 
+namespace psu1{
+
 void TXAKeyword::Detect(const string& token){
 
   if(set_) return;
@@ -63,3 +65,5 @@ void TXAKeyword::Detect(const string& token){
   }
 
 }
+
+}; // namespace psu1

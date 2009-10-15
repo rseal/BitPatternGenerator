@@ -14,29 +14,37 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with BPG.  If not, see <http://www.gnu.org/licenses/>.
-#ifndef TYPE1_KEYWORD_H
-#define TYPE1_KEYWORD_H
+#ifndef GENERIC_KEYWORD_H
+#define GENERIC_KEYWORD_H
 
-
-#include <bpg-v2/Common/Location.hpp>
+#include <boost/dynamic_bitset.hpp>
+#include <boost/tuple/tuple.hpp>
 #include <bpg-v2/Common/Keyword.hpp>
-#include <bpg-v2/Common/Parameter.hpp>
-
-
-struct Parameter;
+#include <bpg-v2/Common/UnitConvert.hpp>
+#include <bpg-v2/Common/Location.hpp>
 
 namespace arecibo{
 
-typedef LocationVector Type1Tuple;
+typedef boost::tuple<LocationVector, boost::dynamic_bitset<> > GenericTuple;
 
-class Type1Keyword: public Keyword<Parameter>{
+class GenericKeyword: public Keyword<GenericTuple>{
   
+  typedef boost::dynamic_bitset<> Pattern;
+
   void Detect(const std::string& token);
   
-  void Verify();
+  void Verify(){ std::cout << "GENERIC verify" << std::endl;}
+  
+  void FormatPattern(Pattern& pattern,std::vector<uint>& codeVec, 
+		     std::vector<bool>& signVec){
+    for(uint i=0; i<codeVec.size(); ++i){
+      for(uint j=0; j<codeVec[i]; ++j)
+	pattern.push_back(!signVec[i]);
+    }
+  }
   
 public:
-  Type1Keyword(): Keyword<Parameter>("type1"){};
+  GenericKeyword(): Keyword<GenericTuple>("generic"){};
   
 };
 

@@ -23,6 +23,8 @@
 #include <bpg-v2/Common/UnitConvert.hpp>
 #include <bpg-v2/Common/Location.hpp>
 
+namespace psu1{
+
 typedef boost::tuple<LocationVector, boost::dynamic_bitset<> > GenericTuple;
 
 class GenericKeyword: public Keyword<GenericTuple>{
@@ -46,4 +48,5 @@ public:
   
 };
 
+}; // namespace psu1
 #endif

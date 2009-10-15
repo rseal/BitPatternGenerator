@@ -21,7 +21,7 @@
 #include <functional>
 
 using namespace std;
-
+using namespace psu1;
 
 BOOST_AUTO_TEST_CASE(tr_keyword_test){
 

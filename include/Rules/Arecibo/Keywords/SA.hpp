@@ -14,31 +14,33 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with BPG.  If not, see <http://www.gnu.org/licenses/>.
-#ifndef TYPE1_KEYWORD_H
-#define TYPE1_KEYWORD_H
+#ifndef SA_KEYWORD_H
+#define SA_KEYWORD_H
 
-
+#include <boost/tuple/tuple.hpp>
 #include <bpg-v2/Common/Location.hpp>
 #include <bpg-v2/Common/Keyword.hpp>
-#include <bpg-v2/Common/Parameter.hpp>
-
-
-struct Parameter;
 
 namespace arecibo{
 
-typedef LocationVector Type1Tuple;
+typedef boost::tuple<LocationVector, bool, float, float&> SaTuple;
 
-class Type1Keyword: public Keyword<Parameter>{
-  
+class SAKeyword: public Keyword<SaTuple>{
+
+  float h0_;
+  float hf_;
+
   void Detect(const std::string& token);
-  
-  void Verify();
+
+  void Verify(){
+    if(h0_ > hf_) throw std::runtime_error("SA window - hf > h0");
+    std::cout << "SA verify" << std::endl;
+  }
   
 public:
-  Type1Keyword(): Keyword<Parameter>("type1"){};
-  
+  SAKeyword(): Keyword<SaTuple>("sa"){};
+
 };
 
-}; //namespace arecibo
+}; // namespace arecibo
 #endif
