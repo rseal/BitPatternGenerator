@@ -5,18 +5,23 @@ project bpg
 	: requirements <include>test/
 	;
 
-build-project src/generate ;
-
 use-project docs : doc/ ;
 
-#obj objs : [ glob *.o ] ;
+alias generate_src : [ glob src/generate/*.cpp ] ;
+alias psu1_src 	 : [ glob src/psu1/*.cpp ] ;
+alias common_src : [ glob src/common/*.cpp ] ;
+alias ao_src 	 : [ glob src/arecibo/*.cpp ] ;
 
+exe bpg-generate-v2
+	: generate_src ao_src psu1_src common_src
+    	;
+ 
 unit-test keyword
-	: test/keyword_test.cpp src
+	: test/keyword_test.cpp psu1_src common_src
 	;
 
 unit-test rpg  
-	: test/rpg_test.cpp src 
+	: test/rpg_test.cpp common_src psu1_src ao_src 
 	: <dependency>test/test.hif
 	;
 
