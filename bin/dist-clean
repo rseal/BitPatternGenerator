@@ -8,6 +8,7 @@ rm -f boostbook_catalog.xml
 rm -f ../include/*~
 rm -f ../include/clp/*~
 rm -f ../include/Common/*~
+rm -f ../include/Display/*~
 rm -f ../include/Instruments/*~
 rm -f ../include/Instruments/Rpg/*~
 rm -f ../include/Rules/*~
