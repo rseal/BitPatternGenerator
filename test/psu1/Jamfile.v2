@@ -1,0 +1,4 @@
+
+unit-test sa
+	: sa_test.cpp ../../src/psu1/SAKeyword.cpp 
+	;

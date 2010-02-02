@@ -40,10 +40,10 @@ BOOST_AUTO_TEST_CASE(type1_keyword_test){
   lv = boost::any_cast<LocationVector>(param::FindParameter(t1Tuple,"txipp").value);
   for_each(lv.begin(), lv.end(), boost::bind(Print,_1));
 
-  t1Key.Process("RXIPP = a.4,a.5,b.6,b.7");
+  t1Key.Process("RIIPP = a.4,a.5,b.6,b.7");
   BOOST_CHECK(t1Key.Set() == true);
   t1Tuple = t1Key.GetTupleRef();
-  lv = boost::any_cast<LocationVector>(param::FindParameter(t1Tuple,"rxipp").value);
+  lv = boost::any_cast<LocationVector>(param::FindParameter(t1Tuple,"riipp").value);
   for_each(lv.begin(), lv.end(), boost::bind(Print,_1));
 
   t1Key.Process("R  f = a.8,a.9,a.10,b.11,b.12");

@@ -39,7 +39,7 @@ public:
     unitMap["usec"]    = 1e-6;
     unitMap["msec"]    = 1e-3;
     unitMap["sec" ]    = 1e0;
-    unitMap["km"  ]    = (2.0/3.0)*1e-6;
+    unitMap["km"  ]    = (2.0/3.0)*1e-5;
     unitMap["m"   ]    = (2.0/3.0)*1e-3;
     unitMap["samples"] = 1e0;
 

@@ -1,4 +1,5 @@
 import make ;
+#import testing;
 
 project bpg 
 	: default-build release
@@ -12,9 +13,24 @@ alias psu1_src 	 : [ glob src/psu1/*.cpp ] ;
 alias common_src : [ glob src/common/*.cpp ] ;
 alias ao_src 	 : [ glob src/arecibo/*.cpp ] ;
 
+obj okFrontPanelDLL.o 
+	: src/shell/okFrontPanelDLL.cpp 
+	: <define>LINUX=1
+	;
+
+lib dl  : : <name>dl      <search>/usr/lib/ ;
+lib usb : : <name>usb     <search>/usr/lib/ ;
+lib pt  : : <name>pthread <search>/usr/lib/ ;
+lib rt  : : <name>rt      <search>/usr/lib/ ;
+
 exe bpg-generate-v2
-	: generate_src ao_src psu1_src common_src
+	: generate_src ao_src psu1_src common_src /usr/local/include/clp/CommandLineParser.hpp
     	;
+
+exe bpg-shell-v2
+	: src/shell/bpg-shell.cpp okFrontPanelDLL.o dl usb pt rt
+	: <define>LINUX=1
+        ;
  
 unit-test keyword
 	: test/keyword_test.cpp psu1_src common_src

@@ -67,6 +67,7 @@ void SAKeyword::Detect(const string& token){
     //convert to usec and round up 
     h0_ = ceil(uvVec[0]*UnitConvert::Convert(usVec[0])*1e6);
     hf_ = ceil(uvVec[1]*UnitConvert::Convert(usVec[1])*1e6);
+    cout << "range = (" << h0_ << "," << hf_ << ")" << endl;
       
     parameters_.push_back(SaTuple(lv,
 				  isNeg,

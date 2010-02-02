@@ -25,33 +25,34 @@
 template<typename T>
 class Keyword{
 
-  virtual void Detect(const std::string& token){};
-  virtual void Verify(){};
-protected:
-  std::vector<T> parameters_;
-  bool set_;
-  const std::string name_;
+   virtual void Detect(const std::string& token){};
+   virtual void Verify(){};
+   protected:
+   std::vector<T> parameters_;
+   bool set_;
+   const std::string name_;
 
-public:
+   public:
 
-  explicit Keyword(const std::string& name): set_(false),name_(name){};
+   explicit Keyword(const std::string& name): set_(false),name_(name){};
 
-  void Process(const std::string& token){
-    std::string str = token;
-    boost::erase_all(str," ");
-    boost::to_lower(str);
-    Detect(str);
+   void Process(const std::string& token){
+      set_=false;
+      std::string str = token;
+      boost::erase_all(str," ");
+      boost::to_lower(str);
+      Detect(str);
    }
 
-  virtual void Print() {};
-  
-  const std::vector<T>& GetTupleRef() {
-    if(!set_) throw std::runtime_error("Keyword " + name_ + " was not found");
-    return parameters_;
-  }
+   virtual void Print() {};
 
-  const bool& Set() const { return set_;}
-  virtual ~Keyword(){};
+   const std::vector<T>& GetTupleRef() {
+      if(!set_) throw std::runtime_error("Keyword " + name_ + " was not found");
+      return parameters_;
+   }
+
+   const bool& Set() const { return set_;}
+   virtual ~Keyword(){};
 };
 
 #endif

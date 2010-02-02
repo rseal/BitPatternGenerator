@@ -18,11 +18,14 @@
 #define LCD_CONTROLLER_H
 
 #include <boost/date_time/posix_time/posix_time.hpp>
-#include <bpg-v2/Common/SThread.hpp>
+#include <sthread/SThread.hpp>
 #include <bpg-v2/Common/LCD.hpp>
 #include <sstream>
 #include <iostream>
 
+//class uses aggregate LCD object to control display 
+//and updating via a separate thread of execution
+//inherited from the SThread class
 class LCDController : public SThread {
 
   typedef boost::posix_time::ptime Time;
@@ -43,7 +46,9 @@ class LCDController : public SThread {
   Mutex mutex_;
   bool newMode_;
 
-  const string ElapsedTime(){
+  //use boost date_time libraries to compute
+  //time elapsed in current mode
+  const std::string ElapsedTime(){
     static bool init=false;
 
     if(!init){
@@ -61,14 +66,16 @@ class LCDController : public SThread {
     return ostr.str();
   }
 
-  const string CurrentTime(){
+  //use boost date_time library to get current system time
+  const std::string CurrentTime(){
     ostr.str("");
     currentTime_ = boost::posix_time::second_clock::local_time();
     ostr << currentTime_;
     return ostr.str();
   }
 
-  const string StartTime(){
+  //return time that the bpg started running
+  const std::string StartTime(){
     ostr.str("");
     ostr << startTime_;
     return ostr.str();
@@ -76,50 +83,64 @@ class LCDController : public SThread {
 
 public:
 
-  LCDController(LCD& lcd): lcd_(lcd), exit_(false), running_(false), newMode_(true){
+  //ctor initializes time format display for LCD
+  explicit LCDController(LCD& lcd): lcd_(lcd), exit_(false), running_(false), newMode_(true){
     tFacet_ = new  boost::posix_time::time_facet("%r %z");
     ostr.imbue(std::locale(ostr.getloc(),tFacet_));
     lcd_.Init();
   }
 
+  //Starts threaded mode display via StartThread()
   void Start() { 
     startTime_ = boost::posix_time::second_clock::local_time();
     running_ = true;
-    StartThread();
+    this->Start();
   }
 
+  //no functionality yet
   void Stop() { running_ = false; }
 
-  void Mode(const string& mode) { 
+  //switch modes
+  void Mode(const std::string& mode) { 
     mode_=mode;
     newMode_ = true;
   }
 
+  //virtual function defining separate thread of execution
+  //Makes use of Sleep() function to put thread to sleep for 1 second
+  //followed by an display update
   void Run(){
     while (!exit_) {
       //sleep for one second then update display
-      Sleep(SEC,1);
+      Sleep(sthread::sec,1);
 
       if(newMode_){
 	    modeTime_ = boost::posix_time::second_clock::local_time();
-	    newMode_=false;
+	    newMode_  = false;
       }
-      string cTime = CurrentTime();
-      string eTime = ElapsedTime();
+      std::string cTime = CurrentTime();
+      std::string eTime = ElapsedTime();
 
+      //using a mutex to prevent possible asynchronous updating
+      //of Message strings via BootScreen() member of LCD
+      mutex_.Lock();
       lcd_.Message(0,"   Mode: " + mode_);
       lcd_.Message(1,"Elapsed: " + eTime);
       lcd_.Message(2,"  Start: " + StartTime());
       lcd_.Message(3," System: " + cTime); 
       lcd_.Update();
+      mutex_.Unlock();
     }
   }
 
+  //sets the exit_ variable which causes the thread to finish and exit
   void Exit() { exit_ = true;}
   
+  //dtor reset display to boot screen and destroys time_facet object
+  //dynamic allocation of tFacet_ required for proper operation
   ~LCDController(){
+    lcd_.BootScreen();
     delete tFacet_;
-    cout << "LCDController DTOR called" << endl;
   }
 };
 

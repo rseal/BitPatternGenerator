@@ -63,7 +63,7 @@ void RadarPulseGenerator::WriteIIF(const string& fileName){
     out << *(dBIter++) << endl;
   }
   out << iif.clkDivB << endl;
-  out << iif.numStatesB << endl;
+  out << iif.numStatesB;
   //add clock divider b
 
   cout << "writing output file" << endl;

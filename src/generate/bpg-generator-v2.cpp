@@ -17,7 +17,7 @@
 
 #include <bpg-v2/Instruments.hpp>
 #include <bpg-v2/Common/InstrumentFinder.hpp>
-#include <bpg-v2/clp/CommandLineParser.hpp>
+#include <clp/CommandLineParser.hpp>
 
 #include <iostream>
 
@@ -29,16 +29,21 @@ int main(int argc,char** argv){
   string outputFile = "output.iif";
 
   CommandLineParser cmd(argc,argv);
-
+  
   //add help switch
   string help = "Displays command line options";
-  cmd.AddSwitch("h", help, false);
-  cmd.AddSwitch("help", help, false);
+  Switch help1Sw("h",help, false);
+  Switch help2Sw("help", help, false);
+
+  cmd.AddSwitch(help1Sw);
+  cmd.AddSwitch(help2Sw);
 
   //add version switch
   string version = "Prints version information";
-  cmd.AddSwitch("v", version, false);
-  cmd.AddSwitch("version", version, false);
+  Switch vSw("v",version,false);
+  Switch versionSW("version",version,false);
+  cmd.AddSwitch(vSw);
+  cmd.AddSwitch(versionSW);
 
   //add debug switch
 //   string debug = "Prints debug information";
@@ -54,7 +59,7 @@ int main(int argc,char** argv){
 
   //print version info if set
   if(cmd.SwitchSet("v") || cmd.SwitchSet("version")){
-    cout << "bpg v2.0-10082009" << endl;
+    cout << "bpg v2.0-01202010" << endl;
     exit(0);
   }
 
