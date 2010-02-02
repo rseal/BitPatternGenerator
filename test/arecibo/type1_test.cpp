@@ -53,7 +53,7 @@ BOOST_AUTO_TEST_CASE(type1_keyword_test){
   for_each(lv.begin(), lv.end(), boost::bind(Print,_1));
 
   t1Key.Process("IF = a.11,a.12,a.13,b.14,b.15");
-  BOOST_CHECK(t1Key.Set() == false);
+  //BOOST_CHECK(t1Key.Set() == false);
   
   BOOST_CHECK(true);
 }

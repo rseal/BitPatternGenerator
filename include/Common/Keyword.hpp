@@ -37,7 +37,7 @@ class Keyword{
    explicit Keyword(const std::string& name): set_(false),name_(name){};
 
    void Process(const std::string& token){
-      set_=false;
+      //set_=false;
       std::string str = token;
       boost::erase_all(str," ");
       boost::to_lower(str);

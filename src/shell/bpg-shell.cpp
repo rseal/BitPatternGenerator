@@ -15,7 +15,7 @@
 #include <bpg-v2/Instruments/Rpg/Exceptions.hpp>
 #include <bpg-v2/Instruments/Rpg/Mode/ModeArray.hpp>
 #include <bpg-v2/Instruments/Rpg/okFrontPanelDLL.h>
-#include <bpg-v2/Common/Lock.hpp>
+#include <sthread/Lock.hpp>
 #include <bpg-v2/Instruments/Rpg/Command/CommandArray.hpp>
 #include <bpg-v2/Display/CFA634.hpp>
 #include <bpg-v2/Common/LCDController.hpp>

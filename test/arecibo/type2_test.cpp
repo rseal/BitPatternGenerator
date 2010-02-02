@@ -34,13 +34,13 @@ BOOST_AUTO_TEST_CASE(type2_keyword_test){
   ParameterVector t2Tuple;
   LocationVector lv;
   
-  t2Key.Process("REFCLK = 20 MHz");
+  t2Key.Process("REFCLOCK = 20 MHz");
   BOOST_CHECK(t2Key.Set() == true);
   t2Tuple = t2Key.GetTupleRef();
-  const float refclk = boost::any_cast<float>(
-					      param::FindParameter(t2Tuple,"refclk").value
+  const float refclock = boost::any_cast<float>(
+					      param::FindParameter(t2Tuple,"refclock").value
 					      );
-  cout << "refclk = " << refclk << endl;
+  cout << "refclock = " << refclock << endl;
 
   t2Key.Process("IPP = 20 msec");
   BOOST_CHECK(t2Key.Set() == true);
@@ -50,8 +50,8 @@ BOOST_AUTO_TEST_CASE(type2_keyword_test){
 					   );
   cout << "ipp = " << ipp << endl;
 
-  t2Key.Process("REFIPP = 20 msec");
-  BOOST_CHECK(t2Key.Set() == false);
+  //t2Key.Process("REFIPP = 20 msec");
+  //BOOST_CHECK(t2Key.Set() == false);
   
   BOOST_CHECK(true);
 }

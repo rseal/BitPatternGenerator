@@ -3,7 +3,7 @@
 
 #include <bpg-v2/Instruments/Rpg/Command/Constants.hpp>
 #include <bpg-v2/Instruments/Rpg/Console/Console.hpp>
-#include <bpg-v2/Common/Lock.hpp>
+#include <sthread/Lock.hpp>
 #include <bpg-v2/Instruments/Rpg/okFrontPanelDLL.h>
 
 #include <iostream>
