@@ -95,6 +95,7 @@ const bool Rules::Verify(){
   //Type2 keywords are refclock or ipp
   const float rfclk = any_cast<float>(param::FindParameter(t2Vec, "refclock").value);
   const float ipp   = any_cast<float>(param::FindParameter(t2Vec, "ipp").value);
+  cout << "ipp = " << ipp << endl; 
 
   const float baudA = bwTuple[0].get<0>();
   const float baudB = bwTuple[0].get<1>();
@@ -227,13 +228,26 @@ const bool Rules::Verify(){
       ports_[ChIndex(rfLocs,j)].set(i+pStart,true);
   }
 
+ 
+  for(i=0; i<saTuple.size(); ++i){
+     LocationVector lv = saTuple[i].get<0>();
+     for(int j=0; j<lv.size(); ++j)
+        cout << "Port " << lv[j].port <<  " Channel " << lv[j].channel << endl;
+
+     cout << "isNeg    " << saTuple[i].get<1>() << "\n"
+        << "h0       " << saTuple[i].get<2>() << "\n"
+        << "h1       " << saTuple[i].get<3>() << endl;
+  }
+
   //(6) BUILD SA SIGNALS
   // These are the sampling windows
   for(i=0; i<saTuple.size(); ++i){
     tLoc    = saTuple[i].get<0>();
     isNeg = saTuple[i].get<1>(); 
-    h0    = static_cast<int>(saTuple[i].get<2>());
-    hf    = static_cast<int>(saTuple[i].get<3>());
+    //transmitted signal begins at start of phase (pStart)
+    h0    = static_cast<int>(saTuple[i].get<2>()) + pStart;
+    hf    = static_cast<int>(saTuple[i].get<3>()) + pStart;
+    cout << "h0=" << h0 << " hf=" << hf << endl;
     for(j=0; j<tLoc.size(); ++j){
       ch = ChIndex(tLoc,j);	
       for(k=h0; k<hf; ++k) ports_[ch][k]=true;

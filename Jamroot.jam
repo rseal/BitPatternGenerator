@@ -32,13 +32,13 @@ exe bpg-shell-v2
 	: <define>LINUX=1
         ;
  
-unit-test keyword
-	: test/keyword_test.cpp psu1_src common_src
-	;
+#unit-test keyword
+	#: test/keyword_test.cpp psu1_src common_src
+	#;
 
-unit-test rpg  
-	: test/rpg_test.cpp common_src psu1_src ao_src 
-	: <dependency>test/test.hif
-	;
+#unit-test rpg  
+#        : test/rpg_test.cpp common_src psu1_src ao_src 
+#        : <dependency>test/test.hif
+#        ;
 
 #make test.hif : test.hif : @common.copy ;

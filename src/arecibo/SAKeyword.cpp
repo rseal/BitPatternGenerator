@@ -60,6 +60,7 @@ void SAKeyword::Detect(const string& token){
     //load location vector
     for(uint i=0; i<pVec.size(); ++i){
       lv.push_back(Location(pVec[i][0],cVec[i]));
+      cout << "location " << pVec[i][0] << "." << cVec[i] << endl;
     }
       
     bool isNeg = "negate" == negStr;
@@ -67,6 +68,7 @@ void SAKeyword::Detect(const string& token){
     //convert to usec and round up 
     h0_ = ceil(uvVec[0]*UnitConvert::Convert(usVec[0])*1e6);
     hf_ = ceil(uvVec[1]*UnitConvert::Convert(usVec[1])*1e6);
+    cout << "range = (" << h0_ << "," << hf_ << ")" << endl;
       
     parameters_.push_back(SaTuple(lv,
 				  isNeg,

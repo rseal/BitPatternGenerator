@@ -134,7 +134,10 @@ public:
   }
 
   //sets the exit_ variable which causes the thread to finish and exit
-  void Exit() { exit_ = true;}
+  void Exit() { 
+	  exit_ = true;
+	  Wait();
+  }
   
   //dtor reset display to boot screen and destroys time_facet object
   //dynamic allocation of tFacet_ required for proper operation

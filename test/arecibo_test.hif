@@ -5,7 +5,7 @@ INSTRUMENT = RPG
 RULES      = ARECIBO             # Several Sets of Transmitter rules can be defined here
 
 #Defines inter pulse period
-IPP        =  2 msec            # InterPulsePeriod
+IPP        =  10 msec            # InterPulsePeriod
 
 #Defines the RPGs master clock rate
 REFCLOCK   =  20 MHz             # Reference clock rate
@@ -40,10 +40,10 @@ RF         = a.3,a.4
 #sampling windows - one or more can be defined
 #Defines (start,stop) sampling ranges
 #Optional negate signal to invert logic
-SA0        = a.5,     (100 km, 110 km) , negate
-SA1        = a.6,     ( 80 km, 100 km)
-
+SA0        = a.5,     (100 km, 150 km)
+SA1        = a.6,     ( 80 km, 100 km), negate
+SA2        = a.7,     (120 km, 190 km)
 #generic signal definitions
 #Defines logic level in number of bauds
-a.7,a.12   = {+5 -2 +2 -1 +1 -100}
-a.9,a.11   = {+10 -20 +30}
+a.8,a.12   = {+5 -2 +2 -1 +1 -100}
+#a.9,a.11   = {+10 -20 +30}

@@ -23,7 +23,7 @@
 
 namespace psu1{
 
-typedef boost::tuple<LocationVector, bool, float, float&> SaTuple;
+typedef boost::tuple<LocationVector, bool, float, float> SaTuple;
 
 class SAKeyword: public Keyword<SaTuple>{
 
