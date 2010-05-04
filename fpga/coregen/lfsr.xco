@@ -1,0 +1,60 @@
+##############################################################
+#
+# Xilinx Core Generator version J.30
+# Date: Wed Jul 11 22:38:36 2007
+#
+##############################################################
+#
+#  This file contains the customisation parameters for a
+#  Xilinx CORE Generator IP GUI. It is strongly recommended
+#  that you do not manually alter this file as it may cause
+#  unexpected and unsupported behavior.
+#
+##############################################################
+#
+# BEGIN Project Options
+SET addpads = False
+SET asysymbol = False
+SET busformat = BusFormatAngleBracketNotRipped
+SET createndf = False
+SET designentry = Verilog
+SET device = xc3s400
+SET devicefamily = spartan3
+SET flowvendor = Other
+SET formalverification = True
+SET foundationsym = False
+SET implementationfiletype = Ngc
+SET package = pq208
+SET removerpms = False
+SET simulationfiles = Behavioral
+SET speedgrade = -4
+SET verilogsim = True
+SET vhdlsim = False
+# END Project Options
+# BEGIN Select
+SELECT Linear_Feedback_Shift_Register family Xilinx,_Inc. 3.0
+# END Select
+# BEGIN Parameters
+CSET asynchronous_reset=false
+CSET asynchronous_reset_value=FFFFFFFF
+CSET clock_enable=true
+CSET component_name=lfsr
+CSET create_rpm=false
+CSET data_valid_output=false
+CSET feedback_gate_type=X_OR
+CSET implementation=Registers
+CSET lfsr_size=32
+CSET lfsr_type=Fibonacci
+CSET load_type=Load_Type_None
+CSET new_seed_output=false
+CSET output_type=Output_Type_Serial
+CSET synchronous_reset=false
+CSET synchronous_reset_value=FFFFFFFF
+CSET tap_locations=C0000401
+CSET terminal_count_output=false
+CSET use_counter_for_max_length_logic=false
+CSET use_maximum_length_logic=false
+# END Parameters
+GENERATE
+# CRC: d9e7cc73
+

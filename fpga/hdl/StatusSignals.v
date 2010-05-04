@@ -1,4 +1,4 @@
-// Copyright (c) 2009 Ryan Seal <rlseal -at- gmail.com>
+// Copyright (c) 2010 Ryan Seal <rlseal -at- gmail.com>
 //
 // This file is part of Bit Pattern Generator (BPG) Software.
 //
@@ -14,16 +14,48 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with BPG.  If not, see <http://www.gnu.org/licenses/>.
-#ifndef SWITCH_H
-#define SWITCH_H
+`default_nettype none
 
-#include <iostream>
-#include <bpg-v2/clp/Option.hpp>
+module StatusSignals
+(
+   clk,
+   we,
+   ready,
+   active,
+   load_complete,
+   preload,
+   active_buffer,
+   reset,
+   status
+);
 
-//!\brief Provides an interface for defining switches on the command line. 
-class Switch: public Option{
-public:
-  Switch(const std::string& name, const std::string& helpDesc, const bool& required):
-	Option(name,helpDesc,required){};
-};
-#endif
+input wire clk;
+input wire we;   
+input wire ready;
+input wire active;
+input wire load_complete;
+input wire preload;
+input wire active_buffer;
+input wire reset;
+output reg [15:0] status;
+
+reg 	  preload_int;
+
+always @ (posedge clk)
+begin
+   preload_int <= preload && !we ? 1 : 0;
+   status <= 
+      {
+      10'd0, 
+      reset,
+      ready, 
+      active, 
+      load_complete, 
+      preload_int, 
+      active_buffer
+      };
+   end
+   endmodule // StatusSignals
+
+
+

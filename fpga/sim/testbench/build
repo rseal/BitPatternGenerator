@@ -1,0 +1,41 @@
+#!/usr/bin/ruby
+
+#ruby script parses modules.list to automate test bench building 
+#additional modules are added with dependencies by editing modules.list
+
+lines   = Array.new
+options = Array.new
+modules = Array.new
+str     = String.new
+
+file    = File.open("modules.list")
+
+while line = file.gets
+  lines.push(line)
+end
+
+lines.each { |i|
+  if i.index('[') == 0 then     
+    if str != nil then
+      modules.push(str)
+      str = ""
+    end
+    options.push(i) 
+  else
+    str << i.chomp + " "
+  end
+}
+modules.push(str)
+
+count = 1;
+options.each {|i| 
+  puts("#{count}" << i) 
+  count += 1
+}
+puts("please choose the module number to build 1..#{options.length}")
+num = gets
+
+system("iverilog -g2 #{modules[num.to_i]}")
+system("vvp a.out")
+system("rm -f *~ a.out")
+

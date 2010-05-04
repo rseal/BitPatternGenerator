@@ -1,4 +1,4 @@
-// Copyright (c) 2009 Ryan Seal <rlseal -at- gmail.com>
+// Copyright (c) 2010 Ryan Seal <rlseal -at- gmail.com>
 //
 // This file is part of Bit Pattern Generator (BPG) Software.
 //
@@ -14,25 +14,38 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with BPG.  If not, see <http://www.gnu.org/licenses/>.
-#ifndef OPTION_H
-#define OPTION_H
+module DAC 
+(
+   clk,
+   din,
+   rst_in,
+   use_dac,
+   dout,
+   rst_out
+);
 
-#include <iostream>
+input wire clk;
+input wire [15:0] din;
+input wire rst_in;
+input wire use_dac;
+output wire [15:0] dout;
+output wire rst_out;
 
-//!\brief Provides an interface for defining switches on the command line. 
-class Option{
-protected:
-  std::string name_;
-  std::string helpDesc_;
-    bool required_;
-    bool set_;
-public:
-  Option(const std::string& name, const std::string& helpDesc, const bool& required):
-	name_(name), helpDesc_(helpDesc), required_(required), set_(false) {}
+reg select;
+reg toggle;
 
-    void Set(bool const& state) { set_ = state;     }
-    const bool& Set()           { return set_;      }
-  const std::string& Name()        { return name_;     }
-  const std::string& Help()        { return helpDesc_; }
-};
-#endif
+//DAC reset is active high
+assign rst_out = ~rst_in;
+assign dout = use_dac ? { 3'd0, clk, clk, select, din[9:0]} : din;
+
+always @ (negedge clk)
+begin
+   if(!rst_in)
+      toggle <= 0;
+   else
+   begin
+      select <= toggle ? 1 : 0;
+      toggle <= ~toggle;
+   end
+end // always @ (negedge clk)
+endmodule // DAC

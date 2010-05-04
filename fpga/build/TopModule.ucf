@@ -1,0 +1,134 @@
+#-------------------------------
+# FrontPanel Host Interface pins
+#-------------------------------
+NET "hi_in<0>"			LOC = "P79";
+NET "hi_in<1>"			LOC = "P57";
+NET "hi_in<2>"			LOC = "P58";
+NET "hi_in<3>"			LOC = "P78";
+NET "hi_in<4>"			LOC = "P61";
+NET "hi_in<5>"			LOC = "P62";
+NET "hi_in<6>"			LOC = "P63";
+NET "hi_in<7>"			LOC = "P64";
+NET "hi_out<0>"			LOC = "P81";
+NET "hi_out<1>"			LOC = "P85";
+NET "hi_inout<0>"		LOC = "P67";
+NET "hi_inout<1>"		LOC = "P68";
+NET "hi_inout<2>"		LOC = "P72";
+NET "hi_inout<3>"		LOC = "P74";
+NET "hi_inout<4>"		LOC = "P86";
+NET "hi_inout<5>"		LOC = "P87";
+NET "hi_inout<6>"		LOC = "P90";
+NET "hi_inout<7>"		LOC = "P92";
+NET "hi_inout<8>"		LOC = "P93";
+NET "hi_inout<9>"		LOC = "P94";
+NET "hi_inout<10>"		LOC = "P95";
+NET "hi_inout<11>"		LOC = "P96";
+NET "hi_inout<12>"		LOC = "P97";
+NET "hi_inout<13>"		LOC = "P100";
+NET "hi_inout<14>"		LOC = "P101";
+NET "hi_inout<15>"		LOC = "P102";
+
+#NET "hi_addr<0>"    LOC = "P61";
+#NET "hi_addr<1>"    LOC = "P62";
+#NET "hi_addr<2>"    LOC = "P63";
+#NET "hi_addr<3>"    LOC = "P64";
+#NET "hi_busy"       LOC = "P81";
+#NET "hi_clk"        LOC = "P79";
+#NET "hi_cs"         LOC = "P57";
+#NET "hi_data<0>"    LOC = "P67";
+#NET "hi_data<1>"    LOC = "P68";
+#NET "hi_data<2>"    LOC = "P72";
+#NET "hi_data<3>"    LOC = "P74";
+#NET "hi_data<4>"    LOC = "P86";
+#NET "hi_data<5>"    LOC = "P87";
+#NET "hi_data<6>"    LOC = "P90";
+#NET "hi_data<7>"    LOC = "P92";
+#NET "hi_data<8>"    LOC = "P93";
+#NET "hi_data<9>"    LOC = "P94";
+#NET "hi_data<10>"   LOC = "P95";
+#NET "hi_data<11>"   LOC = "P96";
+#NET "hi_data<12>"   LOC = "P97";
+#NET "hi_data<13>"   LOC = "P100";
+#NET "hi_data<14>"   LOC = "P101";
+#NET "hi_data<15>"   LOC = "P102";
+#NET "hi_irq"        LOC = "P85";
+#NET "hi_rdwr"       LOC = "P58";
+
+NET "led<0>"        LOC = "P205";
+NET "led<1>"        LOC = "P204";
+NET "led<2>"        LOC = "P203";
+NET "led<3>"        LOC = "P200";
+NET "led<4>"        LOC = "P199";
+NET "led<5>"        LOC = "P198";
+NET "led<6>"        LOC = "P197";
+NET "led<7>"        LOC = "P196";
+
+NET "ext_trig_ext"  LOC = "P166";
+NET "pps_1_ext"     LOC = "P165";
+NET "pps_10_ext"    LOC = "P162";
+
+NET "clk_drifted"   LOC = "P181"; 
+NET "clk_drifted" TNM_NET = "clk_drifted";
+TIMESPEC "TS_clk_drifted" = PERIOD "clk_drifted" 8 ns HIGH 50%;
+
+NET "clk_std"       LOC = "P183";
+NET "clk_std" TNM_NET = "clk_std";
+TIMESPEC "TS_clk_std" = PERIOD "clk_std" 8 ns HIGH 50%;
+
+NET "porta_clk"     LOC = "P27";
+NET "portb_clk"     LOC = "P51";
+
+NET "porta<0>"      LOC = "P26";
+NET "porta<1>"      LOC = "P24";
+NET "porta<2>"      LOC = "P22";
+NET "porta<3>"      LOC = "P21";
+NET "porta<4>"      LOC = "P20";
+NET "porta<5>"      LOC = "P19";
+NET "porta<6>"      LOC = "P18";
+NET "porta<7>"      LOC = "P16";
+NET "porta<8>"      LOC = "P15";
+NET "porta<9>"      LOC = "P13";
+NET "porta<10>"     LOC = "P12";
+NET "porta<11>"     LOC = "P11";
+NET "porta<12>"     LOC = "P10";
+NET "porta<13>"     LOC = "P9";
+NET "porta<14>"     LOC = "P7";
+NET "porta<15>"     LOC = "P5";
+
+NET "dac_en"        LOC = "P52";
+
+NET "portb<0>"      LOC = "P50";
+NET "portb<1>"      LOC = "P48";
+NET "portb<2>"      LOC = "P46";
+NET "portb<3>"      LOC = "P45";
+NET "portb<4>"      LOC = "P44";
+NET "portb<5>"      LOC = "P43";
+NET "portb<6>"      LOC = "P42";
+NET "portb<7>"      LOC = "P40";
+NET "portb<8>"      LOC = "P39";
+NET "portb<9>"      LOC = "P37";
+NET "portb<10>"     LOC = "P36";
+NET "portb<11>"     LOC = "P35";
+NET "portb<12>"     LOC = "P34";
+NET "portb<13>"     LOC = "P33";
+NET "portb<14>"     LOC = "P31";
+NET "portb<15>"     LOC = "P29";
+
+#NET "btn<0>"       LOC = "P194";
+#NET "btn<1>"       LOC = "P191";
+#NET "btn<2>"       LOC = "P190";
+#NET "btn<3>"       LOC = "P189";
+
+NET "int_clk"       LOC = "P80";
+#NET "clk2"         LOC = "P77";
+#NET "clk3"         LOC = "P76";
+
+#OFFSET = IN 20 ns BEFORE "clk1";
+#OFFSET = OUT 20 ns AFTER "clk1";
+#OFFSET = OUT 20 ns AFTER "hi_clk";
+#OFFSET = IN 20 ns BEFORE "hi_clk";
+#NET "hi_clk" TNM_NET = "hi_clk";
+#TIMESPEC "TS_hi_clk" = PERIOD "hi_clk" 20 ns HIGH 50 %;
+
+#NET "clk1" TNM_NET = "clk1";
+#TIMESPEC "TS_clk1" = PERIOD "clk1" 20 ns HIGH 50 %;

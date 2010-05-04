@@ -1,0 +1,24 @@
+[Input Control]
+InputControl_tb.v
+../../coregen/dpram.v
+../../coregen/ddpram.v
+../../hdl/InputControl.v
+../../coregen/BLKMEMDP_V6_2.v
+../../coregen/C_DIST_MEM_V7_1.v
+../../coregen/C_REG_FD_V7_0.v
+../../coregen/DIST_MEM_GEN_V3_2.v
+
+[Output Control]
+OutputControl_tb.v
+../../coregen/dpram.v
+../../coregen/ddpram.v
+../../hdl/OutputControl.v
+../../hdl/InputControl.v
+../../hdl/ClockDivider.v
+../../coregen/BLKMEMDP_V6_2.v
+../../coregen/C_REG_FD_V7_0.v
+../../coregen/DIST_MEM_GEN_V3_2.v
+
+[Clock Divider]
+ClockDivider_tb.v
+../../hdl/ClockDivider.v

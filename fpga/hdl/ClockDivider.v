@@ -14,3 +14,39 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with BPG.  If not, see <http://www.gnu.org/licenses/>.
+module ClockDivider( clk_in, div, clk_out, reset);
+
+input  wire clk_in;
+input  wire [15:0] div;
+output wire clk_out;
+input  wire reset;
+reg [15:0]  counter;
+reg 	       clk_buf;
+
+`ifdef SPARTAN3
+   //clock buffer
+   BUFG cb ( .I ( clk_buf ), .O ( clk_out ));
+`else
+   assign     clk_out = clk_buf;
+`endif
+
+always @ (posedge clk_in) 
+begin
+   if(!reset)
+   begin
+      counter <= 1;
+      clk_buf <= ~clk_in;
+   end
+   else
+   begin
+      if(counter == 1)
+      begin
+         counter <= div;
+         clk_buf <= ~clk_buf;
+      end
+      else
+         counter <= counter - 1;
+   end // always @ (posedge clk_in)
+end // always @ (posedge clk_in)
+
+endmodule // ClkDivider

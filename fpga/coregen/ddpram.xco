@@ -1,0 +1,63 @@
+##############################################################
+#
+# Xilinx Core Generator version J.30
+# Date: Thu Jun 28 21:15:43 2007
+#
+##############################################################
+#
+#  This file contains the customisation parameters for a
+#  Xilinx CORE Generator IP GUI. It is strongly recommended
+#  that you do not manually alter this file as it may cause
+#  unexpected and unsupported behavior.
+#
+##############################################################
+#
+# BEGIN Project Options
+SET addpads = False
+SET asysymbol = False
+SET busformat = BusFormatAngleBracketNotRipped
+SET createndf = False
+SET designentry = Verilog
+SET device = xc3s400
+SET devicefamily = spartan3
+SET flowvendor = Other
+SET formalverification = True
+SET foundationsym = False
+SET implementationfiletype = Ngc
+SET package = pq208
+SET removerpms = False
+SET simulationfiles = Behavioral
+SET speedgrade = -4
+SET verilogsim = True
+SET vhdlsim = False
+# END Project Options
+# BEGIN Select
+SELECT Distributed_Memory_Generator family Xilinx,_Inc. 3.2
+# END Select
+# BEGIN Parameters
+CSET ce_overrides=ce_overrides_sync_controls
+CSET coefficient_file=no_coe_file_loaded
+CSET common_output_ce=false
+CSET common_output_clk=false
+CSET component_name=ddpram
+CSET data_width=32
+CSET default_data=0
+CSET default_data_radix=16
+CSET depth=16
+CSET dual_port_address=non_registered
+CSET dual_port_output_clock_enable=false
+CSET input_clock_enable=false
+CSET input_options=non_registered
+CSET memory_type=dual_port_ram
+CSET output_options=registered
+CSET pipeline_stages=0
+CSET qualify_we_with_i_ce=false
+CSET reset_qdpo=false
+CSET reset_qspo=false
+CSET single_port_output_clock_enable=false
+CSET sync_reset_qdpo=false
+CSET sync_reset_qspo=false
+# END Parameters
+GENERATE
+# CRC: 3c46ecaa
+

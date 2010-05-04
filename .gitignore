@@ -1,6 +1,7 @@
 *~
 *.swp
 test.hif
+test/psu1_test.hif
 bin/boostbook_catalog.xml
-deps/
-notes/
+bin/gcc*
+git-broke.tar.bz2

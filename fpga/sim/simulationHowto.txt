@@ -1,0 +1,43 @@
+using Xilinx cores:
+
+In order to simulate xilinx cores with cver or icarus:
+1. run 'coregen' from the command line.
+2. select File->NewProject
+3. select desired directory to generate core(s).
+4. under Part, select FPGA family.
+5. under Generation, select Verilog.
+6. Leave everything else default and select OK.
+7. Now, you see a list of available cores. Generate the desired core.
+8. Exit coregen.
+
+setting up for xilinx core library simulation:
+1. Create a fake file in the top-level directory named ncvlog (this has changed) and add executable attribute.
+   a. 'touch ncvlog' 
+   b. 'chmod a+x ncsim'
+2. Create a directory named tools
+   a. 'mkdir tools'
+3. Generate the xilinx libraries using 'compxlib' (use 'compxlib -h howto' for examples and help)
+   compxlib -s ncsim -arch spartan3 -l verilog -dir ./ -lib xilinxcorelib -p ./ -w
+
+4. Write your testbench; instantiating the generated core.
+
+Hacking the Xilinx Core libraries: (this is probably not the correct way but it works).
+
+1. The 'compxlib' tool creates one huge file containing all core simulation libraries under XilinxCoreLiv_ver/
+2. Open this file with a text editor (xemacs).
+3. By default (in my case) cver does not cooperate with the xilinx generated library.
+4. You can get around this by trying to compile your testbench with including the xilinx library, 
+   this will expose the missing module.
+   (Unresolved modules or udps: BLKMEMDP_V6_2 in my case)
+5. Open the XilinxCoreLib_ver/XilinxCoreLib_ver_source.v using a decent editor (xemacs)
+6. Search for the module and copy from this file (the modules are separated by large comment blocks).
+7. Paste this module into a new file (preferrably using the module's name for the file name).
+7.5 It may be necassary to remove a few unneeded constructs for correct operation (`celldefine, etc...)
+8. now run cver again including the testbench, xilinx verilog wrapper, and the copied module.
+9. if you dumped your variables to a file, use GTKwave to view the results.
+ 
+
+***warning about cver variable names***
+problem: naming a variable 'port' will work fine with cver and fail due to parsing error with gtkwave
+solution: change the name
+

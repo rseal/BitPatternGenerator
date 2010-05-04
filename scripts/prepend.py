@@ -5,11 +5,11 @@ import os
 newList = list();
 
 #find files without copyright statement
-fileList = os.popen('grep -RL "Copyright" ../include ../src')
+fileList = os.popen('grep -RL "Copyright" ../fpga/hdl ../include ../src')
 
 #filter only source and header files
 for i in fileList:
-    if(i.find(".cpp") != -1 or i.find(".hpp") != -1):
+    if(i.find(".cpp") != -1 or i.find(".hpp") != -1 or i.find(".v") != -1):
         newList.append(i.strip())
 
 f_license = open('preamble.txt')
