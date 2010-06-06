@@ -20,8 +20,13 @@
 #include <boost/tuple/tuple.hpp>
 #include <bpg-v2/Common/Location.hpp>
 #include <bpg-v2/Common/Keyword.hpp>
+#include <boost/lexical_cast.hpp>
 
 namespace psu1{
+
+   const int TR_PRE_MIN = 10;
+   const int TR_POST_MIN = 10;
+
 
 typedef boost::tuple<LocationVector, float, float> TrTuple;
 
@@ -34,14 +39,17 @@ class TRKeyword: public Keyword<TrTuple >{
 
   void Verify(){ 
 
-    if(pre_ < 10) throw std::runtime_error("TR PRE value is below limits");
-    if(post_ < 10) throw std::runtime_error("TR POST value is below limits");
+    if( pre_ < TR_PRE_MIN ) throw std::runtime_error("TR PRE < " + 
+          boost::lexical_cast<std::string>( TR_PRE_MIN ));
+
+    if( post_ < TR_POST_MIN ) throw std::runtime_error("TR POST < " + 
+          boost::lexical_cast<std::string>( TR_POST_MIN ));
+
     std::cout << "TR verify " <<  std::endl;
   }
   
 public:
   TRKeyword(): Keyword<TrTuple>("tr"){};
-
 };
 
 }; // namespace psu1

@@ -20,6 +20,7 @@
 #include <boost/tuple/tuple.hpp>
 #include <bpg-v2/Common/Location.hpp>
 #include <bpg-v2/Common/Keyword.hpp>
+#include <boost/lexical_cast.hpp>
 
 namespace psu1{
 
@@ -33,7 +34,9 @@ class SAKeyword: public Keyword<SaTuple>{
   void Detect(const std::string& token);
 
   void Verify(){
-    if(h0_ > hf_) throw std::runtime_error("SA window - hf > h0");
+    if(h0_ > hf_) throw std::runtime_error("SA window - " + 
+          boost::lexical_cast<std::string> ( h0_ ) + " > " +  boost::lexical_cast<std::string>( hf_ ) );
+
     std::cout << "SA verify" << std::endl;
   }
   

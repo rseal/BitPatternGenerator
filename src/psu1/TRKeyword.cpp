@@ -52,7 +52,6 @@ void TRKeyword::Detect(const string& token){
 		       chseq_p("tr")[assign_a(nameStr)] 
 		       >> ch_p('=') 
 		       >> location_r 
-		       >> ch_p(',')
 		       >> range_r
 		       );
 

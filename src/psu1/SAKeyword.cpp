@@ -48,7 +48,6 @@ void SAKeyword::Detect(const string& token){
 			   (chseq_p("sa") >> uint_p[assign_a(num)])
 			   >> ch_p('=') 
 			   >> location_r 
-			   >> ch_p(',') 
 			   >> range_r 			     
 			   >> !( ch_p(',') >> (chseq_p("negate")[assign_a(negStr)]))
 			   );
@@ -67,18 +66,14 @@ void SAKeyword::Detect(const string& token){
     //convert to usec and round up 
     h0_ = ceil(uvVec[0]*UnitConvert::Convert(usVec[0])*1e6);
     hf_ = ceil(uvVec[1]*UnitConvert::Convert(usVec[1])*1e6);
+    
     cout << "range = (" << h0_ << "," << hf_ << ")" << endl;
       
-    parameters_.push_back(SaTuple(lv,
-				  isNeg,
-				  h0_,
-				  hf_
-				  )
-			  );
+    parameters_.push_back(SaTuple(lv, isNeg, h0_, hf_));
+
     set_ = true;
     Verify();
   }
-
 }
 
 }; // namespace psu1

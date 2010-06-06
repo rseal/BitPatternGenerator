@@ -26,37 +26,40 @@
 
 namespace psu1{
 
-class PSU1Rules: public RpgRules{
+   const float MAX_DUTY_CYCLE = 0.02f;
 
-  //due to spirit rules non-copy problem, we can't simply
-  //create a vector here.
-  TRKeyword      trKey;
-  TXAKeyword     txaKey;
-  CODEKeyword    codeKey;
-  GenericKeyword gKey;
-  TYPE1Keyword   t1Key;
-  TYPE2Keyword   t2Key;
-  SAKeyword      saKey;
+   class PSU1Rules: public RpgRules{
 
-  const int ChIndex(const LocationVector& lv, const int& chNum){
-    return lv[chNum].channel + ((lv[chNum].port == 'a') ? 0 : 16);
-  }
 
-  //protected:
-  void Detect(const TokenVector& tv);
+      //due to spirit rules non-copy problem, we can't simply
+      //create a vector here.
+      TRKeyword      trKey;
+      TXAKeyword     txaKey;
+      CODEKeyword    codeKey;
+      GenericKeyword gKey;
+      TYPE1Keyword   t1Key;
+      TYPE2Keyword   t2Key;
+      SAKeyword      saKey;
 
-  const bool Verify();
+      const int ChIndex(const LocationVector& lv, const int& chNum){
+         return lv[chNum].channel + ((lv[chNum].port == 'a') ? 0 : 16);
+      }
 
-  void Build() { 
-    std::cout << "BUILDING SIGNALS" << std::endl;
-  }
+      //protected:
+      void Detect(const TokenVector& tv);
 
-public:
+      const bool Verify();
 
-  ~PSU1Rules(){
-    InstrumentRuleFactory::Instance().UnregisterRule("psu1");
-  }
-};
+      void Build() { 
+         std::cout << "BUILDING SIGNALS" << std::endl;
+      }
+
+      public:
+
+      ~PSU1Rules(){
+         InstrumentRuleFactory::Instance().UnregisterRule("psu1");
+      }
+   };
 
 }; // namespace psu1
 

@@ -8,7 +8,7 @@ RULES      = PSU1                # Several Sets of Transmitter rules can be defi
 MODE       =  Normal             # Select Normal or Multi modes
 
 #Defines inter pulse period
-IPP        =  10 msec            # InterPulsePeriod
+IPP        =  4 msec            # InterPulsePeriod
 
 #Defines the RPGs master clock rate
 REFCLOCK   =  20 MHz             # Reference clock rate
@@ -19,20 +19,22 @@ BAUDB      =   1 usec            # Baud width for port b
 
 #TR SIGNAL : TR Switch Pulse
 #Defines (pre,post) txa settings
-TR         = a.0,     (14 usec, 10 usec)
+TR         =     a.0  ( 14 usec, 12 usec )
 
 #TXA SIGNAL : Transmit Enable
-#Defines trasmitted width
-TXA        = a.2,     13 usec
-CODE       = a.4,     {+5 -2 +2 -1 +1 -1 +1}
+#Defines trasmitted widt
+TXA        =     a.1  ( 77 usec )
+
+#CODE SIGNAL : Must have length equal to TXA pulse
+CODE       =     a.2 { +77 }
 
 #sampling windows - one or more can be defined
 #Defines (start,stop) sampling ranges
 #Optional negate signal to invert logic
-SA0        = a.5,     (100 km, 110 km) , negate
-SA1        = a.6,     ( 80 km, 100 km)
+SA0        =     a.3  (100 km, 110 km)
+#SA1        =     a.6  ( 80 km, 100 km)
 
 #generic signal definitions
 #Defines logic level in number of bauds
-a.7,a.10   =          {+5 -2 +2 -1 +1 -100}
-a.9,a.1    =          {+10 -20 +30}
+#a.7,a.10   =          {+5 -2 +2 -1 +1 -100}
+#a.9,a.1    =          {+10 -20 +30}

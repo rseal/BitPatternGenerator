@@ -49,8 +49,10 @@ void TXAKeyword::Detect(const string& token){
 			   );
     
   PhraseRule unit_r     = (
-			   uint_p[assign_a(uValue)] >> 
-			   units_r[assign_a(uStr)]
+			   ch_p('(') 
+            >> uint_p[assign_a(uValue)] 
+            >> units_r[assign_a(uStr)] 
+            >> ch_p(')')
 			   );
     
   PhraseRule location_r = (
@@ -60,7 +62,6 @@ void TXAKeyword::Detect(const string& token){
   PhraseRule phrase     = (
 			   chseq_p("txa") >> ch_p('=') 
 			   >> location_r 
-			   >> ch_p(',') 
 			   >> unit_r
 			   );
 

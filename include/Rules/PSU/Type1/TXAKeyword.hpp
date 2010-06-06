@@ -20,26 +20,31 @@
 #include <boost/tuple/tuple.hpp>
 #include <bpg-v2/Common/Location.hpp>
 #include <bpg-v2/Common/Keyword.hpp>
+#include <boost/lexical_cast.hpp>
 
 namespace psu1{
 
-typedef boost::tuple<LocationVector, float> TxaTuple;
+   const int MAX_TXA_WIDTH = 145;
 
-class TXAKeyword: public Keyword<TxaTuple>{
+   typedef boost::tuple<LocationVector, float> TxaTuple;
 
-  float width_;
+   class TXAKeyword: public Keyword<TxaTuple>{
 
-  void Detect(const std::string& token);
+      float width_;
 
-  void Verify(){
-    if(width_ > 145) throw std::runtime_error("TXA width is above limits");
-    std::cout << "TXA verify" << std::endl;
-  }
-  
-public:
-  TXAKeyword(): Keyword<TxaTuple>("txa"){};
+      void Detect(const std::string& token);
 
-};
+      void Verify(){
+         if( width_ >  MAX_TXA_WIDTH ) throw std::runtime_error("ERROR: TXA width > " + 
+               boost::lexical_cast<std::string>( MAX_TXA_WIDTH ));
+
+         std::cout << "TXA verify" << std::endl;
+      }
+
+      public:
+      TXAKeyword(): Keyword<TxaTuple>("txa"){};
+
+   };
 
 }; // namespace psu1
 #endif

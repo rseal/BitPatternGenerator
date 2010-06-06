@@ -22,6 +22,7 @@
 #include <bpg-v2/Common/Location.hpp>
 #include <bpg-v2/Rules/PSU/Type1/PSU1Rules.hpp>
 #include <boost/shared_ptr.hpp>
+#include <boost/lexical_cast.hpp>
 
 using namespace std;
 using namespace boost;
@@ -72,6 +73,9 @@ namespace psu1
       //multiple entries
       const ParameterVector& t1Tuple   = t1Key.GetTupleRef();
 
+      vector<GenericTuple> gTuple; 
+
+      
       //contains simple Parameter
       //single entry
       //const ParameterVector& t2Tuple   = t2Key.GetTupleRef();
@@ -81,6 +85,7 @@ namespace psu1
       const float baudb_l = any_cast<float>(param::FindParameter(t1Tuple, "baudb").value)*1e6;
       const float rfclk   = any_cast<float>(param::FindParameter(t1Tuple, "refclock").value);
       const float ipp     = any_cast<float>(param::FindParameter(t1Tuple, "ipp").value)*1e6;
+
 
       volatile const float divClkA = rfclk*bauda_l/2e6;
       volatile const float divClkB = rfclk*baudb_l/2e6;
@@ -99,18 +104,18 @@ namespace psu1
       }
 
       //verify that code width matches the transmitted pulse width
-      if(dc > .02f) throw std::runtime_error("PSU1Rules - DUTY CYCLE too high");
+      if( dc > MAX_DUTY_CYCLE ) 
+         throw std::runtime_error("PSU1Rules - DUTY CYCLE > " + 
+               lexical_cast<string>(MAX_DUTY_CYCLE) );
 
       float chLengthA = ipp/bauda_l;
       float chLengthB = ipp/baudb_l;
 
       //resize port A channels to proper length
-      for(i=0; i<16; ++i)
-         ports_[i].resize(chLengthA);
+      for(i=0; i<16; ++i) ports_[i].resize(chLengthA);
 
       //resize port B channels to proper length
-      for(i=16; i<32; ++i)
-         ports_[i].resize(chLengthB);
+      for(i=16; i<32; ++i) ports_[i].resize(chLengthB);
 
       //store all locations and compare to 
       //ensure unique assignments
@@ -120,6 +125,19 @@ namespace psu1
       for(i=0; i<saTuple.size(); ++i){
          LocationVector t = saTuple[i].get<0>();
          tLoc.insert(tLoc.end(), t.begin(), t.end());
+      }
+
+      try{
+
+         gTuple = gKey.GetTupleRef();
+
+         //push generic location
+         for(i=0; i<gTuple.size(); ++i){
+            LocationVector t = gTuple[i].get<0>();
+            tLoc.insert(tLoc.end(), t.begin(), t.end());
+         }
+      } catch ( std::runtime_error& e) {
+         cout << "no generic keywords found" << endl;
       }
 
       //push all other locations
@@ -197,15 +215,15 @@ namespace psu1
       //multiple entries
       //GenericKeywords are optional, so check and see if one or more were detected
       if(gKey.Set()){
-         const vector<GenericTuple>& gTuple = gKey.GetTupleRef();
+         //         const vector<GenericTuple>& gTuple = gKey.GetTupleRef();
 
          //push generic locations 
-         if(gKey.Set()){
-            for(i=0; i<gTuple.size(); ++i){
-               LocationVector t = gTuple[i].get<0>();
-               tLoc.insert(tLoc.end(), t.begin(), t.end());
-            }
-         }
+         //if(gKey.Set()){
+         //   for(i=0; i<gTuple.size(); ++i){
+         //      LocationVector t = gTuple[i].get<0>();
+         //      tLoc.insert(tLoc.end(), t.begin(), t.end());
+         //   }
+         //}
 
          for(i=0; i<gTuple.size(); ++i){
             lv = gTuple[i].get<0>();
