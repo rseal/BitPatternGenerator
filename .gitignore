@@ -4,4 +4,5 @@ test.hif
 test/psu1_test.hif
 bin/boostbook_catalog.xml
 bin/gcc*
-git-broke.tar.bz2
+doc/manuals/
+mailbox/

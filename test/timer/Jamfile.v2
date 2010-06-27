@@ -1,0 +1,4 @@
+
+unit-test timer
+	: timer_test.cpp ../../Instruments/Rpg/Command/Command.hpp TestCommand.hpp
+	;
