@@ -26,14 +26,13 @@ class CFA634: public LCD{
 
   const std::string port_;
 
-  void CommInit(){
+  void CommInit() throw( std::runtime_error ) {
     const speed_t baudRate = B19200;
     
     fileDescriptor_ = open(port_.c_str(), O_RDWR | O_NOCTTY | O_NONBLOCK);
     
     if(fileDescriptor_ == -1){
-      //throw std::runtime_error("\nError opening port " + port_);
-      std::cout << "Could not find LCD display" << std::endl;
+      throw std::runtime_error("Could not locate LCD Display on port " + port_);
     }
 
     //get current settings

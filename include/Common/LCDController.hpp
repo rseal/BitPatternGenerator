@@ -18,6 +18,7 @@
 #define LCD_CONTROLLER_H
 
 #include <boost/date_time/posix_time/posix_time.hpp>
+#include <boost/shared_ptr.hpp>
 #include <sthread/SThread.hpp>
 #include <bpg-v2/Common/LCD.hpp>
 #include <sstream>
@@ -30,6 +31,7 @@ class LCDController : public SThread {
 
   typedef boost::posix_time::ptime Time;
   typedef boost::posix_time::time_duration Duration;
+  typedef boost::shared_ptr< boost::posix_time::time_facet > TimeFacet;
   
   LCD& lcd_;
 
@@ -38,7 +40,7 @@ class LCDController : public SThread {
   std::string mode_;
   std::stringstream ostr;
 
-  boost::posix_time::time_facet* tFacet_;
+  TimeFacet tFacet_;
   Time startTime_;
   Time modeTime_;
   Time currentTime_;
@@ -84,10 +86,14 @@ class LCDController : public SThread {
 public:
 
   //ctor initializes time format display for LCD
-  explicit LCDController(LCD& lcd): lcd_(lcd), exit_(false), running_(false), newMode_(true){
-    tFacet_ = new  boost::posix_time::time_facet("%r %z");
-    ostr.imbue(std::locale(ostr.getloc(),tFacet_));
-    lcd_.Init();
+  explicit LCDController(LCD& lcd) throw( std::runtime_error )
+  : lcd_(lcd), exit_(false), running_(false), newMode_(true){
+
+    // ATTENTION: this call can throw
+    lcd_.Init(); 
+
+    tFacet_ = TimeFacet( new boost::posix_time::time_facet("%r %z") );
+    ostr.imbue(std::locale(ostr.getloc(), tFacet_.get() ));
   }
 
   //Starts threaded mode display via StartThread()
@@ -111,6 +117,7 @@ public:
   //followed by an display update
   void Run(){
     while (!exit_) {
+
       //sleep for one second then update display
       Sleep(sthread::sec,1);
 
@@ -132,19 +139,15 @@ public:
       mutex_.Unlock();
     }
   }
-
-  //sets the exit_ variable which causes the thread to finish and exit
-  void Exit() { 
-	  exit_ = true;
-	  Wait();
-  }
   
   //dtor reset display to boot screen and destroys time_facet object
   //dynamic allocation of tFacet_ required for proper operation
   ~LCDController(){
+	  exit_ = true;
+	  Wait();
     lcd_.BootScreen();
-    delete tFacet_;
   }
+
 };
 
 

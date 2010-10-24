@@ -36,6 +36,7 @@
 #include <bpg-v2/Display/CFA634.hpp>
 #include <bpg-v2/Common/LCDController.hpp>
 #include <boost/lexical_cast.hpp>
+#include <boost/shared_ptr.hpp>
 
 using namespace std;
 
@@ -44,11 +45,24 @@ const string imageDir = "/usr/local/bpg/firmware/";
 int main(){
 
   typedef ColorConsole CC;
+  boost::shared_ptr< CFA634 > lcd;
+  boost::shared_ptr< LCDController > lcdController;
+
+  try{
 
   //instantiate proper LCD module
-  CFA634 lcd("/dev/ttyUSB0",4,20);
-  LCDController lcdController(lcd);
-  
+  lcd = boost::shared_ptr< CFA634 >( new CFA634("/dev/ttyUSB0",4,20) );
+  lcdController = boost::shared_ptr< LCDController >( new LCDController(*lcd.get()) );
+
+  //initialize lcd
+  lcd->BootScreen();
+
+  //start lcd controller
+  lcdController->Start();
+  }
+  catch( std::runtime_error e )
+  { cout << "Unable to open LCD display " << endl; }
+
   //load the library
   if(!okFrontPanelDLL_LoadLib(NULL)){
     cerr << "bpg-shell:okFrontPanelDLL_LoadLib failed" << endl;;
@@ -237,7 +251,7 @@ int main(){
 		*target, 
 		modeArray,
 		controlStatus,
-		lcdController,
+		*lcdController.get(),
 		console)
      );
 
@@ -301,18 +315,9 @@ int main(){
 
   //add container to console
   console.AddCommands(commands);
-
-  //initialize lcd
-  //lcd.BootScreen();
-
-  //start lcd controller
-  //lcdController.Start();
   
   //main program loop - accept input until user exit program
   while(!quit){ console.Read();}
-  
-  //stop lcd controller
-  //lcdController.Exit();
   
   cout << "goodbye" << endl;
   controlStatus.Wait();

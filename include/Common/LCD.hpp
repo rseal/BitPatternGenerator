@@ -55,10 +55,10 @@ public:
   LCD(const lcd::uint& line, const lcd::uint& columns):
     newMessage_(line), oldMessage_(line), columns_(columns){}
 
-  void Init(){
+  void Init() throw( std::runtime_error ) {
 
     //setup communication
-    CommInit();
+    CommInit(); 
    
     //these may or may not be effective - depending
     //on LCD model - default behavior does nothing

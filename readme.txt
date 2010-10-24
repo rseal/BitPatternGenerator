@@ -14,6 +14,11 @@ Dependencies:
 	b. boost-book
 	c. quick-book
 
+3. SThreads ( see local repo )
+4. CommandLineParser ( see local repo )
+5. libusb-0.1 series ( a.k.a the old version )
+
+
 Installation Notes:
 
 1. Make sure that /usr/local/include in defined in your PATH variable (e.g. "env | grep PATH")

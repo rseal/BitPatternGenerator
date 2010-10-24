@@ -12,6 +12,8 @@ alias generate_src : [ glob src/generate/*.cpp ] ;
 alias psu1_src 	 : [ glob src/psu1/*.cpp ] ;
 alias common_src : [ glob src/common/*.cpp ] ;
 alias ao_src 	 : [ glob src/arecibo/*.cpp ] ;
+alias common_header : [ glob include/Common/*.hpp ] ;
+alias common_display : [ glob include/Display/*.hpp ] ;
 
 obj okFrontPanelDLL.o 
 	: src/shell/okFrontPanelDLL.cpp 
@@ -28,7 +30,7 @@ exe bpg-generate-v2
     	;
 
 exe bpg-shell-v2
-	: src/shell/bpg-shell.cpp okFrontPanelDLL.o dl usb pt rt
+	: src/shell/bpg-shell.cpp common_display common_header okFrontPanelDLL.o dl usb pt rt
 	: <define>LINUX=1
         ;
  
