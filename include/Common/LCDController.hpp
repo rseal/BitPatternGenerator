@@ -33,7 +33,8 @@ class LCDController : public SThread {
   typedef boost::posix_time::time_duration Duration;
   typedef boost::shared_ptr< boost::posix_time::time_facet > TimeFacet;
   
-  LCD& lcd_;
+  typedef boost::shared_ptr< LCD > LcdPtr;
+  LcdPtr lcd_;
 
   bool running_;
   bool exit_;
@@ -86,21 +87,14 @@ class LCDController : public SThread {
 public:
 
   //ctor initializes time format display for LCD
-  explicit LCDController(LCD& lcd) throw( std::runtime_error )
+  explicit LCDController(LcdPtr lcd) throw( std::runtime_error )
   : lcd_(lcd), exit_(false), running_(false), newMode_(true){
 
     // ATTENTION: this call can throw
-    lcd_.Init(); 
+    lcd_->Init(); 
 
     tFacet_ = TimeFacet( new boost::posix_time::time_facet("%r %z") );
     ostr.imbue(std::locale(ostr.getloc(), tFacet_.get() ));
-  }
-
-  //Starts threaded mode display via StartThread()
-  void Start() { 
-    startTime_ = boost::posix_time::second_clock::local_time();
-    running_ = true;
-    this->Start();
   }
 
   //no functionality yet
@@ -116,6 +110,10 @@ public:
   //Makes use of Sleep() function to put thread to sleep for 1 second
   //followed by an display update
   void Run(){
+
+    startTime_ = boost::posix_time::second_clock::local_time();
+    running_ = true;
+
     while (!exit_) {
 
       //sleep for one second then update display
@@ -131,11 +129,11 @@ public:
       //using a mutex to prevent possible asynchronous updating
       //of Message strings via BootScreen() member of LCD
       mutex_.Lock();
-      lcd_.Message(0,"   Mode: " + mode_);
-      lcd_.Message(1,"Elapsed: " + eTime);
-      lcd_.Message(2,"  Start: " + StartTime());
-      lcd_.Message(3," System: " + cTime); 
-      lcd_.Update();
+      lcd_->Message(0,"   Mode: " + mode_);
+      lcd_->Message(1,"Elapsed: " + eTime);
+      lcd_->Message(2,"  Start: " + StartTime());
+      lcd_->Message(3," System: " + cTime); 
+      lcd_->Update();
       mutex_.Unlock();
     }
   }
@@ -145,7 +143,7 @@ public:
   ~LCDController(){
 	  exit_ = true;
 	  Wait();
-    lcd_.BootScreen();
+    lcd_->BootScreen();
   }
 
 };

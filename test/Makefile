@@ -17,7 +17,7 @@ rpg_test: rpg_test.cpp $(INC)/Common/IInstrumentDefinition.hpp
 	g++ -g -O0 -o rpg_test rpg_test.cpp InstrumentRuleFactory.o InstrumentFactory.o
 
 lcd_test: lcd_test.cpp
-	g++ -g -O0 -o lcd_test lcd_test.cpp -lboost_date_time -lpthread
+	g++ -g -o lcd_test lcd_test.cpp -lboost_date_time -lpthread
 
 clean:
 	rm -rf *~ rpg_test spirit_test signal_test keyword_test \

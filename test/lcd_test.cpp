@@ -1,6 +1,7 @@
 #include <bpg-v2/Common/LCDController.hpp>
 #include <bpg-v2/Display/CFA634.hpp>
 #include <boost/lexical_cast.hpp>
+#include <boost/shared_ptr.hpp>
 
 using namespace boost;
 using namespace std;
@@ -17,7 +18,7 @@ int main(void){
   modes.push_back("Barker 11 ");
   modes.push_back("MRACF     ");
 
-  CFA634 lcd("/dev/ttyUSB0",lines,columns);
+  boost::shared_ptr< CFA634 > lcd( new CFA634("/dev/ttyUSB0",lines,columns) );
   LCDController lcdController(lcd);
 
   while(buf != "start"){ cin >> buf; }
@@ -32,19 +33,19 @@ int main(void){
     cin >> buf;
     if(buf == "u"){
       b+=5;
-      lcd.Brightness(b);
+      lcd->Brightness(b);
     }
     if(buf == "d"){
       b-=5;
-      lcd.Brightness(b);
+      lcd->Brightness(b);
     }
     if(buf == "l"){
       c-=5;
-      lcd.Contrast(c);
+      lcd->Contrast(c);
     }
     if(buf == "r"){
       c+=5; 
-      lcd.Contrast(c);
+      lcd->Contrast(c);
     }
     if(buf == "s"){
       if(++modeCnt == modes.size())
@@ -55,8 +56,6 @@ int main(void){
     cout << "brightness = " << b << endl;
 
   }
-  
-  lcdController.Exit();
 
   return 0;
 }

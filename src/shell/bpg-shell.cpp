@@ -52,7 +52,7 @@ int main(){
 
   //instantiate proper LCD module
   lcd = boost::shared_ptr< CFA634 >( new CFA634("/dev/ttyUSB0",4,20) );
-  lcdController = boost::shared_ptr< LCDController >( new LCDController(*lcd.get()) );
+  lcdController = boost::shared_ptr< LCDController >( new LCDController(lcd ) );
 
   //initialize lcd
   lcd->BootScreen();
