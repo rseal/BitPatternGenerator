@@ -89,7 +89,7 @@ int main(){
   CommandArray commands;
 
   //preamble
-  console.Write(CC::CYAN,"Bit Pattern Generator (BPG) version 1.1  2009\n");
+  console.Write(CC::CYAN,"Bit Pattern Generator (BPG) version 2.0  2010\n");
   console.Write(CC::BROWN,"Ryan Seal, rlseal@gmail.com\n");
   console.Write(CC::BROWN,"Alex Hackett, alh5107@psu.edu\n");
  

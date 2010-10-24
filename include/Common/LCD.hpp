@@ -87,8 +87,8 @@ public:
   virtual void Contrast(const int& num){}
 
   void BootScreen(){
-    Message(0,"  RPG Version 2.0  ");
-    Message(1," January 24, 2010  ");
+    Message(0,"  BPG Version 2.0  ");
+    Message(1," October 24, 2010  ");
     Message(2," ASPIRL Laboratory ");
     Message(3,"   <Penn State>   ");
     Update();
