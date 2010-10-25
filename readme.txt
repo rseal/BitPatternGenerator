@@ -10,20 +10,25 @@ Dependencies:
 	e. any
 
 2. Boost Tools
-	a. boost-build
-	b. boost-book
-	c. quick-book
+	a. boost-book ( optional )
+	b. quick-book ( optional )
 
 3. SThreads ( see local repo )
 4. CommandLineParser ( see local repo )
 5. libusb-0.1 series ( a.k.a the old version )
+6. Scons build system. 
 
 
 Installation Notes:
 
 1. Make sure that /usr/local/include in defined in your PATH variable (e.g. "env | grep PATH")
-2. As root, run scripts/install-headers to install headers in /usr/local/include/bpg-v2 directory.
-3. Use "bjam-xxx --v2" to build the necassary programs (where xxx is the version number of bjam).
-4. Add "uucp" group to access the LCD using "gpasswd -a user uucp".
+2. As root, run "scons install-headers".
+3. As normal user, run "scons".
+4. As root, run "scons install".
+5. Add "uucp" group to access the LCD using "gpasswd -a user uucp".
 
+Operation:
+
+1. Use bpg-generate to create a new radar mode. 
+2. Use bpg-shell to enter the bpg shell to add and run modes. 
  
