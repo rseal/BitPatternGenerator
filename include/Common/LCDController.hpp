@@ -88,17 +88,24 @@ public:
 
   //ctor initializes time format display for LCD
   explicit LCDController(LcdPtr lcd) throw( std::runtime_error )
-  : lcd_(lcd), exit_(false), running_(false), newMode_(true){
+  : SThread(), lcd_(lcd), exit_(false), running_(false), newMode_(true){
 
     // ATTENTION: this call can throw
     lcd_->Init(); 
+    lcd_->BootScreen();
 
-    tFacet_ = TimeFacet( new boost::posix_time::time_facet("%r %z") );
-    ostr.imbue(std::locale(ostr.getloc(), tFacet_.get() ));
   }
 
   //no functionality yet
-  void Stop() { running_ = false; }
+  void Stop() { 
+     if( running ){
+     running_ = false;
+     this->Wait();
+     }
+  }
+
+  // returns true if the controller is running
+  const bool Active() { return running_; }
 
   //switch modes
   void Mode(const std::string& mode) { 
@@ -111,10 +118,12 @@ public:
   //followed by an display update
   void Run(){
 
+    tFacet_ = TimeFacet( new boost::posix_time::time_facet("%r %z") );
+    ostr.imbue(std::locale(ostr.getloc(), tFacet_.get() ));
     startTime_ = boost::posix_time::second_clock::local_time();
     running_ = true;
 
-    while (!exit_) {
+    while (running_) {
 
       //sleep for one second then update display
       Sleep(sthread::sec,1);
@@ -136,16 +145,16 @@ public:
       lcd_->Update();
       mutex_.Unlock();
     }
-  }
-  
-  //dtor reset display to boot screen and destroys time_facet object
-  //dynamic allocation of tFacet_ required for proper operation
-  ~LCDController(){
-	  exit_ = true;
-	  Wait();
+
+    mutex_.Lock();
     lcd_->BootScreen();
+    mutex_.Unlock();
   }
 
+  ~LCDController()
+  {
+    Stop();
+  }
 };
 
 

@@ -52,7 +52,7 @@ protected:
 
 public:
   
-  LCD(const lcd::uint& line, const lcd::uint& columns):
+  LCD(const lcd::uint line, const lcd::uint columns):
     newMessage_(line), oldMessage_(line), columns_(columns){}
 
   void Init() throw( std::runtime_error ) {
@@ -83,8 +83,8 @@ public:
 
   }
 
-  virtual void Brightness(const int& num){}
-  virtual void Contrast(const int& num){}
+  virtual void Brightness(const int num){}
+  virtual void Contrast(const int num){}
 
   void BootScreen(){
     Message(0,"  BPG Version 2.0  ");
@@ -98,7 +98,7 @@ public:
 
   virtual ~LCD(){}
  
-  void Message(const lcd::uint& line, const std::string& str){
+  void Message(const lcd::uint line, const std::string str){
     if(line > newMessage_.size()) 
       throw std::runtime_error(" Requested LCD line number too large");
     newMessage_[line] = str;

@@ -21,23 +21,32 @@
 #include <bpg-v2/Instruments/Rpg/Mode/ModeArray.hpp>
 #include <bpg-v2/Instruments/Rpg/ControlStatus.hpp>
 #include <bpg-v2/Instruments/Rpg/Console/Console.hpp>
+#include <bpg-v2/Common/LCDController.hpp>
+#include <boost/shared_ptr.hpp>
 #include <iostream>
 
 typedef ColorConsole CC;
 
 class Start: public Command{
+  
+  typedef boost::shared_ptr< LCDController > LcdControllerPtr;
+  LcdControllerPtr lcdController_;
   okCUsbFrontPanel& okFrontPanel_;
   ModeArray& modeArray_;
   ControlStatus& controlStatus_;
   std::string port_;
   Console& console_;
 public:
-  Start(const std::string& name, const std::string& description,
-	okCUsbFrontPanel& okFrontPanel, ModeArray& modeArray, 
-	ControlStatus& controlStatus, Console& console):
+  Start(const std::string& name, 
+	const std::string& description,
+	okCUsbFrontPanel& okFrontPanel, 
+	ModeArray& modeArray, 
+	ControlStatus& controlStatus, 
+	LcdControllerPtr lcdController,
+	Console& console):
     Command(name,description), okFrontPanel_(okFrontPanel), 
     modeArray_(modeArray), controlStatus_(controlStatus),
-    console_(console){
+    lcdController_( lcdController ), console_(console){
     argMap_["a"]   = ControlStatus::PORTA;
     argMap_["b"]   = ControlStatus::PORTB;
     argMap_["all"] = ControlStatus::PORTAB;
@@ -48,7 +57,6 @@ public:
   virtual void Execute();
 
 };
-
 
 void Start::Execute(){
   std::string port;
@@ -88,6 +96,7 @@ void Start::Execute(){
       controlStatus_.Control(ControlStatus::START, iter->second, 
 			     ControlStatus::CLEAR);
       console_.Write("PORT active\n", CC::SYSTEM);
+      lcdController_->Start();
     }
   }
   else console_.Write("Invalid Start entry\n", CC::SYSTEM);

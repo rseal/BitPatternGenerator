@@ -54,11 +54,6 @@ int main(){
   lcd = boost::shared_ptr< CFA634 >( new CFA634("/dev/ttyUSB0",4,20) );
   lcdController = boost::shared_ptr< LCDController >( new LCDController(lcd ) );
 
-  //initialize lcd
-  lcd->BootScreen();
-
-  //start lcd controller
-  lcdController->Start();
   }
   catch( std::runtime_error e )
   { cout << "Unable to open LCD display " << endl; }
@@ -228,6 +223,7 @@ int main(){
 	       *target,
 	       modeArray,
 	       controlStatus,
+	       lcdController,
 	       console
 	       )
      );
@@ -251,7 +247,7 @@ int main(){
 		*target, 
 		modeArray,
 		controlStatus,
-		*lcdController.get(),
+		lcdController,
 		console)
      );
 
@@ -319,12 +315,12 @@ int main(){
   //main program loop - accept input until user exit program
   while(!quit){ console.Read();}
   
-  cout << "goodbye" << endl;
   controlStatus.Wait();
 
   //unload the library
   okFrontPanelDLL_FreeLib();
 
+  cout << "goodbye" << endl;
   return 0;
 }
 

@@ -22,22 +22,24 @@
 #include <bpg-v2/Instruments/Rpg/ControlStatus.hpp>
 #include <bpg-v2/Instruments/Rpg/Console/Console.hpp>
 #include <bpg-v2/Common/LCDController.hpp>
+#include <boost/shared_ptr.hpp>
 #include <iostream>
 
 typedef ColorConsole CC;
 
 class Switch: public Command{
+  typedef boost::shared_ptr< LCDController > LcdControllerPtr;
+  LcdControllerPtr lcdController_;
   okCUsbFrontPanel& okFrontPanel_;
   ModeArray& modeArray_;
   ControlStatus& controlStatus_;
   Console& console_;
-  LCDController& lcdController_;
   int dataSize_;
 
 public:
   Switch(const std::string& name, const std::string& description,
 	 okCUsbFrontPanel& okFrontPanel, ModeArray& modes, 
-	 ControlStatus& controlStatus, LCDController& lcdController, Console& console):
+	 ControlStatus& controlStatus, LcdControllerPtr lcdController, Console& console):
     Command(name,description),okFrontPanel_(okFrontPanel), modeArray_(modes),
     controlStatus_(controlStatus), lcdController_(lcdController), dataSize_(DATA_SIZE),
     console_(console){
@@ -45,8 +47,6 @@ public:
     argMap_["b"]   = ControlStatus::PORTB;
     argMap_["all"] = ControlStatus::PORTAB;
   }
-
-  virtual  ~Switch(){};
 
   virtual void Execute();
 
@@ -96,7 +96,7 @@ void Switch::Execute(){
 	console_.Write(mode.Name());
 		    
 	//Send mode name to LCD screen.
-	lcdController_.Mode(mode.Name());
+	lcdController_->Mode(mode.Name());
       }
       else console_.Write("Port failed while loading new mode\n", CC::SYSTEM); 
     }
