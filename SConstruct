@@ -12,10 +12,12 @@ arecibo_src = [ Glob( 'src/arecibo/*.cpp' )]
 common_src = [ Glob( 'src/common/*.cpp' ) ]
 psu1_src = [ Glob( 'src/psu1/*.cpp' ) ]
 generate_src = [ Glob( 'src/generate/*.cpp' ) ]
-shell_src = [ Glob( 'src/shell/*.cpp' ) ]
+shell_src = [ 'src/shell/bpg-shell.cpp', 'src/shell/okFrontPanelDLL.cpp']
+eeprom_src = [ 'src/shell/write-eeprom.cpp', 'src/shell/okFrontPanelDLL.cpp']
 
 generate_prog_src = [ arecibo_src, common_src, psu1_src, generate_src ]
 shell_prog_src = [ shell_src ]
+eeprom_prog_src = [ eeprom_src ]
 
 #setup library path
 libPath=['/usr/lib','/usr/local/lib']
@@ -26,6 +28,7 @@ env = Environment(LIBPATH=libPath,CXXFLAGS=warnFlags,CPPDEFINES=defineFlags);
 
 #object = warnEnv.Object( target='bin/okFrontPanel', source='src/shell/okFrontPanelDLL.cpp' );
 env.Program(target='bin/bpg-shell', source=shell_prog_src, LIBS=libs);
+eeprom = env.Program(target='bin/write-eeprom', source=eeprom_prog_src, LIBS=libs);
 env.Program(target='bin/bpg-generate', source=generate_prog_src, LIBS=libs);
 
 bin_install = env.Install( dir=bin_directory, source=Glob( 'bin/bpg-*' ) )

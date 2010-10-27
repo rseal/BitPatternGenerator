@@ -3,8 +3,4 @@
 *.swp
 test.hif
 test/psu1_test.hif
-bin/boostbook_catalog.xml
-bin/gcc*
-doc/manuals/
-mailbox/
-.sconsign.dblite
+bin/*
