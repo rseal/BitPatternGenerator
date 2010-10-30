@@ -98,7 +98,7 @@ public:
 
   //no functionality yet
   void Stop() { 
-     if( running ){
+     if( running_ ){
      running_ = false;
      this->Wait();
      }

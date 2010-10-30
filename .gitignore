@@ -4,3 +4,4 @@
 test.hif
 test/psu1_test.hif
 bin/*
+.sconsign.dblite
