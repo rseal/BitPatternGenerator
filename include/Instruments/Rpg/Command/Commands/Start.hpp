@@ -96,7 +96,11 @@ void Start::Execute(){
       controlStatus_.Control(ControlStatus::START, iter->second, 
 			     ControlStatus::CLEAR);
       console_.Write("PORT active\n", CC::SYSTEM);
-      lcdController_->Start();
+
+      if( lcdController_.get() != 0 )
+      {
+         lcdController_->Start();
+      }
     }
   }
   else console_.Write("Invalid Start entry\n", CC::SYSTEM);
