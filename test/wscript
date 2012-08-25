@@ -1,0 +1,48 @@
+import glob
+
+################################################################################
+# Loads c++ and java compiler options
+################################################################################
+def options(ctx):
+   ctx.load('compiler_c compiler_cxx')
+
+################################################################################
+# Loads c++ and java compiler options
+################################################################################
+def configure(ctx):
+   ctx.load('compiler_cxx')
+   ctx.check(
+      features = 'cxx cxxprogram',
+      libpath  = ['/usr/lib','/usr/local/lib'],
+      libs     = ['dl', 'pthread','usb','rt'],
+      cflags   = ['-march= native','-Wall','-02'],
+   )
+
+def options(ctx):
+   ctx.load('compiler_cxx')
+
+def build(ctx):
+
+   arecibo_src    = glob.glob('../src/arecibo/*.cpp')
+   common_src     = glob.glob('../src/common/*.cpp')
+   psu1_src       = glob.glob('../src/psu1/*.cpp')
+   generate_src   = glob.glob('../src/generate/*.cpp')
+      
+
+   rpg_test_src = common_src
+   rpg_test_src.append('rpg_test.cpp')
+
+   keyword_test_src = psu1_src
+
+   ctx( rule='cp ${SRC} ${TGT}', source=glob.glob('*.hif'), target=ctx.path.get_bld())
+
+   ctx(
+      name     = 'rpg_test',
+      features = 'cxx cxxprogram',
+      cxxflags = ['-march=native', '-Wall', '-W'],
+      includes = ['../include/common'],
+      source   = rpg_test_src,
+      target   = 'rpg_test',
+      install_path = '${PREFIX}/bin'
+   )
+

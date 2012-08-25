@@ -1,0 +1,6 @@
+[submodule "dep/clp"]
+	path = dep/clp
+	url = git@github.com:rseal/CommandLineParser.git
+[submodule "dep/sthread"]
+	path = dep/sthread
+	url = git@github.com:rseal/SThreads.git

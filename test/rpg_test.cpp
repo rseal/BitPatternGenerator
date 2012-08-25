@@ -31,9 +31,9 @@ BOOST_AUTO_TEST_CASE(radarPulseGenerator_test){
   InstrumentFinder iFinder;
 
   //Locate the instrument according to the specified INSTRUMENT
-  IInstrumentDefinition& instrument = iFinder.Find("test.hif");
+  IInstrumentDefinition& instrument = iFinder.Find("psu.hif");
 
-  BOOST_CHECK(instrument.Init("test.hif", "output.hif"));
+  BOOST_CHECK(instrument.Init("psu.hif", "output.hif"));
 
   //free instrument 
   delete &instrument;
