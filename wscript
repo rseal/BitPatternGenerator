@@ -1,4 +1,4 @@
-
+import os
 
 ################################################################################
 # Local method to remove directory tree
@@ -65,7 +65,7 @@ def configure(ctx):
       features = 'cxx cxxprogram',
       libpath  = ['/usr/lib','/usr/local/lib'],
       libs     = ['dl', 'pthread','usb','rt'],
-      cflags   = ['-march= native','-Wall','-02'],
+      cxxflags = ['-Wall', '-std=c++11', '-march=native', '-Wno-unused-parameter', '-Wno-unused-value'],
    )
 
 def options(ctx):
@@ -90,39 +90,39 @@ def build(ctx):
    ctx(
       name     = 'shell',
       features = 'cxx cxxprogram',
-      cxxflags = ['-march=native', '-Wall', '-W'],
-      includes = ['include'],
+      cxxflags = ['-march=native', '-Wall', '-std=c++11', '-W', '-Wno-unused-parameter', '-Wno-unused-value'],
+      includes = ['include','dep/sthread/include', 'dep/clp/include'],
       defines  = {'LINUX':1},
       source   = shell_prog_src,
       target   = 'bpg-shell',
       libpath  = ['/usr/lib','/usr/local/lib'],
-      lib      = ['dl', 'pthread','usb','rt'],
+      lib      = ['dl', 'pthread','usb','rt','boost_system'],
       install_path = '${PREFIX}/bin'
    )
 
    ctx(
       name     = 'generate',
       features = 'cxx cxxprogram',
-      cxxflags = ['-march=native', '-Wall', '-W'],
-      includes = ['include'],
+      cxxflags = ['-march=native', '-Wall', '-std=c++11', '-W', '-Wno-unused-parameter', '-Wno-unused-value'],
+      includes = ['include','dep/sthread/include', 'dep/clp/include'],
       defines  = {'LINUX':1},
       source   = generate_prog_src,
       target   = 'bpg-generate',
       libpath  = ['/usr/lib','/usr/local/lib'],
-      lib      = ['dl', 'pthread','usb','rt'],
+      lib      = ['dl', 'pthread','usb','rt', 'boost_system'],
       install_path = '${PREFIX}/bin'
    )
 
    ctx(
       name     = 'write-eeprom',
       features = 'cxx cxxprogram',
-      cxxflags = ['-march=native', '-Wall', '-W'],
-      includes = ['include'],
+      cxxflags = ['-march=native', '-Wall', '-std=c++11', '-W'],
+      includes = ['include','dep/sthread/include', 'dep/clp/include'],
       defines  = {'LINUX':1},
       source   = eeprom_prog_src,
       target   = 'write-eeprom',
       libpath  = ['/usr/lib','/usr/local/lib'],
-      lib      = ['dl', 'pthread','usb','rt'],
+      lib      = ['dl', 'pthread','usb','rt', 'boost_system'],
       install_path = '${PREFIX}/bin'
    )
 

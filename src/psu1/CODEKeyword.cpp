@@ -35,11 +35,6 @@ namespace psu1{
       vector<uint>   cVec;
       LocationVector lv;
 
-      PhraseRule units_r    =  (
-         chseq_p("km") | chseq_p("usec") | chseq_p("mhz") | chseq_p("msec") | 
-         chseq_p("nsec")
-         );
-
       PhraseRule port_r     = (
             ch_p('a') | ch_p('b')
           );

@@ -14,15 +14,20 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with BPG.  If not, see <http://www.gnu.org/licenses/>.
+
 #include <iostream>
+#include <cstdint>
+#include <cfloat>
+
 #include <boost/tuple/tuple.hpp>
 #include <boost/bind.hpp>
+#include <boost/shared_ptr.hpp>
+#include <boost/lexical_cast.hpp>
+
 #include <bpg-v2/Common/Keyword.hpp>
 #include <bpg-v2/Common/Unit.hpp>
 #include <bpg-v2/Common/Location.hpp>
 #include <bpg-v2/Rules/PSU/Type1/PSU1Rules.hpp>
-#include <boost/shared_ptr.hpp>
-#include <boost/lexical_cast.hpp>
 
 using namespace std;
 using namespace boost;
@@ -30,13 +35,17 @@ using namespace rpg;
 
 namespace psu1 
 {
+   // Register rule set with rule factory 
    IRules* Callback(){ return new PSU1Rules(); }
    bool result = InstrumentRuleFactory::Instance().RegisterRule("psu1",Callback);
 
-
-   void PSU1Rules::Detect(const TokenVector& tv){
-
-      for(uint i=0; i<tv.size(); ++i){
+   /////////////////////////////////////////////////////////////////////////////
+   //
+   /////////////////////////////////////////////////////////////////////////////
+   void PSU1Rules::Detect(const TokenVector& tv)
+   {
+      for(unsigned int i=0; i<tv.size(); ++i)
+      {
          trKey.Process(tv[i]);
          txaKey.Process(tv[i]);
          codeKey.Process(tv[i]);
@@ -45,197 +54,353 @@ namespace psu1
          t2Key.Process(tv[i]);
          saKey.Process(tv[i]);
       }
-   };
+   }
 
-   const bool PSU1Rules::Verify(){
+   /////////////////////////////////////////////////////////////////////////////
+   //
+   /////////////////////////////////////////////////////////////////////////////
+   bool PSU1Rules::Verify()
+   {
+      //store all locations and compare to 
+      //ensure unique assignments
+      LocationVector globalLocations;
 
-      uint i,j,k,ch;
-      uint h0,hf;
-      bool isNeg;
-
-      //contains tuple<LocationVector, Pattern, float>
+      //contains tuple<LocationVector, Pattern, double>
       //single entry
-      const vector<CodeTuple>& cTuple = codeKey.GetTupleRef();
+      const CodeTupleVector& codeTupleVec = codeKey.GetTupleRef();
 
-      //contains tuple<LocationVector, float, float>
+      //contains tuple<LocationVector, double, double>
       //single entry
-      const vector<TrTuple>& trTuple  = trKey.GetTupleRef();
+      const TrTupleVector& trTupleVec  = trKey.GetTupleRef();
 
-      //contains tuple<LocationVector, float>
+      //contains tuple<LocationVector, double>
       //single entry
-      const vector<TxaTuple>& txaTuple = txaKey.GetTupleRef();
+      const TxaTupleVector& txaTupleVec = txaKey.GetTupleRef();
 
-      //contains tuple<LocationVector, bool, float, float>
+      //contains tuple<LocationVector, bool, double, double>
       //multiple entries
-      const vector<SaTuple>& saTuple = saKey.GetTupleRef();
+      const SaTupleVector& saTupleVec = saKey.GetTupleRef();
 
       //contains simple Parameter
       //multiple entries
       const ParameterVector& t1Tuple   = t1Key.GetTupleRef();
 
-      vector<GenericTuple> gTuple; 
+      //contains tuple<LocationVector, dynamic_bitset<> >
+      //optional with multiple entries
+      GenericTupleVector genericTupleVec; 
 
-      
+      if(gKey.Set())
+      {
+         genericTupleVec = gKey.GetTupleRef();
+      }
+
       //contains simple Parameter
       //single entry
       //const ParameterVector& t2Tuple   = t2Key.GetTupleRef();
 
-      const float txa_l   = txaTuple[0].get<1>();
-      const float bauda_l = any_cast<float>(param::FindParameter(t1Tuple, "bauda").value)*1e6;
-      const float baudb_l = any_cast<float>(param::FindParameter(t1Tuple, "baudb").value)*1e6;
-      const float rfclk   = any_cast<float>(param::FindParameter(t1Tuple, "refclock").value);
-      const float ipp     = any_cast<float>(param::FindParameter(t1Tuple, "ipp").value)*1e6;
+      const double txa_baud = txaTupleVec[0].get<1>();
+      const double rfclk    = any_cast<double>(param::FindParameter(t1Tuple, "refclock").value);
+      const double ippb     = any_cast<double>(param::FindParameter(t1Tuple, "ippb").value);
+      const double baudb    = any_cast<double>(param::FindParameter(t1Tuple, "baudb").value);
+      const double ippa     = any_cast<double>(param::FindParameter(t1Tuple, "ippa").value);
+      const double bauda    = any_cast<double>(param::FindParameter(t1Tuple, "bauda").value);
 
+      iif_.clkDivA = rfclk*bauda/2.0;
+      iif_.clkDivB = rfclk*baudb/2.0;
 
-      volatile const float divClkA = rfclk*bauda_l/2e6;
-      volatile const float divClkB = rfclk*baudb_l/2e6;
-
-      iif_.clkDivA = divClkA;
-      iif_.clkDivB = divClkB;
-
-      //const float ipp_b   = rfclk/ipp;
-      const float dc      = txa_l/ipp;      
-      const float code_l  = cTuple[0].get<2>()*bauda_l;
+      //const double ipp_b   = rfclk/ipp;
+      const double duty_cycle = txa_baud/(ippa*bauda);
+      const double code_l  = codeTupleVec[0].get<2>()*bauda;
 
       //verify that code width matches the transmitted pulse width
-      if(txa_l != code_l) {
-         cerr << "TXA Pulse Width != CODE Pulse Width => " << txa_l << " != " << code_l << endl;
+      if(fabs(txa_baud-code_l) < DBL_EPSILON) 
+      {
+         cerr << "TXA Pulse Width != CODE Pulse Width => " << txa_baud << " != " << code_l << endl;
          throw std::runtime_error("PSU1Rules: TXA length != CODE length");
       }
 
       //verify that code width matches the transmitted pulse width
-      if( dc > MAX_DUTY_CYCLE ) 
+      if( duty_cycle > MAX_DUTY_CYCLE ) 
+      {
          throw std::runtime_error("PSU1Rules - DUTY CYCLE > " + 
                lexical_cast<string>(MAX_DUTY_CYCLE) );
-
-      float chLengthA = ipp/bauda_l;
-      float chLengthB = ipp/baudb_l;
-
-      //resize port A channels to proper length
-      for(i=0; i<16; ++i) ports_[i].resize(chLengthA);
-
-      //resize port B channels to proper length
-      for(i=16; i<32; ++i) ports_[i].resize(chLengthB);
-
-      //store all locations and compare to 
-      //ensure unique assignments
-      LocationVector tLoc;
-
-      //push sa locations 
-      for(i=0; i<saTuple.size(); ++i){
-         LocationVector t = saTuple[i].get<0>();
-         tLoc.insert(tLoc.end(), t.begin(), t.end());
       }
 
-      try{
+      //push sa locations 
+      for(uint16_t idx=0; idx<saTupleVec.size(); ++idx)
+      {
+         LocationVector lv = saTupleVec[idx].get<0>();
+         globalLocations.insert(globalLocations.end(), lv.begin(), lv.end());
+      }
 
-         gTuple = gKey.GetTupleRef();
-
-         //push generic location
-         for(i=0; i<gTuple.size(); ++i){
-            LocationVector t = gTuple[i].get<0>();
-            tLoc.insert(tLoc.end(), t.begin(), t.end());
-         }
-      } catch ( std::runtime_error& e) {
-         cout << "no generic keywords found" << endl;
+      //push generic location
+      for(uint16_t idx=0; idx<genericTupleVec.size(); ++idx)
+      {
+         LocationVector lv = genericTupleVec[idx].get<0>();
+         globalLocations.insert(globalLocations.end(), lv.begin(), lv.end());
       }
 
       //push all other locations
-      LocationVector t = txaTuple[0].get<0>();
-      tLoc.insert(tLoc.end(), t.begin(), t.end() );
-      t = trTuple[0].get<0>();
-      tLoc.insert(tLoc.end(), t.begin(), t.end() );
-      t = cTuple[0].get<0>();
-      tLoc.insert(tLoc.end(), t.begin(), t.end() );
+      LocationVector t = txaTupleVec[0].get<0>();
+      globalLocations.insert(globalLocations.end(), t.begin(), t.end() );
+      t = trTupleVec[0].get<0>();
+      globalLocations.insert(globalLocations.end(), t.begin(), t.end() );
+      t = codeTupleVec[0].get<0>();
+      globalLocations.insert(globalLocations.end(), t.begin(), t.end() );
 
 
       //lazy way to check for duplicate signal assignments
-      for(i=0; i<tLoc.size(); ++i)
-         for(j=i+1; j<tLoc.size(); ++j)
-            if(tLoc[i].channel == tLoc[j].channel)
-               if(tLoc[i].port == tLoc[j].port){
-                  cout << tLoc[i].port << "." << tLoc[i].channel << " ";
+      for(uint16_t idx=0; idx<globalLocations.size(); ++idx)
+      {
+         for(uint16_t jdx=idx+1; jdx<globalLocations.size(); ++jdx)
+         {
+            if(globalLocations[idx].channel == globalLocations[jdx].channel)
+            {
+               if(globalLocations[idx].port == globalLocations[jdx].port)
+               {
+                  cout << globalLocations[idx].port << "." << globalLocations[idx].channel << " ";
                   throw std::runtime_error("SIGNALS are assigned to the same port.channel");
                }
-
-      //VERIFICATION PASSED at this point
-
-      //Begin Building signals into Preformatted forms
-
-      //(1) BUILD TR Signal
-      const float pre         = trTuple[0].get<1>();
-      const float post        = trTuple[0].get<2>();
-      const float trWidth     = pre + txa_l + post;
-      LocationVector lv = trTuple[0].get<0>();
-      uint sz = lv.size();
-
-      //(1) BUILD TR SIGNAL
-      for(i=0; i<sz; ++i){
-         for(j=0; j<trWidth; ++j)
-            ports_[ChIndex(lv,i)].set(j,true);
-      }
-
-      //(2) BUILD TXA Signal
-      lv = txaTuple[0].get<0>();
-      sz = lv.size();
-      for(i=0; i<sz; ++i){
-         for(j=0; j<txa_l; ++j)
-            ports_[ChIndex(lv,i)].set(j+pre,true);
-      }
-
-      //(3) BUILD CODE Signal
-      lv = cTuple[0].get<0>();
-      const Pattern p = cTuple[0].get<1>();
-      sz = lv.size();
-      for(i=0; i<sz; ++i){
-         ch = ChIndex(lv,i);
-         for(j=0; j<p.size(); ++j) ports_[ch][pre+j] = p[j];
-      }
-
-      //(4) BUILD SA SIGNALS
-      // These are the sampling windows
-      // There is a negate option to correctly trigger Julio's system.
-      for(i=0; i<saTuple.size(); ++i){
-         lv    = saTuple[i].get<0>();
-         isNeg = saTuple[i].get<1>(); 
-         h0    = static_cast<int>(saTuple[i].get<2>());
-         hf    = static_cast<int>(saTuple[i].get<3>());
-         for(j=0; j<lv.size(); ++j){
-            ch = ChIndex(lv,j);
-            //window's point of reference is TXA and not t=0 since we
-            //are using a TR window to protect the receivers (i.e. add pre offset)
-            cout << "h0=" << h0 << " hf=" << hf << endl;
-            for(k=h0+pre; k<hf+pre; ++k) ports_[ch][k]=true;
-            if(isNeg) ports_[ch].flip(); 
-         } 
-      }
-
-      //(5) BUILD GENERIC SIGNALS
-      //GenericTuple contains tuple<LocationVector, Pattern>
-      //multiple entries
-      //GenericKeywords are optional, so check and see if one or more were detected
-      if(gKey.Set()){
-         //         const vector<GenericTuple>& gTuple = gKey.GetTupleRef();
-
-         //push generic locations 
-         //if(gKey.Set()){
-         //   for(i=0; i<gTuple.size(); ++i){
-         //      LocationVector t = gTuple[i].get<0>();
-         //      tLoc.insert(tLoc.end(), t.begin(), t.end());
-         //   }
-         //}
-
-         for(i=0; i<gTuple.size(); ++i){
-            lv = gTuple[i].get<0>();
-            const Pattern p = gTuple[i].get<1>();
-            for(j=0; j<lv.size(); ++j){
-               const int ch = ChIndex(lv,j);
-               ports_[ch] = p;
-               ports_[ch].resize(('a'==lv[j].port)? chLengthA : chLengthB);
-            } 
+            }
          }
       }
+
       return true;
+   }
+
+   /////////////////////////////////////////////////////////////////////////////
+   //
+   /////////////////////////////////////////////////////////////////////////////
+   void PSU1Rules::Build()
+   {
+      //contains tuple<LocationVector, Pattern, double>
+      //single entry
+      const CodeTupleVector& codeTupleVec = codeKey.GetTupleRef();
+
+      //contains tuple<LocationVector, double, double>
+      //single entry
+      const TrTupleVector& trTupleVec  = trKey.GetTupleRef();
+
+      //contains tuple<LocationVector, double>
+      //single entry
+      const TxaTupleVector& txaTupleVec = txaKey.GetTupleRef();
+
+      //contains tuple<LocationVector, bool, double, double>
+      //multiple entries
+      const SaTupleVector& saTupleVec = saKey.GetTupleRef();
+
+      //contains simple Parameter
+      //multiple entries
+      const ParameterVector& t1Tuple   = t1Key.GetTupleRef();
+
+      const double txa_baud = txaTupleVec[0].get<1>();
+      const double bauda    = any_cast<double>(param::FindParameter(t1Tuple, "bauda").value);
+
+      //contains tuple<LocationVector, dynamic_bitset<> >
+      //optional with multiple entries
+      GenericTupleVector genericTupleVec; 
+
+      if(gKey.Set())
+      {
+         genericTupleVec = gKey.GetTupleRef();
+      }
+
+      ///////////////////////////////////////////////////////////////////////////// 
+      //(1) BUILD TR Signal
+      ///////////////////////////////////////////////////////////////////////////// 
+      BuildTrSignal(trTupleVec, txa_baud);
+
+      ///////////////////////////////////////////////////////////////////////////// 
+      //(2) BUILD TXA Signal
+      ///////////////////////////////////////////////////////////////////////////// 
+      BuildTxaSignal(txaTupleVec, trTupleVec, txa_baud); 
+
+      ///////////////////////////////////////////////////////////////////////////// 
+      //(3) BUILD CODE Signal
+      ///////////////////////////////////////////////////////////////////////////// 
+      BuildCodeSignal(codeTupleVec, trTupleVec);
+
+      ///////////////////////////////////////////////////////////////////////////// 
+      //(4) BUILD SA SIGNALS
+      ///////////////////////////////////////////////////////////////////////////// 
+      BuildSaSignal(saTupleVec, trTupleVec, bauda);
+
+      ///////////////////////////////////////////////////////////////////////////// 
+      //(5) BUILD GENERIC SIGNALS - optional, check for existence
+      ///////////////////////////////////////////////////////////////////////////// 
+      if(gKey.Set())
+      {
+         BuildGenericSignal(genericTupleVec);
+      }
+
+      uint16_t maxPortALen = 0;
+      uint16_t maxPortBLen = 0;
+
+      for(uint16_t idx=PORTA_START; idx<PORTA_END; ++idx)
+      {
+         if(ports_[idx].size() > maxPortALen)
+         {
+            maxPortALen = ports_[idx].size();
+         }
+      }
+
+      for(uint16_t idx=PORTB_START; idx<PORTB_END; ++idx)
+      {
+         if(ports_[idx].size() > maxPortBLen)
+         {
+            maxPortBLen = ports_[idx].size();
+         }
+      }
+
+      for(uint16_t idx=PORTA_START; idx<PORTA_END; ++idx)
+      {
+         ports_[idx].resize(maxPortALen);
+      }
+
+      for(uint16_t idx=PORTB_START; idx<PORTB_END; ++idx)
+      {
+         ports_[idx].resize(maxPortBLen);
+         std::cout << "CHANNEL " << idx << " length = " << ports_[idx].size() << std::endl;
+      }
+
+
+      std::cout << "COMPLETE" << std::endl;
    } 
+
+   /////////////////////////////////////////////////////////////////////////////
+   //
+   /////////////////////////////////////////////////////////////////////////////
+   void PSU1Rules::BuildTrSignal(const TrTupleVector& trTupleVec, const double txaBaud)
+   {
+      std::cout << "BUILDING TR Signal " << std::endl;
+      const double pre_baud  = trTupleVec[0].get<1>();
+      const double post_baud = trTupleVec[0].get<2>();
+      const double tr_baud   = pre_baud + txaBaud + post_baud;
+
+      LocationVector lv = trTupleVec[0].get<0>();
+
+      for(uint16_t idx=0; idx<lv.size(); ++idx)
+      {
+         const uint16_t ch_idx = ChIndex(lv,idx);
+         ports_[ch_idx].resize(tr_baud);
+
+         for(uint16_t jdx=0; jdx<tr_baud; ++jdx)
+         {
+            ports_[ch_idx].set(jdx,true);
+         }
+      }
+
+   }
+
+   /////////////////////////////////////////////////////////////////////////////
+   //
+   /////////////////////////////////////////////////////////////////////////////
+   void PSU1Rules::BuildTxaSignal(const TxaTupleVector& txaTupleVec, 
+         const TrTupleVector& trTupleVec, const double txaBaud)
+   {
+      std::cout << "BUILDING TXA Signal " << std::endl;
+
+      LocationVector lv = txaTupleVec[0].get<0>();
+      const uint16_t pre_baud = trTupleVec[0].get<1>();
+
+      for(uint16_t idx=0; idx<lv.size(); ++idx)
+      {
+         const uint16_t ch_idx = ChIndex(lv,idx);
+         ports_[ch_idx].resize(pre_baud + txaBaud);
+
+         for(uint16_t jdx=0; jdx<txaBaud; ++jdx)
+         {
+            const uint16_t txa_offset = jdx + pre_baud;
+            ports_[ch_idx].set(txa_offset,true);
+         }
+      }
+   }
+
+   /////////////////////////////////////////////////////////////////////////////
+   //
+   /////////////////////////////////////////////////////////////////////////////
+   void PSU1Rules::BuildCodeSignal(const CodeTupleVector& codeTupleVec,
+         const TrTupleVector& trTupleVec)
+   {
+      std::cout << "BUILDING CODE Signal " << std::endl;
+
+      LocationVector lv = codeTupleVec[0].get<0>();
+      const Pattern pattern = codeTupleVec[0].get<1>();
+      const uint16_t pre_baud = trTupleVec[0].get<1>();
+
+      for(uint16_t idx=0; idx<lv.size(); ++idx)
+      {
+         const uint16_t ch_idx = ChIndex(lv,idx);
+         ports_[ch_idx].resize(pre_baud+pattern.size());
+
+         for(uint16_t jdx=0; jdx<pattern.size(); ++jdx) 
+         {
+            const uint16_t code_offset = pre_baud + jdx;
+            ports_[ch_idx][code_offset] = pattern[jdx];
+         }
+      }
+   }
+
+   /////////////////////////////////////////////////////////////////////////////
+   //
+   /////////////////////////////////////////////////////////////////////////////
+   void PSU1Rules::BuildSaSignal(const SaTupleVector& saTupleVec,
+         const TrTupleVector& trTupleVec, const double bauda)
+   {
+
+      std::cout << "BUILDING SA (Receive Window) Signal " << std::endl;
+
+      for(uint16_t idx =0; idx<saTupleVec.size(); ++idx)
+      {
+         // get all port.channel locations
+         LocationVector lv = saTupleVec[idx].get<0>();
+         bool isNeg = saTupleVec[idx].get<1>(); 
+
+         // convert to baud
+         const uint16_t h0_baud  = static_cast<uint16_t>(saTupleVec[idx].get<2>()/bauda);
+         const uint16_t hf_baud  = static_cast<uint16_t>(saTupleVec[idx].get<3>()/bauda);
+         const uint16_t pre_baud = trTupleVec[0].get<1>();
+
+         //window's point of reference is TXA and not t=0 since we
+         //are using a TR window to protect the receivers (i.e. add pre offset)
+         const uint16_t h0_offset = h0_baud + pre_baud;
+         const uint16_t hf_offset = hf_baud + pre_baud;
+
+         for(uint16_t jdx=0; jdx<lv.size(); ++jdx)
+         {
+            const uint16_t ch_jdx = ChIndex(lv,jdx);
+            ports_[ch_jdx].resize(hf_offset);
+
+            // enable signal for defined receive window 
+            for(uint16_t kdx=h0_offset; kdx<hf_offset; ++kdx)
+            { 
+               ports_[ch_jdx][kdx]=true;
+            }
+
+            // invert signal if negate set
+            if(isNeg) { ports_[ch_jdx].flip(); }
+         } 
+      }
+   }
+
+   /////////////////////////////////////////////////////////////////////////////
+   //
+   /////////////////////////////////////////////////////////////////////////////
+   void PSU1Rules::BuildGenericSignal(const GenericTupleVector& genericTupleVec)
+   {
+      std::cout << "BUILDING Generic Signals " << std::endl;
+
+      for(uint16_t idx=0; idx<genericTupleVec.size(); ++idx)
+      {
+         // get all port.channel locations
+         LocationVector lv = genericTupleVec[idx].get<0>();
+
+         // iterate through all locations and assign signal
+         for(uint16_t jdx=0; jdx<lv.size(); ++jdx)
+         {
+            ports_[ChIndex(lv,jdx)] = genericTupleVec[idx].get<1>();
+         } 
+      }
+   }
 
 }; // namespace psu1
