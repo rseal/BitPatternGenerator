@@ -27,9 +27,9 @@ void TYPE1Keyword::Detect(const string& token){
 
   typedef rule<phrase_scanner_t> PhraseRule;
 
-  string         nStr;
-  unsigned int   uValue;
-  string         uStr;
+  string nStr;
+  double uValue;
+  string uStr;
 
   PhraseRule keyword_names_r = (
 				chseq_p("refclock") | 
@@ -44,7 +44,7 @@ void TYPE1Keyword::Detect(const string& token){
 			    );
     
   PhraseRule unit_r     = (
-			   uint_p[assign_a(uValue)] >> 
+			   real_p[assign_a(uValue)] >> 
 			   units_r[assign_a(uStr)]
 			   );
     

@@ -74,11 +74,12 @@ class ControlStatus: public SThread
       void SendControl(const BitArray& bitArray)
       {
          ScopedLock Lock(mutex_);
-         okFrontPanel_.SetWireInValue(CONTROL, bitArray.to_ulong());
+         okFrontPanel_.SetWireInValue(CONTROL, static_cast<int>(bitArray.to_ulong()));
          okFrontPanel_.UpdateWireIns();
-         // 	std::cout << std::hex;
-         // 	std::cout << "sent 0x" << bitArray.to_ulong() << std::endl;
-         // 	std::cout << std::dec;
+         
+         //std::cout << std::hex;
+         //std::cout << "sent 0x" << bitArray.to_ulong() << std::endl;
+         //std::cout << std::dec;
       }
 
 

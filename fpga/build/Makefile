@@ -17,7 +17,7 @@ ncd2:
 	par -ol high -xe n -w ${FILENAME}.ncd ${FILENAME} ${FILENAME}.pcf
 
 bit:	
-	bitgen -w ${FILENAME}.ncd -b ../bin/${FILENAME}.bit
+	bitgen -w ${FILENAME}.ncd -b ../firmare/bpg.bit
 
 #dpRamTest: ${FILENAME}.cpp buffer.h
 #	g++ -o ${FILENAME} ${FILENAME}.cpp -lokFrontPanel -lusb -lblitz

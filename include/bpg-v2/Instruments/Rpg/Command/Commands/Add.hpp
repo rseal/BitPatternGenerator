@@ -20,6 +20,8 @@
 #include <cstdint>
 #include <iostream>
 #include <fstream>
+#include <chrono>
+#include <thread>
 
 #pragma GCC system_header
 #include <bpg-v2/Instruments/Rpg/okFrontPanelDLL.h>
@@ -43,7 +45,6 @@ class Add: public Command
       okCUsbFrontPanel& okFrontPanel_;
       ControlStatus& controlStatus_;
       ModeArray& modeArray_;
-      uint16_t dataSize_;
       Mutex& mutex_;
       Console& console_;
 
@@ -62,14 +63,22 @@ class Add: public Command
             Console& console
          ): 
          Command(name,description), okFrontPanel_(okFrontPanel), 
-         controlStatus_(controlStatus), modeArray_(modes), dataSize_(8196),
-         mutex_(mutex), console_(console)
+         controlStatus_(controlStatus), modeArray_(modes), mutex_(mutex), 
+         console_(console)
    {
 
    }
 
       virtual ~Add(){};
       virtual void Execute(); 
+
+      static const uint16_t NUM_ELEMENTS = 8196;
+      static const uint16_t PORTA_IDX    = 0;
+      static const uint16_t PORTB_IDX    = 4098;
+      static const int  PIPEA_ADDRESS    = 0x80;
+      static const int  PIPEB_ADDRESS    = 0x81;
+
+
 
 };
 
@@ -91,7 +100,7 @@ bool Add::Load(const std::string& name)
          data.push_back(boost::lexical_cast<int>(input));
       }
 
-      if(data.size() != dataSize_) 
+      if(data.size() != NUM_ELEMENTS) 
       {
          console_.Write("WARNING: size mismatch - found " +
                boost::lexical_cast<std::string>(data.size()) +
@@ -111,23 +120,29 @@ bool Add::Load(const std::string& name)
 
 void Add::InitializeFPGA(DataVector& data)
 {
-   //if this is the first mode - initialize the fpga with it
-   unsigned char *porta = 
-      reinterpret_cast<unsigned char*> (&data[0]);
-   unsigned char *portb = 
-      reinterpret_cast<unsigned char*>(&data[4098]);
-
    mutex_.Lock();
-   okFrontPanel_.WriteToPipeIn(0x80, dataSize_, porta);
-   okFrontPanel_.WriteToPipeIn(0x81, dataSize_, portb);
+   okFrontPanel_.WriteToPipeIn(PIPEA_ADDRESS, NUM_ELEMENTS, 
+         (unsigned char*)&data[PORTA_IDX]);
    mutex_.Unlock();
 
    //add a delay giving the update thread a chance to receive new status
    // I will find a better place to put this soon as debugging is over
-   usleep(10000);
+   std::this_thread::sleep_for(std::chrono::milliseconds(100));
 
    if(!controlStatus_.Ready(ControlStatus::PORTA)) 
       console_.Write("ERROR: PORTA load failed\n",CC::SYSTEM);  
+
+   mutex_.Lock();
+   okFrontPanel_.WriteToPipeIn(PIPEB_ADDRESS, NUM_ELEMENTS,
+         (unsigned char*)&data[PORTB_IDX]);
+   mutex_.Unlock();
+
+   //add a delay giving the update thread a chance to receive new status
+   // I will find a better place to put this soon as debugging is over
+   std::this_thread::sleep_for(std::chrono::milliseconds(100));
+
+   if(!controlStatus_.Ready(ControlStatus::PORTB)) 
+      console_.Write("ERROR: PORTB load failed\n",CC::SYSTEM);  
 }
 
 

@@ -70,14 +70,19 @@ void Stop::Execute(){
 		
       // stop waits for the current IPP to complete - 1 second delay
       int i=0;
-      for(i; i < 1000; ++i){
-	if(!controlStatus_.Active(ControlStatus::PORTA)) break;
-	usleep(1000);
+      for(i; i < 1000; ++i)
+      {
+         if(!controlStatus_.Active(iter->second)) break;
+         usleep(1000);
       }
-      if(i == 1000) console_.Write("ERROR: Port stop command failed to respond. Port is active.\n", CC::SYSTEM);
-      else{
-	console_.Write("Port has been stopped.\n", CC::SYSTEM);
-	controlStatus_.Control(ControlStatus::STOP, iter->second, ControlStatus::CLEAR);
+      if(i == 1000) 
+      {
+         console_.Write("ERROR: Port stop command failed to respond. Port is active.\n", CC::SYSTEM);
+      }
+      else
+      {
+         console_.Write("Port has been stopped.\n", CC::SYSTEM);
+         controlStatus_.Control(ControlStatus::STOP, iter->second, ControlStatus::CLEAR);
       }
     }
   }

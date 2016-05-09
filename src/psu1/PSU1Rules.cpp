@@ -100,7 +100,6 @@ namespace psu1
 
       const double txa_baud = txaTupleVec[0].get<1>();
       const double rfclk    = any_cast<double>(param::FindParameter(t1Tuple, "refclock").value);
-      const double ippb     = any_cast<double>(param::FindParameter(t1Tuple, "ippb").value);
       const double baudb    = any_cast<double>(param::FindParameter(t1Tuple, "baudb").value);
       const double ippa     = any_cast<double>(param::FindParameter(t1Tuple, "ippa").value);
       const double bauda    = any_cast<double>(param::FindParameter(t1Tuple, "bauda").value);
@@ -194,6 +193,9 @@ namespace psu1
       const ParameterVector& t1Tuple   = t1Key.GetTupleRef();
 
       const double txa_baud = txaTupleVec[0].get<1>();
+      const double ippb     = any_cast<double>(param::FindParameter(t1Tuple, "ippb").value);
+      const double baudb    = any_cast<double>(param::FindParameter(t1Tuple, "baudb").value);
+      const double ippa     = any_cast<double>(param::FindParameter(t1Tuple, "ippa").value);
       const double bauda    = any_cast<double>(param::FindParameter(t1Tuple, "bauda").value);
 
       //contains tuple<LocationVector, dynamic_bitset<> >
@@ -244,6 +246,15 @@ namespace psu1
          }
       }
 
+      const uint16_t ippa_baud = static_cast<uint16_t>(ippa/bauda);
+
+      if(ippa_baud < maxPortALen)
+      {
+         throw std::runtime_error("PSU1Rules: PORTA IPP is less then longest signal");
+      }
+
+      maxPortALen = ippa_baud;
+
       for(uint16_t idx=PORTB_START; idx<PORTB_END; ++idx)
       {
          if(ports_[idx].size() > maxPortBLen)
@@ -251,6 +262,15 @@ namespace psu1
             maxPortBLen = ports_[idx].size();
          }
       }
+
+      const uint16_t ippb_baud = static_cast<uint16_t>(ippb/baudb);
+
+      if(ippb_baud < maxPortBLen)
+      {
+         throw std::runtime_error("PSU1Rules: PORTB IPP is less then longest signal");
+      }
+
+      maxPortBLen = ippb_baud;
 
       for(uint16_t idx=PORTA_START; idx<PORTA_END; ++idx)
       {

@@ -127,6 +127,7 @@ assign portb_clk = clk_div2;
 //channel 15 of portA is hardwired to produce either phase or coded long pulse
 // depending on use_clp bit
 assign porta = use_clp ? {clp , porta_buf[14:0]} : porta_buf;
+assign portb = portb_buf;
 
 //32-bit linear feedback shift register for coded long pulse - port a
 lfsr lfsr_a
@@ -137,14 +138,14 @@ lfsr lfsr_a
 );
 
 //signal routing for DAC module - port b
-DAC dac_b (
-   .clk(clk_div2),
-   .din(portb_buf),
-   .rst_in(reset2),
-   .use_dac(use_dac),
-   .dout(portb),
-   .rst_out(dac_en)
-);
+//DAC dac_b (
+   //.clk(clk_div2),
+   //.din(portb_buf),
+   //.rst_in(reset2),
+   //.use_dac(use_dac),
+   //.dout(portb),
+   //.rst_out(dac_en)
+//);
 
 //PORT A BUFFERS
 dpram db1(
