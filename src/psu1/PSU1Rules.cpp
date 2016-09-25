@@ -46,12 +46,18 @@ namespace psu1
    {
       for(unsigned int i=0; i<tv.size(); ++i)
       {
-         trKey.Process(tv[i]);
-         txaKey.Process(tv[i]);
-         codeKey.Process(tv[i]);
          gKey.Process(tv[i]);
          t1Key.Process(tv[i]);
          t2Key.Process(tv[i]);
+      }
+
+      const double bauda = any_cast<double>(param::FindParameter(t1Key.GetTupleRef(), "bauda").value);
+
+      for(unsigned int i=0; i<tv.size(); ++i)
+      {
+         trKey.Process(tv[i],bauda);
+         txaKey.Process(tv[i],bauda);
+         codeKey.Process(tv[i]);
          saKey.Process(tv[i]);
       }
    }
@@ -71,7 +77,7 @@ namespace psu1
 
       //contains tuple<LocationVector, double, double>
       //single entry
-      const TrTupleVector& trTupleVec  = trKey.GetTupleRef();
+      const TrTupleVector& trTupleVec = trKey.GetTupleRef();
 
       //contains tuple<LocationVector, double>
       //single entry
@@ -83,7 +89,7 @@ namespace psu1
 
       //contains simple Parameter
       //multiple entries
-      const ParameterVector& t1Tuple   = t1Key.GetTupleRef();
+      const ParameterVector& t1Tuple = t1Key.GetTupleRef();
 
       //contains tuple<LocationVector, dynamic_bitset<> >
       //optional with multiple entries
@@ -98,17 +104,27 @@ namespace psu1
       //single entry
       //const ParameterVector& t2Tuple   = t2Key.GetTupleRef();
 
-      const double txa_baud = txaTupleVec[0].get<1>();
+      const double txa = txaTupleVec[0].get<1>();
       const double rfclk    = any_cast<double>(param::FindParameter(t1Tuple, "refclock").value);
       const double baudb    = any_cast<double>(param::FindParameter(t1Tuple, "baudb").value);
       const double ippa     = any_cast<double>(param::FindParameter(t1Tuple, "ippa").value);
       const double bauda    = any_cast<double>(param::FindParameter(t1Tuple, "bauda").value);
+      const double txa_baud = round(txa/bauda);
 
-      iif_.clkDivA = rfclk*bauda/2.0;
-      iif_.clkDivB = rfclk*baudb/2.0;
+      iif_.clkDivA = round(rfclk*bauda/2.0);
+      iif_.clkDivB = round(rfclk*baudb/2.0);
+
+      std::cout << "txa      = " << txa << std::endl;
+      std::cout << "txa_baud = " << txa_baud << std::endl;
+      std::cout << "rfclk    = " << rfclk << std::endl;
+      std::cout << "baudb    = " << baudb << std::endl;
+      std::cout << "bauda    = " << bauda << std::endl;
+      std::cout << "ippa     = " << ippa << std::endl;
+      std::cout << "diva     = " << iif_.clkDivA << std::endl;
+      std::cout << "divb     = " << iif_.clkDivB << std::endl;
 
       //const double ipp_b   = rfclk/ipp;
-      const double duty_cycle = txa_baud/(ippa*bauda);
+      const double duty_cycle = txa/ippa;
       const double code_l  = codeTupleVec[0].get<2>()*bauda;
 
       //verify that code width matches the transmitted pulse width
@@ -121,8 +137,9 @@ namespace psu1
       //verify that code width matches the transmitted pulse width
       if( duty_cycle > MAX_DUTY_CYCLE ) 
       {
-         throw std::runtime_error("PSU1Rules - DUTY CYCLE > " + 
-               lexical_cast<string>(MAX_DUTY_CYCLE) );
+         throw std::runtime_error("PSU1Rules - DUTY CYCLE " + 
+               lexical_cast<string>(duty_cycle) + " > " + 
+               lexical_cast<string>(MAX_DUTY_CYCLE));
       }
 
       //push sa locations 
@@ -192,11 +209,11 @@ namespace psu1
       //multiple entries
       const ParameterVector& t1Tuple   = t1Key.GetTupleRef();
 
-      const double txa_baud = txaTupleVec[0].get<1>();
       const double ippb     = any_cast<double>(param::FindParameter(t1Tuple, "ippb").value);
       const double baudb    = any_cast<double>(param::FindParameter(t1Tuple, "baudb").value);
       const double ippa     = any_cast<double>(param::FindParameter(t1Tuple, "ippa").value);
       const double bauda    = any_cast<double>(param::FindParameter(t1Tuple, "bauda").value);
+      const double txa      = txaTupleVec[0].get<1>();
 
       //contains tuple<LocationVector, dynamic_bitset<> >
       //optional with multiple entries
@@ -210,12 +227,12 @@ namespace psu1
       ///////////////////////////////////////////////////////////////////////////// 
       //(1) BUILD TR Signal
       ///////////////////////////////////////////////////////////////////////////// 
-      BuildTrSignal(trTupleVec, txa_baud);
+      BuildTrSignal(trTupleVec, txa, bauda);
 
       ///////////////////////////////////////////////////////////////////////////// 
       //(2) BUILD TXA Signal
       ///////////////////////////////////////////////////////////////////////////// 
-      BuildTxaSignal(txaTupleVec, trTupleVec, txa_baud); 
+      BuildTxaSignal(txaTupleVec, trTupleVec, txa, bauda); 
 
       ///////////////////////////////////////////////////////////////////////////// 
       //(3) BUILD CODE Signal
@@ -246,7 +263,7 @@ namespace psu1
          }
       }
 
-      const uint16_t ippa_baud = static_cast<uint16_t>(ippa/bauda);
+      const uint16_t ippa_baud = round(ippa/bauda);
 
       if(ippa_baud < maxPortALen)
       {
@@ -263,7 +280,7 @@ namespace psu1
          }
       }
 
-      const uint16_t ippb_baud = static_cast<uint16_t>(ippb/baudb);
+      const uint16_t ippb_baud = round(ippb/baudb);
 
       if(ippb_baud < maxPortBLen)
       {
@@ -290,12 +307,13 @@ namespace psu1
    /////////////////////////////////////////////////////////////////////////////
    //
    /////////////////////////////////////////////////////////////////////////////
-   void PSU1Rules::BuildTrSignal(const TrTupleVector& trTupleVec, const double txaBaud)
+   void PSU1Rules::BuildTrSignal(const TrTupleVector& trTupleVec, const double txa, const double bauda)
    {
       std::cout << "BUILDING TR Signal " << std::endl;
-      const double pre_baud  = trTupleVec[0].get<1>();
-      const double post_baud = trTupleVec[0].get<2>();
-      const double tr_baud   = pre_baud + txaBaud + post_baud;
+      const uint16_t pre_baud = round(trTupleVec[0].get<1>()/bauda);
+      const uint16_t post_baud = round(trTupleVec[0].get<2>()/bauda);
+      const uint16_t txa_baud = round(txa/bauda);
+      const uint16_t tr_baud = pre_baud + txa_baud + post_baud;
 
       LocationVector lv = trTupleVec[0].get<0>();
 
@@ -316,19 +334,20 @@ namespace psu1
    //
    /////////////////////////////////////////////////////////////////////////////
    void PSU1Rules::BuildTxaSignal(const TxaTupleVector& txaTupleVec, 
-         const TrTupleVector& trTupleVec, const double txaBaud)
+         const TrTupleVector& trTupleVec, const double txa, const double bauda)
    {
       std::cout << "BUILDING TXA Signal " << std::endl;
 
       LocationVector lv = txaTupleVec[0].get<0>();
-      const uint16_t pre_baud = trTupleVec[0].get<1>();
+      const uint16_t pre_baud = round(trTupleVec[0].get<1>()/bauda);
+      const double txa_baud = round(txa/bauda);
 
       for(uint16_t idx=0; idx<lv.size(); ++idx)
       {
          const uint16_t ch_idx = ChIndex(lv,idx);
-         ports_[ch_idx].resize(pre_baud + txaBaud);
+         ports_[ch_idx].resize(pre_baud + txa_baud);
 
-         for(uint16_t jdx=0; jdx<txaBaud; ++jdx)
+         for(uint16_t jdx=0; jdx<txa_baud; ++jdx)
          {
             const uint16_t txa_offset = jdx + pre_baud;
             ports_[ch_idx].set(txa_offset,true);

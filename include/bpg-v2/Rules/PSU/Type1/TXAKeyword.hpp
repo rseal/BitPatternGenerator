@@ -26,14 +26,14 @@ namespace psu1{
 
    const double MAX_TXA_WIDTH = 145e-6;
 
-   typedef boost::tuple<LocationVector, float> TxaTuple;
+   typedef boost::tuple<LocationVector, double> TxaTuple;
    typedef std::vector<TxaTuple> TxaTupleVector;
 
    class TXAKeyword: public Keyword<TxaTuple>{
 
       float width_;
 
-      void Detect(const std::string& token);
+      void Detect(const std::string& token, double baudWidth);
 
       void Verify(){
          if( width_ >  MAX_TXA_WIDTH ) throw std::runtime_error("ERROR: TXA width > " + 

@@ -193,7 +193,7 @@ ddpram vb2(
 
 
 //instantiating BUFGMUX for this case fails to route properly - this method works
-assign 		  clk = use_drifted == 2'b11 ? int_clk : use_drifted == 2'b10 ? clk_drifted : clk_std;
+assign clk = use_drifted == 2'b11 ? int_clk : use_drifted == 2'b10 ? clk_drifted : clk_std;
 
 
 //INPUT CONTROL MODULE

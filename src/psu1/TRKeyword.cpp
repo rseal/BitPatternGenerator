@@ -24,9 +24,8 @@ using namespace boost::spirit::classic;
 
 namespace psu1{
 
-   void TRKeyword::Detect(const string& token)
+   void TRKeyword::Detect(const string& token, double baudWidth)
    {
-
       if(set_) return;
 
       typedef rule<phrase_scanner_t> PhraseRule;
@@ -51,7 +50,7 @@ namespace psu1{
 
       // build phrase
       PhraseRule phrase = (
-            chseq_p("tr")[assign_a(nameStr)] 
+            chseq_p("tr")
             >> ch_p('=') 
             >> location_r 
             >> range_r
@@ -68,8 +67,8 @@ namespace psu1{
          }
 
          //load parameters - units will be defined in baud
-         pre_  = unitValueVec[0];
-         post_ = unitValueVec[1];
+         pre_  = unitValueVec[0]*baudWidth;
+         post_ = unitValueVec[1]*baudWidth;
 
          parameters_.push_back(TrTuple(lv, pre_, post_));
 

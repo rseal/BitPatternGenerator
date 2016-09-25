@@ -21,35 +21,42 @@
 #include <bpg-v2/Common/Location.hpp>
 #include <bpg-v2/Common/Keyword.hpp>
 #include <boost/lexical_cast.hpp>
+#include <limits>
+#include <cmath>
 
 namespace psu1{
 
-   // define rules
-   const int TR_PRE_MIN = 10;
-   const int TR_POST_MIN = 10;
 
-   typedef boost::tuple<LocationVector, float, float> TrTuple;
+   // define rules
+   const double TR_PRE_MIN_USEC = 10.0e-6;
+   const double TR_POST_MIN_USEC = 10.0e-6;
+
+   typedef boost::tuple<LocationVector, double, double> TrTuple;
    typedef std::vector<TrTuple> TrTupleVector;
 
    class TRKeyword: public Keyword<TrTuple >
    {
       private:
 
-         float pre_;
-         float post_;
+         double pre_;
+         double post_;
 
-         void Detect(const std::string& token);
+         void Detect(const std::string& token, double baudWidth);
 
          // Validate signals with predetermined rules
          inline void Verify()
          { 
+            const double EPSILON = 1e-9;
+
             // pre min check
-            if( pre_ < TR_PRE_MIN ) throw std::runtime_error("TR PRE < " + 
-                  boost::lexical_cast<std::string>( TR_PRE_MIN ));
+            if( pre_ < TR_PRE_MIN_USEC && fabs(pre_-TR_PRE_MIN_USEC) > EPSILON)
+               throw std::runtime_error("TR PRE " + boost::lexical_cast<std::string>(pre_) + "<" +
+                  boost::lexical_cast<std::string>(TR_PRE_MIN_USEC ));
 
             // post min check
-            if( post_ < TR_POST_MIN ) throw std::runtime_error("TR POST < " + 
-                  boost::lexical_cast<std::string>( TR_POST_MIN ));
+            if( post_ < TR_POST_MIN_USEC && fabs(post_-TR_POST_MIN_USEC) > EPSILON)
+               throw std::runtime_error("TR POST " + boost::lexical_cast<std::string>(post_) + "<" +
+                  boost::lexical_cast<std::string>(TR_POST_MIN_USEC ));
 
             std::cout << "TR verify " <<  std::endl;
          }

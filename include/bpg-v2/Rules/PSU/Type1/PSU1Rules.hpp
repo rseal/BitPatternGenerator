@@ -36,10 +36,10 @@ namespace psu1{
    {
       private:
 
-         void BuildTrSignal(const TrTupleVector& trTupleVec, const double txaBaud);
+         void BuildTrSignal(const TrTupleVector& trTupleVec, const double txa, const double bauda);
 
          void BuildTxaSignal(const TxaTupleVector& txaTupleVec, 
-               const TrTupleVector& trTupleVec, const double txaBaud );
+               const TrTupleVector& trTupleVec, const double txa, const double bauda);
 
          void BuildCodeSignal(const CodeTupleVector& codeTupleVec,
                const TrTupleVector& trTupleVec);

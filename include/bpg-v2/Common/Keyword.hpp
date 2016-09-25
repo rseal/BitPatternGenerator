@@ -28,6 +28,7 @@ class Keyword
    private:
 
       virtual void Detect(const std::string& token){};
+      virtual void Detect(const std::string& token, double baudWidth){};
       virtual void Verify(){};
 
    protected:
@@ -47,6 +48,14 @@ class Keyword
          boost::erase_all(str," ");
          boost::to_lower(str);
          Detect(str);
+      }
+
+      void Process(const std::string& token, double baudWidth){
+         //set_=false;
+         std::string str = token;
+         boost::erase_all(str," ");
+         boost::to_lower(str);
+         Detect(str,baudWidth);
       }
 
       virtual void Print() {};

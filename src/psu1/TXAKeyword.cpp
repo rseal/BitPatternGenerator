@@ -23,7 +23,7 @@ using namespace boost::spirit::classic;
 
 namespace psu1{
 
-   void TXAKeyword::Detect(const string& token)
+   void TXAKeyword::Detect(const string& token, double baudWidth)
    {
 
       // don't bother with duplicate entries in configuration file.
@@ -72,7 +72,7 @@ namespace psu1{
          }
 
          //load parameters
-         width_ = uValue*UnitConvert::Convert(uStr);
+         width_ = uValue*baudWidth;
          parameters_.push_back(TxaTuple(lv,width_));
 
          set_ = true;

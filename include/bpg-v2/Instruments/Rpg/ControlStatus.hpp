@@ -33,6 +33,7 @@
 #include <sthread/SThread.hpp>
 #include <bitset>
 #include <iostream>
+#include <cstdint>
 
 ////////////////////////////////////////////////////////////////////////////////
 ///\brief Communicates control and status information between the host PC and 
@@ -74,7 +75,7 @@ class ControlStatus: public SThread
       void SendControl(const BitArray& bitArray)
       {
          ScopedLock Lock(mutex_);
-         okFrontPanel_.SetWireInValue(CONTROL, static_cast<int>(bitArray.to_ulong()));
+         okFrontPanel_.SetWireInValue(CONTROL, static_cast<uint16_t>(bitArray.to_ulong()));
          okFrontPanel_.UpdateWireIns();
          
          //std::cout << std::hex;
@@ -108,7 +109,7 @@ class ControlStatus: public SThread
       /// okCUsbFrontPanel is passed by reference and provides 
       /// the interface with the FPGA
       ControlStatus(okCUsbFrontPanel& okFrontPanel, int& exit, Mutex& mutex): 
-         okFrontPanel_(okFrontPanel), updateRate_(10), exit_(exit),
+         okFrontPanel_(okFrontPanel), updateRate_(100), exit_(exit),
          reset1_(0), reset2_(0), start1_(0), start2_(0), stop1_(0),
          stop2_(0), sync_(0), clkSource_(0), activeBuffer1_(0),
          activeBuffer2_(0), preload1_(0), preload2_(0),
@@ -131,7 +132,6 @@ class ControlStatus: public SThread
       {
          while(!exit_)
          {
-
             mutex_.Lock();
             okFrontPanel_.UpdateWireOuts();
             status1_ = okFrontPanel_.GetWireOutValue(STATUS1);
@@ -255,14 +255,11 @@ class ControlStatus: public SThread
          }
 
          sync_ = value;
-         //std::bitset<2> temp(value);
-         //control_.set(6, static_cast<int>(temp[0]));
-         //control_.set(7, static_cast<int>(temp[1]));
          SendControl(control_);
       }
 
       /// Specify either the standard clock or the drifted version
-      void ClockSource(const int& value)
+      void ClockSource(const int value)
       {
          switch(value)
          {
@@ -300,14 +297,14 @@ class ControlStatus: public SThread
 
 
       /// Enables/Disables optional DAC connected to PortB
-      void UseDAC(const bool& state)
+      void UseDAC(const bool state)
       {
          control_.set(12,static_cast<int>(state));
          SendControl(control_);
       };
 
       /// Enables/Disables coded long pulse phase coding
-      void UseCLP(const bool& state)
+      void UseCLP(const bool state)
       {
          control_.set(13, static_cast<int>(state));
          SendControl(control_);
