@@ -396,9 +396,9 @@ namespace psu1
          bool isNeg = saTupleVec[idx].get<1>(); 
 
          // convert to baud
-         const uint16_t h0_baud  = static_cast<uint16_t>(saTupleVec[idx].get<2>()/bauda);
-         const uint16_t hf_baud  = static_cast<uint16_t>(saTupleVec[idx].get<3>()/bauda);
-         const uint16_t pre_baud = trTupleVec[0].get<1>();
+         const uint16_t h0_baud  = round(saTupleVec[idx].get<2>()/bauda);
+         const uint16_t hf_baud  = round(saTupleVec[idx].get<3>()/bauda);
+         const uint16_t pre_baud = round(trTupleVec[0].get<1>()/bauda);
 
          //window's point of reference is TXA and not t=0 since we
          //are using a TR window to protect the receivers (i.e. add pre offset)
