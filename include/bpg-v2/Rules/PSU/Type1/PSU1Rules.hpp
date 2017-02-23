@@ -42,7 +42,7 @@ namespace psu1{
                const TrTupleVector& trTupleVec, const double txa, const double bauda);
 
          void BuildCodeSignal(const CodeTupleVector& codeTupleVec,
-               const TrTupleVector& trTupleVec);
+               const TrTupleVector& trTupleVec, const double bauda );
 
          void BuildSaSignal(const SaTupleVector& saTupleVec,
                const TrTupleVector& trTupleVec, const double bauda );

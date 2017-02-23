@@ -109,7 +109,7 @@ namespace psu1
       const double baudb    = any_cast<double>(param::FindParameter(t1Tuple, "baudb").value);
       const double ippa     = any_cast<double>(param::FindParameter(t1Tuple, "ippa").value);
       const double bauda    = any_cast<double>(param::FindParameter(t1Tuple, "bauda").value);
-      const double txa_baud = round(txa/bauda);
+      const uint32_t txa_baud = round(txa/bauda);
 
       iif_.clkDivA = round(rfclk*bauda/2.0);
       iif_.clkDivB = round(rfclk*baudb/2.0);
@@ -125,10 +125,13 @@ namespace psu1
 
       //const double ipp_b   = rfclk/ipp;
       const double duty_cycle = txa/ippa;
-      const double code_l  = codeTupleVec[0].get<2>()*bauda;
+      const uint32_t code_l  = codeTupleVec[0].get<2>();
+
+      std::cout << "code length = " << code_l << std::endl;
+      std::cout << "txa  length = " << txa_baud << std::endl;
 
       //verify that code width matches the transmitted pulse width
-      if(fabs(txa_baud-code_l) < DBL_EPSILON) 
+      if(txa_baud != code_l)
       {
          cerr << "TXA Pulse Width != CODE Pulse Width => " << txa_baud << " != " << code_l << endl;
          throw std::runtime_error("PSU1Rules: TXA length != CODE length");
@@ -237,7 +240,7 @@ namespace psu1
       ///////////////////////////////////////////////////////////////////////////// 
       //(3) BUILD CODE Signal
       ///////////////////////////////////////////////////////////////////////////// 
-      BuildCodeSignal(codeTupleVec, trTupleVec);
+      BuildCodeSignal(codeTupleVec, trTupleVec, bauda);
 
       ///////////////////////////////////////////////////////////////////////////// 
       //(4) BUILD SA SIGNALS
@@ -359,13 +362,13 @@ namespace psu1
    //
    /////////////////////////////////////////////////////////////////////////////
    void PSU1Rules::BuildCodeSignal(const CodeTupleVector& codeTupleVec,
-         const TrTupleVector& trTupleVec)
+         const TrTupleVector& trTupleVec, const double bauda)
    {
       std::cout << "BUILDING CODE Signal " << std::endl;
 
       LocationVector lv = codeTupleVec[0].get<0>();
       const Pattern pattern = codeTupleVec[0].get<1>();
-      const uint16_t pre_baud = trTupleVec[0].get<1>();
+      const uint16_t pre_baud = round(trTupleVec[0].get<1>()/bauda);
 
       for(uint16_t idx=0; idx<lv.size(); ++idx)
       {
